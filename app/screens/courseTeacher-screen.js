@@ -90,14 +90,14 @@ export default class Page2Screen extends Component {
             <View style={styles.container}>
               <Text style={styles.welcome}>
                 Coursetableview {/*tableview*/}
-                <Button
-                  title=''
+              </Text>
+              <Button
+                  title='Edit'
                   onPress={() => {
                   const { navigate } = this.props.navigation
                   navigate('Page7NewScreen')
                   }} 
                 />
-              </Text>
             </View>
             <Button
             title='Back to Main screen'

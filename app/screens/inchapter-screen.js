@@ -41,7 +41,7 @@ export default class Page2Screen extends Component {
             <Text
               style={styles.appBar.colRight.titleTextStyle}
               numberOfLines={1}>
-                Subject
+                Chapter
             </Text>
           </View>
         </View>

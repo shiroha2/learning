@@ -41,10 +41,20 @@ export default class Page2Screen extends Component {
             <Text
               style={styles.appBar.colRight.titleTextStyle}
               numberOfLines={1}>
-                Chapter
+                Exersice
             </Text>
           </View>
         </View>
+        <TouchableOpacity
+            style={styles.appBar.colLeft.containerStyle}
+            onPress={() => {
+              const { navigate } = this.props.navigation
+              navigate('PageExerciseTeacherEditScreen')
+             }}>
+            <Text>
+              Edit
+            </Text>
+        </TouchableOpacity>
 
         {/* Body */}
         <ScrollView style={{
@@ -52,33 +62,18 @@ export default class Page2Screen extends Component {
         }}>
           <Text style={styles.welcome}>
           {/*Show Chapter TableView */}
-            Chapter table View
+            Exercise View
           </Text>
           <Button
-            title='Go In chapter'
+            title=''
             onPress={() => {
-              const { navigate } = this.props.navigation
-              navigate('Page5Screen')
+              this.props.navigation.goBack()
             }} />
-            <Button
-            title='Go In exercise'
-            onPress={() => {
-              const { navigate } = this.props.navigation
-              navigate('PageExerciseScreen')
-            }} />
-
           <Button
             title='Back to Main screen'
             onPress={() => {
               this.props.navigation.goBack()
             }} />
-            <Button
-            title='Chat'
-            onPress={() => {const { navigate } = this.props.navigation
-            navigate('ChatRoom')}} />
-            <Button
-            title='Out from Course'
-            onPress={() => {}} />
           
         </ScrollView>
         

@@ -51,7 +51,17 @@ export default class Page2Screen extends Component {
               navigate('Page7NewScreen')
              }}>
             <Text>
-              New
+              New Chapter
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.appBar.colLeft.containerStyle}
+            onPress={() => {
+              const { navigate } = this.props.navigation
+              navigate('Page7NewScreen')
+             }}>
+            <Text>
+              New Exercise
             </Text>
           </TouchableOpacity>
         </View>
@@ -63,12 +73,11 @@ export default class Page2Screen extends Component {
           <Text style={styles.welcome}>
           {/*Show Chapter TableView */}
             Chapter TableView
-            <Button
+          </Text>
+          <Button
               title='Edit'
               onPress={() => {const { navigate } = this.props.navigation
-              navigate('Page7NewScreen')}} />
-          </Text>
-          
+              navigate('Page7EditScreen')}} />
           <Button
             title='Back to Main screen'
             onPress={() => {

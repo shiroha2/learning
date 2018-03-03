@@ -6,6 +6,7 @@ import Page2Screen from './app/screens/profile-screen'
 import Page3Screen from './app/screens/course-screen'
 import Page4Screen from './app/screens/chapter-screen'
 import Page5Screen from './app/screens/inchapter-screen'
+import PageExerciseScreen from './app/screens/exercise-screen'
 import ChatRoom from './app/screens/chatroom-screen'
 import Page6Screen from './app/screens/courseTeacher-screen'
 import Page6NewScreen from './app/screens/courseTeacherNew-screen'
@@ -13,6 +14,11 @@ import Page6EditScreen from './app/screens/courseTeacherEdit-screen'
 import Page7Screen from './app/screens/chapterTeacher-screen'
 import Page7NewScreen from './app/screens/chapterTeacherNew-screen'
 import Page7EditScreen from './app/screens/chapterTeacherEdit-screen'
+import PageExerciseTeacherScreen from './app/screens/exerciseTeacher-screen'
+import PageExerciseTeacherEditScreen from './app/screens/exerciseTeacherEdit-screen'
+import PageExerciseTeacherNewScreen from './app/screens/exerciseTeacherNew-screen'
+
+
 
 
 import { defaultTransitionConfig } from 'react-navigation/src/views/CardStack/TransitionConfigs'
@@ -54,6 +60,18 @@ const Navigator = StackNavigator({
   },
   Page7EditScreen: {
     screen: Page7EditScreen,
+  },
+  PageExerciseScreen: {
+    screen: PageExerciseScreen,
+  },
+  PageExerciseTeacherScreen: {
+    screen: PageExerciseTeacherScreen,
+  },
+  PageExerciseTeacherEditScreen: {
+    screen: PageExerciseTeacherEditScreen,
+  },
+  PageExerciseTeacherNewScreen: {
+    screen: PageExerciseTeacherNewScreen,
   },
 }, {
   headerMode: 'none',

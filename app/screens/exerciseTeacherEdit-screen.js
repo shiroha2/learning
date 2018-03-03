@@ -14,6 +14,7 @@ import {
   TouchableOpacity,
   IconIonic,
   ScrollView,
+  TextInput,
 } from 'react-native'
 
 export default class Page2Screen extends Component {
@@ -41,7 +42,7 @@ export default class Page2Screen extends Component {
             <Text
               style={styles.appBar.colRight.titleTextStyle}
               numberOfLines={1}>
-                Chapter
+                Exercise Edit
             </Text>
           </View>
         </View>
@@ -50,35 +51,26 @@ export default class Page2Screen extends Component {
         <ScrollView style={{
           flex: 1,
         }}>
-          <Text style={styles.welcome}>
-          {/*Show Chapter TableView */}
-            Chapter table View
+         <Text styte={styles.welcome}>
+            Exercise
           </Text>
+          <TextInput
+          />
+          <Text styte={styles.welcome}>
+            Desciption
+          </Text>
+          <TextInput
+          />
           <Button
-            title='Go In chapter'
+            title='Done'
             onPress={() => {
-              const { navigate } = this.props.navigation
-              navigate('Page5Screen')
+              this.props.navigation.goBack()
             }} />
-            <Button
-            title='Go In exercise'
-            onPress={() => {
-              const { navigate } = this.props.navigation
-              navigate('PageExerciseScreen')
-            }} />
-
           <Button
             title='Back to Main screen'
             onPress={() => {
               this.props.navigation.goBack()
             }} />
-            <Button
-            title='Chat'
-            onPress={() => {const { navigate } = this.props.navigation
-            navigate('ChatRoom')}} />
-            <Button
-            title='Out from Course'
-            onPress={() => {}} />
           
         </ScrollView>
         
