@@ -11,6 +11,7 @@ import {
   Text,
   View,
   Button,
+  TextInput,
 } from 'react-native'
 
 export default class Page2Screen extends Component {
@@ -23,9 +24,29 @@ export default class Page2Screen extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          Welcome to Page 2
+          Profile
         </Text>
+        <TextInput
+          
+        />
+        <TextInput
+          
+        />
         <Button
+          title='Student'
+          onPress={() => {
+            const { navigate } = this.props.navigation
+            navigate('Page3Screen')
+          }} 
+        />
+        <Button
+          title='Teacher'
+          onPress={() => {
+            const { navigate } = this.props.navigation
+            navigate('Page6Screen')
+          }}
+        />
+          <Button
           title='Back to Main screen'
           onPress={() => {
             this.props.navigation.goBack()

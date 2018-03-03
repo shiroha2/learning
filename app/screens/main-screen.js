@@ -29,10 +29,10 @@ export default class MainScreen extends Component {
           textAlign: 'center',
           margin: 10,
         }}>
-          Welcome to Page 1
+          Learning HP
         </Text>
         <Button
-          title='Go to page 2'
+          title='Log in with google'
           onPress={() => {
             const { navigate } = this.props.navigation
             navigate('Page2Screen')
