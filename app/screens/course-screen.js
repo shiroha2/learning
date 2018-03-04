@@ -14,13 +14,32 @@ import {
   TouchableOpacity,
   IconIonic,
   ScrollView,
-  
+  ListView,
 } from 'react-native'
 
 export default class Page2Screen extends Component {
 
+  ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+  state = {
+    dataSource: [],
+  }
+  
+
   constructor(props) {
     super(props)
+
+    this.state.dataSource = this.ds.cloneWithRows([])
+  }
+
+  componentDidMount() {
+    // Call API then set data(s) into state
+    this.setState({
+      dataSource: this.ds.cloneWithRows([{
+        title: 'Title name 1',
+      },{
+        title: 'Title name 1',
+      }]),
+    })
   }
 
   render() {
@@ -83,14 +102,32 @@ export default class Page2Screen extends Component {
             </Text>
           </TouchableOpacity>
           </View>
+
+
         {/* Body */}
         <ScrollView style={{
           flex: 1,
         }}>
             <View style={styles.container}>
-              <Text style={styles.welcome}>
-                tableview {/*tableview*/}
-              </Text>
+              
+              <ListView
+                enableEmptySections={true}
+                dataSource={this.state.dataSource}
+                renderRow={(data) => {
+                  return (
+                    <View style={{
+                      borderBottomColor: 'gray',
+                      borderBottomWidth: 1,
+                      marginLeft: 10,
+                      marginRight: 10,
+                      marginBottom: 10,
+                      padding: 10,
+                    }}>
+                      <Text>{ data.title }</Text>
+                    </View>
+                  )
+                }} />
+
             </View>
             <Button
             title='Go chapter'

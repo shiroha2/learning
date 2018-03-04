@@ -75,7 +75,7 @@ const Navigator = StackNavigator({
   },
 }, {
   headerMode: 'none',
-  initialRouteName: 'MainScreen',
+  initialRouteName: 'Page3Screen',
 });
 
 const DEBUG_TAG = 'App'
