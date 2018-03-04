@@ -14,15 +14,34 @@ import {
   TouchableOpacity,
   IconIonic,
   ScrollView,
+  ListView,
   
 } from 'react-native'
 
 export default class Page2Screen extends Component {
 
-  constructor(props) {
-    super(props)
+
+  ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+  state = {
+    dataSource: [],
   }
 
+  constructor(props) {
+    super(props)
+
+    this.state.dataSource = this.ds.cloneWithRows([])
+  }
+  componentDidMount() {
+    // Call API then set data(s) into state
+    this.setState({
+      dataSource: this.ds.cloneWithRows([{
+        title: 'Title name 1',
+      },{
+        title: 'Title name 1',
+      }]),
+    })
+  }
+  
   render() {
     return (
       <View style={styles.container}> 
@@ -88,27 +107,46 @@ export default class Page2Screen extends Component {
           flex: 1,
         }}>
             <View style={styles.container}>
-              <Text style={styles.welcome}>
-                Coursetableview {/*tableview*/}
-              </Text>
-              <Button
-                  title='Edit'
-                  onPress={() => {
-                  const { navigate } = this.props.navigation
-                  navigate('Page7NewScreen')
-                  }} 
-                />
+              
+              <ListView
+                enableEmptySections={true}
+                dataSource={this.state.dataSource}
+                renderRow={(data) => {
+                  return (
+                    <View style={{
+                      borderBottomColor: 'gray',
+                      borderBottomWidth: 1,
+                      marginLeft: 10,
+                      marginRight: 10,
+                      marginBottom: 10,
+                      padding: 10,
+                    }}>
+                      <Text>{ data.title }</Text>
+                      <Button
+                          title='Edit'
+                          onPress={() => {
+                          const { navigate } = this.props.navigation
+                          navigate('Page6EditScreen')
+                        }} 
+                      />
+                       <Button
+                          title='Chat'
+                          onPress={() => {
+                          const { navigate } = this.props.navigation
+                          navigate('ChatRoom')
+                        }} 
+                      />
+                    </View>
+                  )
+                }} />
+
             </View>
             <Button
-            title='Back to Main screen'
-            onPress={() => {
-              this.props.navigation.goBack()
-            }} 
+              title='Back to Main screen'
+              onPress={() => {
+                this.props.navigation.goBack()
+              }} 
             />
-            <Button
-            title='Close Course'
-            onPress={() => {this.props.navigation.goBack()
-            }} />
         </ScrollView>
         
       </View>

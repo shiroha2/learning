@@ -61,6 +61,16 @@ export default class Page2Screen extends Component {
           </Text>
           <TextInput
           />
+          <Text styte={styles.welcome}>
+            Point
+          </Text>
+          <TextInput
+          />
+          <Text styte={styles.welcome}>
+            Answer
+          </Text>
+          <TextInput
+          />
           <Button
             title='Done'
             onPress={() => {

@@ -61,6 +61,13 @@ export default class Page2Screen extends Component {
           <TextInput
           />
           <Button
+            title='Answer'
+            onPress={() => {
+            const { navigate } = this.props.navigation
+            navigate('PageAnswerScreen')
+            }}
+          />
+          <Button
             title='Done'
             onPress={() => {
               this.props.navigation.goBack()

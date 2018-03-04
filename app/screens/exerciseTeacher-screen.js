@@ -44,8 +44,7 @@ export default class Page2Screen extends Component {
                 Exersice
             </Text>
           </View>
-        </View>
-        <TouchableOpacity
+          <TouchableOpacity
             style={styles.appBar.colLeft.containerStyle}
             onPress={() => {
               const { navigate } = this.props.navigation
@@ -56,19 +55,16 @@ export default class Page2Screen extends Component {
             </Text>
         </TouchableOpacity>
 
+      </View>
+        
         {/* Body */}
         <ScrollView style={{
           flex: 1,
         }}>
           <Text style={styles.welcome}>
-          {/*Show Chapter TableView */}
+          {/*Show Exercise View */}
             Exercise View
           </Text>
-          <Button
-            title=''
-            onPress={() => {
-              this.props.navigation.goBack()
-            }} />
           <Button
             title='Back to Main screen'
             onPress={() => {

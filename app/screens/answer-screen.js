@@ -15,31 +15,12 @@ import {
   IconIonic,
   ScrollView,
   TextInput,
-  ListView,
 } from 'react-native'
 
 export default class Page2Screen extends Component {
 
-  ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
-  state = {
-    dataSource: [],
-  }
-
   constructor(props) {
     super(props)
-
-    this.state.dataSource = this.ds.cloneWithRows([])
-  }
-
-  componentDidMount() {
-    // Call API then set data(s) into state
-    this.setState({
-      dataSource: this.ds.cloneWithRows([{
-        title: 'Messages1',
-      },{
-        title: 'Messages2',
-      }]),
-    })
   }
 
   render() {
@@ -61,7 +42,7 @@ export default class Page2Screen extends Component {
             <Text
               style={styles.appBar.colRight.titleTextStyle}
               numberOfLines={1}>
-                Course Chat
+                Answer
             </Text>
           </View>
         </View>
@@ -71,34 +52,9 @@ export default class Page2Screen extends Component {
           flex: 1,
         }}>
           <Text style={styles.welcome}>
-              Chat
+          {/*Show Chapter TableView */}
+            Answer View
           </Text>
-            <View style={styles.container}>
-              
-              <ListView
-                enableEmptySections={true}
-                dataSource={this.state.dataSource}
-                renderRow={(data) => {
-                  return (
-                    <View style={{
-                      borderBottomColor: 'gray',
-                      borderBottomWidth: 1,
-                      marginLeft: 10,
-                      marginRight: 10,
-                      marginBottom: 10,
-                      padding: 10,
-                    }}>
-                      <Text>{ data.title }</Text>
-                    </View>
-                  )
-                }} />
-
-              </View>
-          <TextInput
-          />
-          <Button
-            title='Send'
-            onPress={() => {}} />
           <Button
             title='Back to Main screen'
             onPress={() => {

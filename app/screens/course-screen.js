@@ -124,25 +124,26 @@ export default class Page2Screen extends Component {
                       padding: 10,
                     }}>
                       <Text>{ data.title }</Text>
+                      <Button
+                          title='Go chapter'
+                          onPress={() => {
+                          const { navigate } = this.props.navigation
+                          navigate('Page4Screen')
+                        }} 
+                      />
+                      <Button
+                          title='Add'
+                          onPress={() => {
+                          const { navigate } = this.props.navigation
+                          navigate('Page4Screen')
+                        }} 
+                      />
                     </View>
                   )
                 }} />
 
             </View>
-            <Button
-            title='Go chapter'
-            onPress={() => {
-              const { navigate } = this.props.navigation
-              navigate('Page4Screen')
-            }} 
-            />
-            <Button
-            title='Go exercise'
-            onPress={() => {
-              const { navigate } = this.props.navigation
-              navigate('PageExerciseScreen')
-            }} 
-            />
+            
             <Button
             title='Back to Main screen'
             onPress={() => {

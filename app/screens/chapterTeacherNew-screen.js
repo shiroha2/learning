@@ -61,6 +61,14 @@ export default class Page2Screen extends Component {
           </Text>
           <TextInput
           />
+          <Text styte={styles.welcome}>
+            Upload PDF
+          </Text>
+          <TextInput
+          />
+          <View>
+            {/*PDF View*/}
+          </View>
           <Button
             title='Done'
             onPress={() => {

@@ -7,6 +7,7 @@ import Page3Screen from './app/screens/course-screen'
 import Page4Screen from './app/screens/chapter-screen'
 import Page5Screen from './app/screens/inchapter-screen'
 import PageExerciseScreen from './app/screens/exercise-screen'
+import PageAnswerScreen from './app/screens/answer-screen'
 import ChatRoom from './app/screens/chatroom-screen'
 import Page6Screen from './app/screens/courseTeacher-screen'
 import Page6NewScreen from './app/screens/courseTeacherNew-screen'
@@ -39,6 +40,9 @@ const Navigator = StackNavigator({
   },
   Page5Screen: {
     screen: Page5Screen,
+  },
+  PageAnswerScreen: {
+    screen: PageAnswerScreen
   },
   ChatRoom: {
     screen: ChatRoom,
@@ -75,7 +79,7 @@ const Navigator = StackNavigator({
   },
 }, {
   headerMode: 'none',
-  initialRouteName: 'Page3Screen',
+  initialRouteName: 'MainScreen',
 });
 
 const DEBUG_TAG = 'App'

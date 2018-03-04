@@ -14,6 +14,7 @@ import {
   TouchableOpacity,
   IconIonic,
   ScrollView,
+  TextInput,
 } from 'react-native'
 
 export default class Page2Screen extends Component {
@@ -57,6 +58,16 @@ export default class Page2Screen extends Component {
           />
           <Text styte={styles.welcome}>
             Desciption
+          </Text>
+          <TextInput
+          />
+          <Text styte={styles.welcome}>
+            Point
+          </Text>
+          <TextInput
+          />
+          <Text styte={styles.welcome}>
+            Answer
           </Text>
           <TextInput
           />

@@ -44,7 +44,7 @@ export default class Page2Screen extends Component {
               numberOfLines={1}>
               Course
             </Text>
-          </View>
+          </View>       
         </View>
        
         {/* Body */}

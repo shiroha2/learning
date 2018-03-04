@@ -14,12 +14,33 @@ import {
   TouchableOpacity,
   IconIonic,
   ScrollView,
+  ListView,
+
 } from 'react-native'
 
 export default class Page2Screen extends Component {
 
+  ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+  state = {
+    dataSource: [],
+  }
+  
+
   constructor(props) {
     super(props)
+
+    this.state.dataSource = this.ds.cloneWithRows([])
+  }
+
+  componentDidMount() {
+    // Call API then set data(s) into state
+    this.setState({
+      dataSource: this.ds.cloneWithRows([{
+        title: 'Title name 1',
+      },{
+        title: 'Title name 1',
+      }]),
+    })
   }
 
   render() {
@@ -50,22 +71,40 @@ export default class Page2Screen extends Component {
         <ScrollView style={{
           flex: 1,
         }}>
-          <Text style={styles.welcome}>
-          {/*Show Chapter TableView */}
-            Chapter table View
-          </Text>
-          <Button
-            title='Go In chapter'
-            onPress={() => {
-              const { navigate } = this.props.navigation
-              navigate('Page5Screen')
-            }} />
-            <Button
-            title='Go In exercise'
-            onPress={() => {
-              const { navigate } = this.props.navigation
-              navigate('PageExerciseScreen')
-            }} />
+          <View style={styles.container}>
+              
+              <ListView
+                enableEmptySections={true}
+                dataSource={this.state.dataSource}
+                renderRow={(data) => {
+                  return (
+                    <View style={{
+                      borderBottomColor: 'gray',
+                      borderBottomWidth: 1,
+                      marginLeft: 10,
+                      marginRight: 10,
+                      marginBottom: 10,
+                      padding: 10,
+                    }}>
+                      <Text>{ data.title }</Text>
+                      <Button
+                        title='Go In chapter'
+                        onPress={() => {
+                        const { navigate } = this.props.navigation
+                        navigate('Page5Screen')
+                      }} />
+                      <Button
+                        title='Go In exercise'
+                        onPress={() => {
+                        const { navigate } = this.props.navigation
+                        navigate('PageExerciseScreen')
+                      }} />
+                    </View>
+                  )
+                }} />
+
+              </View>
+          
 
           <Button
             title='Back to Main screen'
