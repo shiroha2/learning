@@ -4,16 +4,55 @@ import {
   Text,
   View,
   Button,
+  Image,
+  TextInput
 } from 'react-native'
+
+import firebase from 'firebase'
+import {
+  GoogleSignin
+} from 'react-native-google-signin'
 
 export default class MainScreen extends Component {
 
   constructor(props) {
     super(props)
+    this.state = {
+      loading: true
+    }
   }
 
+
   componentDidMount() {
-    console.log('DEBUG_TAG', 'This message will appear on Android Studio')
+    console.log('DEBUG_TAG', 'This message will appear on Android Studio') 
+    const config = {
+      apiKey: 'AIzaSyDJwDtP3iaG5fZ_p8-3kayQC4eTlMeY2h0',
+      authDomain: 'learninghpapp.firebaseapp.com',
+      databaseURL: 'https://learninghpapp.firebaseio.com',
+      projectId: 'learninghpapp',
+      storageBucket: 'learninghpapp.appspot.com',
+      messagingSenderId: '849804559418'
+    }
+    firebase.initializeApp(config)
+  }
+
+  state = {
+    email: '',
+    password: '',
+    error: ''
+  }
+
+  onButtonPress() {
+    const { email, password } = this.state;
+ 
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .catch(() => {
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+          .catch(() => {
+            this.setState({ error: 'Authentication Failed.' });
+          })
+      })
+    
   }
 
   render() {
@@ -24,6 +63,9 @@ export default class MainScreen extends Component {
         alignItems: 'center',
         backgroundColor: '#F5FCFF',
       }}>
+        <Image 
+        style={{width: 150, height: 150}}
+        source={require('/Users/supakitsujaritcheewawong/learninghpapp/app/images/app-iron.png')}/>
         <Text style={{
           fontSize: 20,
           textAlign: 'center',
@@ -31,13 +73,50 @@ export default class MainScreen extends Component {
         }}>
           Learning HP
         </Text>
+        <TextInput
+            value={this.state.email}
+            onChangeText={text => this.setState({ email })}
+            style={{ height: 20, width: 100 }}
+          />
+       <TextInput
+            value={this.state.password}
+            onChangeText={text => this.setState({ password })}
+            style={{ height: 20, width: 100 }}
+          />
+        <Button
+          title='Log in'
+          onPress = {this.onButtonPress.bind(this)}
+        />
+        
         <Button
           title='Log in with google'
           onPress={() => {
-            const { navigate } = this.props.navigation
-            navigate('Page2Screen')
+            GoogleSignin.signIn().then((data)=>{
+              const credential = firebase.auth.GithubAuthProvider.credential(data.idToken,data.accessToken)
+            })
+            return firebase.auth().signInWithCredential(credential)
+            .then((user)=>{
+              const { navigate } = this.props.navigation
+              navigate('Page2Screen')
+            }).catch((error)=>{
+              const { code, message } = error 
+            })
           }} />
+          <Button
+            title= 'next'
+            onPress={() => {
+              const {navigate} = this.props.navigation
+              navigate('Page2Screen')
+            }}
+          />
       </View>
     )
+  }
+}
+
+const styles = {
+  errorTextStyle: {
+    alignSelf: 'center',
+    color: 'red'
   }
 }

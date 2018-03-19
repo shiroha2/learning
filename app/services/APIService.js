@@ -2,6 +2,7 @@ import lodash from 'lodash'
 
 
 const DEBUG_TAG = 'APIService'
+const prefixUrl = 'https://learninghp.azurewebsites.net/'
 
 export default class APIService {
   /** @type {APIService} */

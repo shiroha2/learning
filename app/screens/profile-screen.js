@@ -12,12 +12,23 @@ import {
   View,
   Button,
   TextInput,
+  Picker
 } from 'react-native'
+
+import {
+  userUpdate,
+  userCreate
+} from '../actions/userAction'
 
 export default class Page2Screen extends Component {
 
   constructor(props) {
     super(props)
+  }
+  
+  onButtonPress() {
+    const {name, email, status } = this.props
+    this.props.userCreate({name , email, status})
   }
 
   render() {
@@ -27,21 +38,37 @@ export default class Page2Screen extends Component {
           Profile
         </Text>
         <TextInput
-          
+          value = {this.props.name}
+          onChangeText={text=>this.props.userUpdate({prop: 'name', value: text})}
         />
         <TextInput
-          
+          value = {this.props.email}
+          onChangeText={text=>this.props.userUpdate({prop: 'email', value: text})}
         />
+        <Text style={styles.pickerTextStyle}>Status</Text>
+        <Picker
+          style={{ flex: 1 }}
+          selectedValue={this.props.status}
+          onValueChange={status => this.props.userUpdate({ prop: 'status', value: status })}
+        >
+          <Picker.Item label="Student" value="student"/>
+          <Picker.Item label="Teacher" value="teacher"/>
+        </Picker>
+
+
         <Button
           title='Student'
           onPress={() => {
+            this.onButtonPress.bind(this)
             const { navigate } = this.props.navigation
             navigate('Page3Screen')
           }} 
         />
+
         <Button
           title='Teacher'
           onPress={() => {
+            this.onButtonPress.bind(this)
             const { navigate } = this.props.navigation
             navigate('Page6Screen')
           }}
