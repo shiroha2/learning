@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "849804559418",
+    "firebase_url": "https://learninghpapp.firebaseio.com",
+    "project_id": "learninghpapp",
+    "storage_bucket": "learninghpapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:849804559418:android:dd17ea33ee010723",
+        "android_client_info": {
+          "package_name": "com.learninghpapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "849804559418-u11iup8ent00klagiru4bri809hovhap.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOI7ZqYjR_LPWVZuV5uWhlq8Db5O8zpYc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
