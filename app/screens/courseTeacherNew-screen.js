@@ -15,18 +15,39 @@ import {
   IconIonic,
   ScrollView,
   TextInput,
-  
+
 } from 'react-native'
 
-export default class Page2Screen extends Component {
+import firebase from 'firebase'
+
+export default class Page6NewScreen extends Component {
 
   constructor(props) {
     super(props)
   }
 
+  state = {
+    courseName: '',
+    desciption: ''
+  }
+
+  courseCreate(courseName, desciption){
+    state = 'undeploy'
+    const {currentUser} = firebase.auth()
+    
+    const course = firebase.database().ref(`/course/${currentUser.uid}`)
+    course.push({ courseName, desciption, state})
+  }
+  courseCreateDeploy(courseName, desciption){
+    state = 'deploy'
+    const {currentUser} = firebase.auth()
+
+    const course = firebase.database().ref(`/course/${currentUser.uid}`)
+    course.push({ courseName, desciption, state})
+  }
   render() {
     return (
-      <View style={styles.container}> 
+      <View style={styles.container}>
         {/* AppBar */}
         <View style={styles.appBar.containerStyle}>
           <TouchableOpacity
@@ -56,7 +77,7 @@ export default class Page2Screen extends Component {
             </Text>
           </TouchableOpacity>
         </View>
-      
+
         {/* Body */}
         <ScrollView style={{
           flex: 1,
@@ -66,35 +87,43 @@ export default class Page2Screen extends Component {
                 course name
               </Text>
               <TextInput
+                value = {this.state.courseName}
+                onChangeText={courseName => this.setState({ courseName })}
+                style={{ height: 50, width: 200 }}
               />
               <Text style={styles.welcome}>
                 desciption
               </Text>
               <TextInput
+                value = {this.state.desciption}
+                onChangeText={desciption => this.setState({ desciption })}
+                style={{ height: 50, width: 300 }}
               />
             </View>
-            
+
             <Button
             title='Save'
             onPress={() => {
+              this.courseCreate(this.state.courseName , this.state.desciption)
               this.props.navigation.goBack()
-            }} 
+            }}
             />
             <Button
             title='Deploy'
             onPress={() => {
+              this.courseCreateDeploy(this.state.courseName , this.state.desciption)
               this.props.navigation.goBack()
-            }} 
+            }}
             />
             <Button
             title='Back to Main screen'
             onPress={() => {
               this.props.navigation.goBack()
-            }} 
+            }}
             />
-            
+
         </ScrollView>
-        
+
       </View>
     )
   }

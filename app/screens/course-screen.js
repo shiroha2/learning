@@ -17,13 +17,13 @@ import {
   ListView,
 } from 'react-native'
 
-export default class Page2Screen extends Component {
+export default class Page3Screen extends Component {
 
   ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
   state = {
     dataSource: [],
   }
-  
+
 
   constructor(props) {
     super(props)
@@ -44,7 +44,7 @@ export default class Page2Screen extends Component {
 
   render() {
     return (
-      <View style={styles.container}> 
+      <View style={styles.container}>
         {/* AppBar */}
         <View style={styles.appBar.containerStyle}>
           <TouchableOpacity
@@ -75,7 +75,7 @@ export default class Page2Screen extends Component {
           </TouchableOpacity>
         </View>
         {/* ItemBar */}
-                                            
+
         <View style={styles.appBar2.containerStyle}>
           <TouchableOpacity
             style={styles.appBar2.colLeft.containerStyle}
@@ -109,7 +109,7 @@ export default class Page2Screen extends Component {
           flex: 1,
         }}>
             <View style={styles.container}>
-              
+
               <ListView
                 enableEmptySections={true}
                 dataSource={this.state.dataSource}
@@ -129,29 +129,29 @@ export default class Page2Screen extends Component {
                           onPress={() => {
                           const { navigate } = this.props.navigation
                           navigate('Page4Screen')
-                        }} 
+                        }}
                       />
                       <Button
                           title='Add'
                           onPress={() => {
                           const { navigate } = this.props.navigation
                           navigate('Page4Screen')
-                        }} 
+                        }}
                       />
                     </View>
                   )
                 }} />
 
             </View>
-            
+
             <Button
             title='Back to Main screen'
             onPress={() => {
               this.props.navigation.goBack()
-            }} 
+            }}
             />
         </ScrollView>
-        
+
       </View>
     )
   }

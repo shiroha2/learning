@@ -1,2 +1,6 @@
 export const USER_CREATE = 'user_create'
 export const USER_UPDATE = 'user_update'
+export const COURSE_UPDATE = 'course_update'
+export const COURSE_CREATE = 'course_create'
+export const COURSE_FETCH_SUCCESS = 'course_fetch_success'
+export const COURSE_DELETE = 'course_delete'

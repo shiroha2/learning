@@ -18,7 +18,7 @@ import {
   ListView,
 } from 'react-native'
 
-export default class Page2Screen extends Component {
+export default class ChatRoom extends Component {
 
   ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
   state = {
@@ -44,7 +44,7 @@ export default class Page2Screen extends Component {
 
   render() {
     return (
-      <View style={styles.container}> 
+      <View style={styles.container}>
         {/* AppBar */}
         <View style={styles.appBar.containerStyle}>
           <TouchableOpacity
@@ -74,7 +74,7 @@ export default class Page2Screen extends Component {
               Chat
           </Text>
             <View style={styles.container}>
-              
+
               <ListView
                 enableEmptySections={true}
                 dataSource={this.state.dataSource}
@@ -104,9 +104,9 @@ export default class Page2Screen extends Component {
             onPress={() => {
               this.props.navigation.goBack()
             }} />
-          
+
         </ScrollView>
-        
+
       </View>
     )
   }

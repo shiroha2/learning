@@ -18,13 +18,13 @@ import {
 
 } from 'react-native'
 
-export default class Page2Screen extends Component {
+export default class Page4Screen extends Component {
 
   ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
   state = {
     dataSource: [],
   }
-  
+
 
   constructor(props) {
     super(props)
@@ -45,7 +45,7 @@ export default class Page2Screen extends Component {
 
   render() {
     return (
-      <View style={styles.container}> 
+      <View style={styles.container}>
         {/* AppBar */}
         <View style={styles.appBar.containerStyle}>
           <TouchableOpacity
@@ -72,7 +72,7 @@ export default class Page2Screen extends Component {
           flex: 1,
         }}>
           <View style={styles.container}>
-              
+
               <ListView
                 enableEmptySections={true}
                 dataSource={this.state.dataSource}
@@ -104,7 +104,7 @@ export default class Page2Screen extends Component {
                 }} />
 
               </View>
-          
+
 
           <Button
             title='Back to Main screen'
@@ -112,19 +112,20 @@ export default class Page2Screen extends Component {
               this.props.navigation.goBack()
             }} />
             <Button
-            title='Chat'
-            onPress={() => {const { navigate } = this.props.navigation
-            navigate('ChatRoom')}} />
+              title='Chat'
+              onPress={() => {const { navigate } = this.props.navigation
+              navigate('ChatRoom')}} />
             <Button
-            title='Out from Course'
-            onPress={() => {}} />
-          
+              title='Out from Course'
+              onPress={() => {}} />
+
         </ScrollView>
-        
+
       </View>
     )
   }
 }
+
 
 const styles = {
   container: {

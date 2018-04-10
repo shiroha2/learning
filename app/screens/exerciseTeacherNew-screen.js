@@ -17,15 +17,16 @@ import {
   TextInput,
 } from 'react-native'
 
-export default class Page2Screen extends Component {
+export default class PageExerciseTeacherNewScreen extends Component {
 
   constructor(props) {
     super(props)
   }
 
+
   render() {
     return (
-      <View style={styles.container}> 
+      <View style={styles.container}>
         {/* AppBar */}
         <View style={styles.appBar.containerStyle}>
           <TouchableOpacity
@@ -81,9 +82,9 @@ export default class Page2Screen extends Component {
             onPress={() => {
               this.props.navigation.goBack()
             }} />
-          
+
         </ScrollView>
-        
+
       </View>
     )
   }

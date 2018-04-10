@@ -4,6 +4,7 @@
  * @flow
  */
 
+import _ from 'lodash'
 import React, { Component } from 'react';
 import {
   Platform,
@@ -15,15 +16,35 @@ import {
   IconIonic,
   ScrollView,
   ListView,
-  
+
 } from 'react-native'
 
-export default class Page2Screen extends Component {
+import firebase from 'firebase'
+import {
+  COURSE_FETCH_SUCCESS
+}from '../type/types'
+
+//import { Actions } from 'react-native-router-flux'
+
+export default class Page6Screen extends Component {
 
 
   ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
   state = {
     dataSource: [],
+  }
+
+  courseFetch(){
+    const {currentUser} = firebase.auth()
+    const course = firebase.database().ref(`/course`)
+    /**return(dispatch) => {
+      course.on('value', snapshot => {
+        dispatch({
+          type: COURSE_FETCH_SUCCESS,
+          payload: snapshot.val()
+        })
+      })
+    }**/
   }
 
   constructor(props) {
@@ -41,10 +62,10 @@ export default class Page2Screen extends Component {
       }]),
     })
   }
-  
+
   render() {
     return (
-      <View style={styles.container}> 
+      <View style={styles.container}>
         {/* AppBar */}
         <View style={styles.appBar.containerStyle}>
           <TouchableOpacity
@@ -75,7 +96,7 @@ export default class Page2Screen extends Component {
           </TouchableOpacity>
         </View>
         {/* ItemBar */}
-                                            
+
         <View style={styles.appBar2.containerStyle}>
           <TouchableOpacity
             style={styles.appBar2.colLeft.containerStyle}
@@ -107,7 +128,7 @@ export default class Page2Screen extends Component {
           flex: 1,
         }}>
             <View style={styles.container}>
-              
+
               <ListView
                 enableEmptySections={true}
                 dataSource={this.state.dataSource}
@@ -127,21 +148,21 @@ export default class Page2Screen extends Component {
                           onPress={() => {
                           const { navigate } = this.props.navigation
                           navigate('Page7Screen')
-                        }} 
+                        }}
                       />
                       <Button
                           title='Edit'
                           onPress={() => {
                           const { navigate } = this.props.navigation
                           navigate('Page6EditScreen')
-                        }} 
+                        }}
                       />
                        <Button
                           title='Chat'
                           onPress={() => {
                           const { navigate } = this.props.navigation
                           navigate('ChatRoom')
-                        }} 
+                        }}
                       />
                     </View>
                   )
@@ -152,10 +173,10 @@ export default class Page2Screen extends Component {
               title='Back to Main screen'
               onPress={() => {
                 this.props.navigation.goBack()
-              }} 
+              }}
             />
         </ScrollView>
-        
+
       </View>
     )
   }

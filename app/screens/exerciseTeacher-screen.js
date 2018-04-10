@@ -16,7 +16,7 @@ import {
   ScrollView,
 } from 'react-native'
 
-export default class Page2Screen extends Component {
+export default class PageExerciseTeacherScreen extends Component {
 
   constructor(props) {
     super(props)
@@ -24,7 +24,7 @@ export default class Page2Screen extends Component {
 
   render() {
     return (
-      <View style={styles.container}> 
+      <View style={styles.container}>
         {/* AppBar */}
         <View style={styles.appBar.containerStyle}>
           <TouchableOpacity
@@ -56,7 +56,7 @@ export default class Page2Screen extends Component {
         </TouchableOpacity>
 
       </View>
-        
+
         {/* Body */}
         <ScrollView style={{
           flex: 1,
@@ -70,9 +70,9 @@ export default class Page2Screen extends Component {
             onPress={() => {
               this.props.navigation.goBack()
             }} />
-          
+
         </ScrollView>
-        
+
       </View>
     )
   }

@@ -15,10 +15,10 @@ import {
   IconIonic,
   ScrollView,
   TextInput,
-  
+
 } from 'react-native'
 
-export default class Page2Screen extends Component {
+export default class Page6EditScreen extends Component {
 
   constructor(props) {
     super(props)
@@ -26,7 +26,7 @@ export default class Page2Screen extends Component {
 
   render() {
     return (
-      <View style={styles.container}> 
+      <View style={styles.container}>
         {/* AppBar */}
         <View style={styles.appBar.containerStyle}>
           <TouchableOpacity
@@ -44,9 +44,9 @@ export default class Page2Screen extends Component {
               numberOfLines={1}>
               Course
             </Text>
-          </View>       
+          </View>
         </View>
-       
+
         {/* Body */}
         <ScrollView style={{
           flex: 1,
@@ -67,28 +67,28 @@ export default class Page2Screen extends Component {
             title='Save'
             onPress={() => {
               this.props.navigation.goBack()
-            }} 
+            }}
             />
             <Button
             title='Deploy'
             onPress={() => {
               this.props.navigation.goBack()
-            }} 
+            }}
             />
             <Button
             title='Close Course'
             onPress={() => {
               this.props.navigation.goBack()
-            }} 
+            }}
             />
             <Button
             title='Back to Main screen'
             onPress={() => {
               this.props.navigation.goBack()
-            }} 
+            }}
             />
         </ScrollView>
-        
+
       </View>
     )
   }

@@ -15,17 +15,46 @@ import {
   TouchableOpacity,
   IconIonic,
   ScrollView,
+  Alert
 } from 'react-native'
 
-export default class Page2Screen extends Component {
+
+export default class Page7NewScreen extends Component {
 
   constructor(props) {
     super(props)
   }
 
+  state = {
+    chapterName: '',
+    desciption: '',
+    pathOfpdf: ''
+  }
+
+  chapterCreate(){
+
+  }
+  onPressLearnMore(){
+    FilePickerManager.showFilePicker(null, (response) => {
+      console.log('Response = ', response)
+      if(response.didCancel){
+        console.log('Use cancelled file picker')
+      }
+      else if (response.error){
+        console.log('FilePickerManager Error: ', response.error)
+      }
+      else{
+        this.setState({
+          file: response
+        })
+      }
+    })
+    //Alert.alert('Button has been pressed!');
+  }
+
   render() {
     return (
-      <View style={styles.container}> 
+      <View style={styles.container}>
         {/* AppBar */}
         <View style={styles.appBar.containerStyle}>
           <TouchableOpacity
@@ -55,17 +84,29 @@ export default class Page2Screen extends Component {
             Chapter
           </Text>
           <TextInput
+            value={this.state.chapterName}
+            onChangeText={chapterName => this.setState({ courseName })}
           />
           <Text styte={styles.welcome}>
             Desciption
           </Text>
           <TextInput
+            value={this.state.desciption}
+            onChangeText={desciption => this.setState({ desciption })}
           />
           <Text styte={styles.welcome}>
             Upload PDF
           </Text>
           <TextInput
+            value={this.state.pathOfpdf}
+            onChangeText={pathOfpdf => this.setState({ pathOfpdf })}
           />
+          <Button
+            title= 'Select File'
+            onPress={this.onPressLearnMore.bind(this)}
+            color="#841584"
+            accessibilityLabel="Learn more about this purple button"
+            />
           <View>
             {/*PDF View*/}
           </View>
@@ -79,10 +120,10 @@ export default class Page2Screen extends Component {
             onPress={() => {
               this.props.navigation.goBack()
             }} />
-            
-          
+
+
         </ScrollView>
-        
+
       </View>
     )
   }

@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react'
 import { TextInput, View, Text } from 'react-native'
- 
+
 const Input = ({ label, value, onChangeText, placeholder, secureTextEntry }) => {
   const { inputStyle, labelStyle, containerStyle } = styles
- 
+
   return (
     <View style={containerStyle}>
       <Text style={labelStyle}>{label}</Text>
@@ -16,17 +16,17 @@ const Input = ({ label, value, onChangeText, placeholder, secureTextEntry }) => 
         style={inputStyle}
       />
     </View>
-  );
-};
- 
+  )
+}
+
 Input.PropTypes = {
   label: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   onChangeText: PropTypes.func.isRequired,
   placeholder: PropTypes.string.isRequired,
   secureTextEntry: PropTypes.bool.isRequired
-};
- 
+}
+
 const styles = {
   inputStyle: {
     color: '#000',
@@ -48,5 +48,5 @@ const styles = {
     alignItems: 'center'
   }
 };
- 
+
 export { Input }

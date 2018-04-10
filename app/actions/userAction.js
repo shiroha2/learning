@@ -1,7 +1,7 @@
 import firebase from 'firebase'
 import {
-    USER_CREATE,
     USER_UPDATE,
+    USER_CREATE
 } from '../type/types'
 
 export const userUpdate = ({prop , value}) => {

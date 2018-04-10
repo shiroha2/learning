@@ -24,7 +24,7 @@ export default class MainScreen extends Component {
 
 
   componentDidMount() {
-    console.log('DEBUG_TAG', 'This message will appear on Android Studio') 
+    console.log('DEBUG_TAG', 'This message will appear on Android Studio')
     const config = {
       apiKey: 'AIzaSyDJwDtP3iaG5fZ_p8-3kayQC4eTlMeY2h0',
       authDomain: 'learninghpapp.firebaseapp.com',
@@ -44,7 +44,7 @@ export default class MainScreen extends Component {
 
   onButtonPress() {
     const { email, password } = this.state;
- 
+
     firebase.auth().signInWithEmailAndPassword(email, password)
       .catch(() => {
         firebase.auth().createUserWithEmailAndPassword(email, password)
@@ -52,8 +52,21 @@ export default class MainScreen extends Component {
             this.setState({ error: 'Authentication Failed.' });
           })
       })
-    
+
   }
+  onButtonLoginGoogle(){
+    GoogleSignin.signIn().then((data)=>{
+       const credential = firebase.auth.GithubAuthProvider.credential(data.idToken,data.accessToken)
+       return firebase.auth().signInWithCredential(credential)
+        .then((user)=>{
+          const { navigate } = this.props.navigation
+          navigate('Page2Screen')
+        }).catch((error)=>{
+          const { code, message } = error
+        })
+    })
+  }
+
 
   render() {
     return (
@@ -63,7 +76,7 @@ export default class MainScreen extends Component {
         alignItems: 'center',
         backgroundColor: '#F5FCFF',
       }}>
-        <Image 
+        <Image
         style={{width: 150, height: 150}}
         source={require('/Users/supakitsujaritcheewawong/learninghpapp/app/images/app-iron.png')}/>
         <Text style={{
@@ -73,34 +86,38 @@ export default class MainScreen extends Component {
         }}>
           Learning HP
         </Text>
+        <Text>
+          ID
+        </Text>
+
         <TextInput
             value={this.state.email}
-            onChangeText={text => this.setState({ email })}
-            style={{ height: 20, width: 100 }}
+            onChangeText={email => this.setState({ email })}
+            style={{ height: 50, width: 200 }}
           />
+        <Text>
+          Password
+        </Text>
        <TextInput
+            secureTextEntry={true}
             value={this.state.password}
-            onChangeText={text => this.setState({ password })}
-            style={{ height: 20, width: 100 }}
+            onChangeText={password => this.setState({ password })}
+            style={{ height: 50, width: 200 }}
           />
         <Button
           title='Log in'
-          onPress = {this.onButtonPress.bind(this)}
+          onPress = {() => {
+            this.onButtonPress.bind(this)
+            const {navigate} = this.props.navigation
+            navigate('Page2Screen')
+          }
+        }
         />
-        
+
         <Button
           title='Log in with google'
           onPress={() => {
-            GoogleSignin.signIn().then((data)=>{
-              const credential = firebase.auth.GithubAuthProvider.credential(data.idToken,data.accessToken)
-            })
-            return firebase.auth().signInWithCredential(credential)
-            .then((user)=>{
-              const { navigate } = this.props.navigation
-              navigate('Page2Screen')
-            }).catch((error)=>{
-              const { code, message } = error 
-            })
+              this.onButtonLoginGoogle()
           }} />
           <Button
             title= 'next'

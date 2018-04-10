@@ -4,7 +4,8 @@
  * @flow
  */
 
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import firebase from 'firebase'
 import {
   Platform,
   StyleSheet,
@@ -16,19 +17,54 @@ import {
 } from 'react-native'
 
 import {
-  userUpdate,
-  userCreate
-} from '../actions/userAction'
+    USER_UPDATE,
+    USER_CREATE
+} from '../type/types'
+
+//import { Actions } from 'react-native-router-flux'
 
 export default class Page2Screen extends Component {
 
   constructor(props) {
     super(props)
   }
-  
-  onButtonPress() {
-    const {name, email, status } = this.props
-    this.props.userCreate({name , email, status})
+  state = {
+    name: 'default',
+    email: 'default@default.com'
+  }
+
+  userStudentCreate(name , email){
+    status = "student"
+    const {currentUser} = firebase.auth()
+
+    firebase.database().ref(`/users/${currentUser.uid}`).push({name, email,status})
+    console.log(name, email, status)
+    /**return(dispatch)=> {
+      student.push({ name, email, status})
+        .then(() => {
+          dispatch({type: USER_CREATE})
+          Actions.Page3Screen({type: 'reset'})
+        })
+    }**/
+    const { navigate } = this.props.navigation
+    navigate('Page3Screen')
+
+  }
+  userTeacherCreate(name, email){
+    status = "teacher"
+    const {currentUser} = firebase.auth()
+
+    firebase.database().ref(`/users/${currentUser.uid}`).push({name, email,status})
+    console.log(name, email, status)
+    /**return(dispatch)=> {
+      teacher.push({name, email, status})
+        .then(() => {
+          dispatch({type: USER_CREATE})
+          Actions.Page6Screen({type: 'reset'})
+        })
+    }**/
+    const { navigate } = this.props.navigation
+    navigate('Page6Screen')
   }
 
   render() {
@@ -37,47 +73,36 @@ export default class Page2Screen extends Component {
         <Text style={styles.welcome}>
           Profile
         </Text>
+        <Text style={styles.welcome}>
+          Name
+        </Text>
         <TextInput
-          value = {this.props.name}
-          onChangeText={text=>this.props.userUpdate({prop: 'name', value: text})}
+          value = {this.state.name}
+          onChangeText={name => this.setState({ name })}
+          style={{ height: 50, width: 200 }}
         />
+        <Text style={styles.welcome}>
+          E-mail
+        </Text>
         <TextInput
-          value = {this.props.email}
-          onChangeText={text=>this.props.userUpdate({prop: 'email', value: text})}
+          value = {this.state.email}
+          onChangeText={email => this.setState({ email })}
+          style={{ height: 50, width: 200 }}
         />
-        <Text style={styles.pickerTextStyle}>Status</Text>
-        <Picker
-          style={{ flex: 1 }}
-          selectedValue={this.props.status}
-          onValueChange={status => this.props.userUpdate({ prop: 'status', value: status })}
-        >
-          <Picker.Item label="Student" value="student"/>
-          <Picker.Item label="Teacher" value="teacher"/>
-        </Picker>
-
 
         <Button
           title='Student'
           onPress={() => {
-            this.onButtonPress.bind(this)
-            const { navigate } = this.props.navigation
-            navigate('Page3Screen')
-          }} 
+            this.userStudentCreate(this.state.name , this.state.email)
+          }}
         />
 
         <Button
           title='Teacher'
           onPress={() => {
-            this.onButtonPress.bind(this)
-            const { navigate } = this.props.navigation
-            navigate('Page6Screen')
+            this.userTeacherCreate(this.state.name , this.state.email)
           }}
         />
-          <Button
-          title='Back to Main screen'
-          onPress={() => {
-            this.props.navigation.goBack()
-          }} />
       </View>
     )
   }

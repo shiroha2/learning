@@ -19,7 +19,7 @@ import PageExerciseTeacherScreen from './app/screens/exerciseTeacher-screen'
 import PageExerciseTeacherEditScreen from './app/screens/exerciseTeacherEdit-screen'
 import PageExerciseTeacherNewScreen from './app/screens/exerciseTeacherNew-screen'
 
-
+import LoginForm from './app/auth/loginForm'
 
 
 import { defaultTransitionConfig } from 'react-navigation/src/views/CardStack/TransitionConfigs'
@@ -77,6 +77,7 @@ const Navigator = StackNavigator({
   PageExerciseTeacherNewScreen: {
     screen: PageExerciseTeacherNewScreen,
   },
+
 }, {
   headerMode: 'none',
   initialRouteName: 'MainScreen',
