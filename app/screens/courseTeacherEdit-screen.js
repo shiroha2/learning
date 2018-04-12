@@ -27,7 +27,6 @@ export default class Page6EditScreen extends Component {
     this.itemRef = firebase.database().ref(`/course`)
 
   }
-
   componentDidMount(){
     this.listenForItems(this.itemRef)
   }
@@ -49,12 +48,12 @@ export default class Page6EditScreen extends Component {
 
   state = {
     courseName: '',
-    desciption: '',
-    courseKey: ''
+    desciption: ''
   }
 
   courseUpdateUndaploy(courseName, desciption){
     state = 'undeploy'
+    courseKey = this.props.navigation.state.params.key
     const {currentUser} = firebase.auth()
     teacherid = currentUser.uid
 
@@ -106,11 +105,15 @@ export default class Page6EditScreen extends Component {
                 course name
               </Text>
               <TextInput
+                value = {this.state.courseName}
+                onChangeText={courseName => this.setState({ courseName })}
               />
               <Text style={styles.welcome}>
                 desciption
               </Text>
               <TextInput
+                value = {this.state.desciption}
+                onChangeText={desciption => this.setState({ desciption })}
               />
             </View>
             <Button
