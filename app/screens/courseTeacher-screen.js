@@ -34,34 +34,39 @@ export default class Page6Screen extends Component {
     dataSource: [],
   }
 
-  courseFetch(){
-    const {currentUser} = firebase.auth()
-    const course = firebase.database().ref(`/course`)
-    /**return(dispatch) => {
-      course.on('value', snapshot => {
-        dispatch({
-          type: COURSE_FETCH_SUCCESS,
-          payload: snapshot.val()
+  listenForItems(itemsRef){
+    itemsRef.on('value', (snap) => {
+
+        var items = []
+        snap.forEach((child) => {
+          items.push({
+              title: child.val().courseName,
+              _key: child.key
+          })
         })
-      })
-    }**/
+        this.setState({
+          dataSource: this.ds.cloneWithRows(items)
+        })
+    })
   }
 
   constructor(props) {
     super(props)
-
+    this.itemRef = firebase.database().ref(`/course`)
     this.state.dataSource = this.ds.cloneWithRows([])
   }
   componentDidMount() {
     // Call API then set data(s) into state
-    this.setState({
+    this.listenForItems(this.itemRef)
+  /**  this.setState({
       dataSource: this.ds.cloneWithRows([{
         title: 'Title name 1',
       },{
         title: 'Title name 1',
       }]),
-    })
+    })**/
   }
+
 
   render() {
     return (
@@ -143,23 +148,25 @@ export default class Page6Screen extends Component {
                       padding: 10,
                     }}>
                       <Text>{ data.title }</Text>
+                      <Text>{ data._key }</Text>
                       <Button
                           title='Chapter'
-                          onPress={() => {
+                          onPress={() =>{
                           const { navigate } = this.props.navigation
-                          navigate('Page7Screen')
+
+                          navigate('Page7Screen', )
                         }}
                       />
                       <Button
                           title='Edit'
-                          onPress={() => {
+                          onPress={(key) =>{
                           const { navigate } = this.props.navigation
-                          navigate('Page6EditScreen')
+                          navigate('Page6EditScreen', {key: data._key})
                         }}
                       />
                        <Button
                           title='Chat'
-                          onPress={() => {
+                          onPress={() =>{
                           const { navigate } = this.props.navigation
                           navigate('ChatRoom')
                         }}

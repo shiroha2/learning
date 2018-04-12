@@ -34,10 +34,10 @@ export default class Page2Screen extends Component {
   }
 
   userStudentCreate(name , email){
-    status = "student"
+    status = 'student'
     const {currentUser} = firebase.auth()
-
-    firebase.database().ref(`/users/${currentUser.uid}`).push({name, email,status})
+    iduser = currentUser.uid
+    firebase.database().ref(`/users/iduser`).push({iduser, name, email,status})
     console.log(name, email, status)
     /**return(dispatch)=> {
       student.push({ name, email, status})
@@ -53,8 +53,8 @@ export default class Page2Screen extends Component {
   userTeacherCreate(name, email){
     status = "teacher"
     const {currentUser} = firebase.auth()
-
-    firebase.database().ref(`/users/${currentUser.uid}`).push({name, email,status})
+    iduser = currentUser.uid
+    firebase.database().ref(`/users/iduser`).push({iduser, name, email,status})
     console.log(name, email, status)
     /**return(dispatch)=> {
       teacher.push({name, email, status})

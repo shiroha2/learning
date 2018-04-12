@@ -31,10 +31,10 @@ export default class Page7NewScreen extends Component {
     pathOfpdf: ''
   }
 
-  chapterCreate(){
-
+  onPresschapterCreate(){
+      
   }
-  onPressLearnMore(){
+ /**  onPressLearnMore(){
     FilePickerManager.showFilePicker(null, (response) => {
       console.log('Response = ', response)
       if(response.didCancel){
@@ -51,6 +51,7 @@ export default class Page7NewScreen extends Component {
     })
     //Alert.alert('Button has been pressed!');
   }
+  **/
 
   render() {
     return (

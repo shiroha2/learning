@@ -26,12 +26,12 @@ export default class MainScreen extends Component {
   componentDidMount() {
     console.log('DEBUG_TAG', 'This message will appear on Android Studio')
     const config = {
-      apiKey: 'AIzaSyDJwDtP3iaG5fZ_p8-3kayQC4eTlMeY2h0',
-      authDomain: 'learninghpapp.firebaseapp.com',
-      databaseURL: 'https://learninghpapp.firebaseio.com',
-      projectId: 'learninghpapp',
-      storageBucket: 'learninghpapp.appspot.com',
-      messagingSenderId: '849804559418'
+      apiKey: "AIzaSyDJwDtP3iaG5fZ_p8-3kayQC4eTlMeY2h0",
+      authDomain: "learninghpapp.firebaseapp.com",
+      databaseURL: "https://learninghpapp.firebaseio.com",
+      projectId: "learninghpapp",
+      storageBucket: "learninghpapp.appspot.com",
+      messagingSenderId: "849804559418"
     }
     firebase.initializeApp(config)
   }

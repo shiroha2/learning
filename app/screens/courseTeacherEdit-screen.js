@@ -5,6 +5,7 @@
  */
 
 import React, { Component } from 'react';
+import firebase from 'firebase'
 import {
   Platform,
   StyleSheet,
@@ -15,6 +16,7 @@ import {
   IconIonic,
   ScrollView,
   TextInput,
+  ListView
 
 } from 'react-native'
 
@@ -22,6 +24,54 @@ export default class Page6EditScreen extends Component {
 
   constructor(props) {
     super(props)
+    this.itemRef = firebase.database().ref(`/course`)
+
+  }
+
+  componentDidMount(){
+    this.listenForItems(this.itemRef)
+  }
+
+  listenForItems(itemsRef){
+    courseKey = this.props.navigation.state.params.key
+    itemsRef.on('value', (snap) => {
+        var items = []
+        snap.forEach((child) => {
+          if(child.val().key == courseKey){
+            items.push({
+                title: child.val().courseName,
+                _key: child.key
+              })
+            }
+        })
+    })
+  }
+
+  state = {
+    courseName: '',
+    desciption: '',
+    courseKey: ''
+  }
+
+  courseUpdateUndaploy(courseName, desciption){
+    state = 'undeploy'
+    const {currentUser} = firebase.auth()
+    teacherid = currentUser.uid
+
+    const course = firebase.database().ref(`/course/${courseKey}`)
+    course.update({courseName, desciption, state, teacherid})
+  }
+
+  courseUpdateDeploy(courseName, desciption){
+    state = 'deploy'
+    const {currentUser} = firebase.auth()
+    teacherid = currentUser.uid
+
+    const course = firebase.database().ref(`/course/${courseKey}`)
+    course.update({ courseName, desciption, state, teacherid})
+  }
+  courseDelete(){
+    firebase.database().ref(`/course/${courseKey}`).remove()
   }
 
   render() {
@@ -66,18 +116,21 @@ export default class Page6EditScreen extends Component {
             <Button
             title='Save'
             onPress={() => {
+              this.courseUpdateUndaploy(this.state.courseName , this.state.desciption)
               this.props.navigation.goBack()
             }}
             />
             <Button
             title='Deploy'
             onPress={() => {
+              this.courseUpdateDeploy(this.state.courseName, this.state.desciption)
               this.props.navigation.goBack()
             }}
             />
             <Button
             title='Close Course'
             onPress={() => {
+              this.courseDelete()
               this.props.navigation.goBack()
             }}
             />

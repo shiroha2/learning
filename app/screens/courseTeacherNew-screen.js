@@ -16,6 +16,7 @@ import {
   ScrollView,
   TextInput,
 
+
 } from 'react-native'
 
 import firebase from 'firebase'
@@ -34,16 +35,16 @@ export default class Page6NewScreen extends Component {
   courseCreate(courseName, desciption){
     state = 'undeploy'
     const {currentUser} = firebase.auth()
-    
-    const course = firebase.database().ref(`/course/${currentUser.uid}`)
-    course.push({ courseName, desciption, state})
+    teacherid = currentUser.uid
+    const course = firebase.database().ref(`/course/`)
+    course.update({courseName, desciption, state, teacherid})
   }
   courseCreateDeploy(courseName, desciption){
     state = 'deploy'
     const {currentUser} = firebase.auth()
-
-    const course = firebase.database().ref(`/course/${currentUser.uid}`)
-    course.push({ courseName, desciption, state})
+    teacherid = currentUser.uid
+    const course = firebase.database().ref(`/course/`)
+    course.update({ courseName, desciption, state, teacherid})
   }
   render() {
     return (
