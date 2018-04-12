@@ -37,14 +37,14 @@ export default class Page6NewScreen extends Component {
     const {currentUser} = firebase.auth()
     teacherid = currentUser.uid
     const course = firebase.database().ref(`/course/`)
-    course.update({courseName, desciption, state, teacherid})
+    course.push({courseName, desciption, state, teacherid})
   }
   courseCreateDeploy(courseName, desciption){
     state = 'deploy'
     const {currentUser} = firebase.auth()
     teacherid = currentUser.uid
     const course = firebase.database().ref(`/course/`)
-    course.update({ courseName, desciption, state, teacherid})
+    course.push({ courseName, desciption, state, teacherid})
   }
   render() {
     return (
