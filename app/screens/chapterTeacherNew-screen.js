@@ -5,6 +5,7 @@
  */
 
 import React, { Component } from 'react';
+import firebase from 'firebase'
 import {
   Platform,
   StyleSheet,
@@ -31,8 +32,12 @@ export default class Page7NewScreen extends Component {
     pathOfpdf: ''
   }
 
-  onPresschapterCreate(){
-      
+  onPresschapterCreate(chapterName , desciption, pathOfpdf){
+    courseKey = this.props.navigation.state.params.key
+    const {currentUser} = firebase.auth()
+    teacherid = currentUser.uid
+    const chapter = firebase.database().ref(`/course/${courseKey}/chapter`)
+    chapter.push({chapterName , desciption , pathOfpdf})
   }
  /**  onPressLearnMore(){
     FilePickerManager.showFilePicker(null, (response) => {
@@ -86,7 +91,7 @@ export default class Page7NewScreen extends Component {
           </Text>
           <TextInput
             value={this.state.chapterName}
-            onChangeText={chapterName => this.setState({ courseName })}
+            onChangeText={chapterName => this.setState({ chapterName })}
           />
           <Text styte={styles.welcome}>
             Desciption
@@ -104,7 +109,9 @@ export default class Page7NewScreen extends Component {
           />
           <Button
             title= 'Select File'
-            onPress={this.onPressLearnMore.bind(this)}
+            onPress={() => {
+              this.props.navigation.goBack()
+            }}
             color="#841584"
             accessibilityLabel="Learn more about this purple button"
             />
@@ -114,6 +121,7 @@ export default class Page7NewScreen extends Component {
           <Button
             title='Done'
             onPress={() => {
+              this.onPresschapterCreate(this.state.chapterName , this.state.desciption , this.state.pathOfpdf)
               this.props.navigation.goBack()
             }} />
           <Button

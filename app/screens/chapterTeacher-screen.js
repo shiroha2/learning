@@ -5,6 +5,7 @@
  */
 
 import React, { Component } from 'react';
+import firebase from 'firebase'
 import {
   Platform,
   StyleSheet,
@@ -27,19 +28,37 @@ export default class Page7Screen extends Component {
 
   constructor(props) {
     super(props)
-
+    courseKey = this.props.navigation.state.params.key
+    this.itemRef = firebase.database().ref(`/course/${courseKey}/chapter`)
     this.state.dataSource = this.ds.cloneWithRows([])
+  }
+
+  listenForItems(itemsRef){
+    itemsRef.on('value', (snap) => {
+
+        var items = []
+        snap.forEach((child) => {
+          items.push({
+              title: child.val().chapterName,
+              _key: child.key
+          })
+        })
+        this.setState({
+          dataSource: this.ds.cloneWithRows(items)
+        })
+    })
   }
 
   componentDidMount() {
     // Call API then set data(s) into state
-    this.setState({
+    this.listenForItems(this.itemRef)
+    /**this.setState({
       dataSource: this.ds.cloneWithRows([{
         title: 'Title name 1',
       },{
         title: 'Title name 1',
       }]),
-    })
+    })**/
   }
 
   render() {
@@ -66,9 +85,9 @@ export default class Page7Screen extends Component {
           </View>
           <TouchableOpacity
             style={styles.appBar.colLeft.containerStyle}
-            onPress={() => {
+            onPress={(key) => {
               const { navigate } = this.props.navigation
-              navigate('Page7NewScreen')
+              navigate('Page7NewScreen' , {key: this.props.navigation.state.params.key})
              }}>
             <Text>
               New Chapter
@@ -98,21 +117,21 @@ export default class Page7Screen extends Component {
                       <Text>{ data.title }</Text>
                       <Button
                         title='Edit'
-                        onPress={() => {
-                        const { navigate } = this.props.navigation
-                        navigate('Page7EditScreen')
+                        onPress={(key , chapterkey) => {
+                          const { navigate } = this.props.navigation
+                          navigate('Page7EditScreen', {key: this.props.navigation.state.params.key , chapterkey: data._key})
                       }} />
                        <Button
                         title='Exercise'
-                        onPress={() => {
-                        const { navigate } = this.props.navigation
-                        navigate('PageExerciseTeacherScreen')
+                        onPress={(key, chapterkey) => {
+                          const { navigate } = this.props.navigation
+                          navigate('PageExerciseTeacherScreen', {key: this.props.navigation.state.params.key , chapterkey: data._key})
                       }} />
                       <Button
                         title='Add Exercise'
-                        onPress={() => {
-                        const { navigate } = this.props.navigation
-                        navigate('PageExerciseTeacherNewScreen')
+                        onPress={(key, chapterkey) => {
+                          const { navigate } = this.props.navigation
+                          navigate('PageExerciseTeacherNewScreen', {key: this.props.navigation.state.params.key , chapterkey: data._key})
                       }} />
                     </View>
                   )

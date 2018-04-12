@@ -151,10 +151,9 @@ export default class Page6Screen extends Component {
                       <Text>{ data._key }</Text>
                       <Button
                           title='Chapter'
-                          onPress={() =>{
+                          onPress={(key) =>{
                           const { navigate } = this.props.navigation
-
-                          navigate('Page7Screen', )
+                          navigate('Page7Screen', {key: data._key})
                         }}
                       />
                       <Button

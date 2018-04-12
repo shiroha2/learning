@@ -5,6 +5,7 @@
  */
 
 import React, { Component } from 'react';
+import firebase from 'firebase'
 import {
   Platform,
   StyleSheet,
@@ -22,6 +23,27 @@ export default class Page7EditScreen extends Component {
   constructor(props) {
     super(props)
   }
+
+  state = {
+    chapterName: '',
+    desciption: '',
+    pathOfpdf: ''
+  }
+
+  onPresschapterUpdate(chapterName , desciption, pathOfpdf){
+    courseKey = this.props.navigation.state.params.key
+    const {currentUser} = firebase.auth()
+    teacherid = currentUser.uid
+    const chapter = firebase.database().ref(`/course/${courseKey}/chapter`)
+    chapter.update({chapterName , desciption , pathOfpdf})
+  }
+
+  chapterDelete(){
+    courseKey = this.props.navigation.state.params.key
+    chapterkey = this.props.navigation.state.params.chapterkey
+    firebase.database().ref(`/course/${courseKey}/chapter/${chapterkey}`).remove()
+  }
+
 
   render() {
     return (
@@ -55,20 +77,27 @@ export default class Page7EditScreen extends Component {
             Chapter
           </Text>
           <TextInput
+            value={this.state.chapterName}
+            onChangeText={chapterName => this.setState({ chapterName })}
           />
           <Text styte={styles.welcome}>
             Desciption
           </Text>
           <TextInput
+            value={this.state.desciption}
+            onChangeText={desciption => this.setState({ desciption })}
           />
           <Text styte={styles.welcome}>
             Upload PDF
           </Text>
           <TextInput
+            value={this.state.pathOfpdf}
+            onChangeText={pathOfpdf => this.setState({ pathOfpdf })}
           />
           <Button
             title='Done'
             onPress={() => {
+              this.onPresschapterUpdate(this.state.chapterName , this.state.desciption , this.state.pathOfpdf)
               this.props.navigation.goBack()
             }} />
           <Button
@@ -79,6 +108,7 @@ export default class Page7EditScreen extends Component {
           <Button
               title='Detele'
               onPress={() => {
+                this.chapterDelete()
                 this.props.navigation.goBack()
               }} />
 
