@@ -49,15 +49,50 @@ export default class Page6Screen extends Component {
         })
     })
   }
+  listenForYourItems(itemsRef){
+    const {currentUser} = firebase.auth()
+    itemsRef.on('value', (snap) => {
 
+        var items = []
+        snap.forEach((child) => {
+          if(child.val().teacherid == currentUser.uid){
+            items.push({
+                title: child.val().courseName,
+                _key: child.key
+            })
+          }
+        })
+        this.setState({
+          dataSource: this.ds.cloneWithRows(items)
+        })
+    })
+  }
+  listenForYourItemsDeployed(itemsRef){
+    const {currentUser} = firebase.auth()
+    itemsRef.on('value', (snap) => {
+
+        var items = []
+        snap.forEach((child) => {
+          if((child.val().teacherid == currentUser.uid) && (child.val().status == 'deploy')){
+            items.push({
+                title: child.val().courseName,
+                _key: child.key
+            })
+          }
+        })
+        this.setState({
+          dataSource: this.ds.cloneWithRows(items)
+        })
+    })
+  }
   constructor(props) {
     super(props)
-    this.itemRef = firebase.database().ref(`/course`)
+    this.itemsRef = firebase.database().ref(`/course`)
     this.state.dataSource = this.ds.cloneWithRows([])
   }
   componentDidMount() {
     // Call API then set data(s) into state
-    this.listenForItems(this.itemRef)
+    this.listenForItems(this.itemsRef)
   /**  this.setState({
       dataSource: this.ds.cloneWithRows([{
         title: 'Title name 1',
@@ -105,7 +140,10 @@ export default class Page6Screen extends Component {
         <View style={styles.appBar2.containerStyle}>
           <TouchableOpacity
             style={styles.appBar2.colLeft.containerStyle}
-            onPress={() => { }}>
+            onPress={() => {
+              this.listenForItems(this.itemsRef)
+
+            }}>
             <Text style={styles.appBar.colRight.titleTextStyle}
               numberOfLines={1}>
               All
@@ -113,7 +151,9 @@ export default class Page6Screen extends Component {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.appBar2.colLeft.containerStyle}
-            onPress={() => { }}>
+            onPress={() => {
+              this.listenForYourItems(this.itemsRef)
+            }}>
             <Text style={styles.appBar.colRight.titleTextStyle}
               numberOfLines={1}>
               Your Course
@@ -121,7 +161,9 @@ export default class Page6Screen extends Component {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.appBar2.colLeft.containerStyle}
-            onPress={() => { }}>
+            onPress={() => {
+              this.listenForYourItemsDeployed(this.itemsRef)
+            }}>
             <Text style={styles.appBar.colRight.titleTextStyle}
               numberOfLines={1}>
               Course Deployed

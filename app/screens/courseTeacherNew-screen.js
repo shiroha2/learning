@@ -67,16 +67,6 @@ export default class Page6NewScreen extends Component {
               Course
             </Text>
           </View>
-          <TouchableOpacity
-            style={styles.appBar.colLeft.containerStyle}
-            onPress={() => {
-              const { navigate } = this.props.navigation
-              navigate('Page4Screen')
-              }}>
-            <Text>
-              +
-            </Text>
-          </TouchableOpacity>
         </View>
 
         {/* Body */}
