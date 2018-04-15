@@ -77,7 +77,7 @@ export default class Page7NewScreen extends Component {
             <Text
               style={styles.appBar.colRight.titleTextStyle}
               numberOfLines={1}>
-                Edit Chapter
+                New Chapter
             </Text>
           </View>
         </View>

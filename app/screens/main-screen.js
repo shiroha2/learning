@@ -54,9 +54,11 @@ export default class MainScreen extends Component {
       })
 
   }
-  onButtonLoginGoogle(){
-    GoogleSignin.signIn().then((data)=>{
-       const credential = firebase.auth.GithubAuthProvider.credential(data.idToken,data.accessToken)
+  onButtonLoginGoogle = () => {
+    GoogleSignin
+    .signIn()
+    .then((data)=>{
+       const credential = firebase.auth.GithubAuthProvider.credential(data.idToken, data.accessToken)
        return firebase.auth().signInWithCredential(credential)
         .then((user)=>{
           const { navigate } = this.props.navigation
@@ -118,6 +120,8 @@ export default class MainScreen extends Component {
           title='Log in with google'
           onPress={() => {
               this.onButtonLoginGoogle()
+              const {navigate} = this.props.navigation
+              navigate('Page2Screen')
           }} />
           <Button
             title= 'next'
