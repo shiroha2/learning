@@ -73,7 +73,7 @@ export default class Page6Screen extends Component {
 
         var items = []
         snap.forEach((child) => {
-          if((child.val().teacherid == currentUser.uid) && (child.val().status == 'deploy')){
+          if((child.val().teacherid == currentUser.uid) && (child.val().status == "deploy")){
             items.push({
                 title: child.val().courseName,
                 _key: child.key
@@ -100,6 +100,10 @@ export default class Page6Screen extends Component {
         title: 'Title name 1',
       }]),
     })**/
+  }
+
+  chatRoomCreate(){
+
   }
 
 

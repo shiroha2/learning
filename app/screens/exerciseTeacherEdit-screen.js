@@ -5,6 +5,7 @@
  */
 
 import React, { Component } from 'react';
+import firebase from 'firebase'
 import {
   Platform,
   StyleSheet,
@@ -21,6 +22,33 @@ export default class PageExerciseTeacherEditScreen extends Component {
 
   constructor(props) {
     super(props)
+    this.coursekey = this.props.navigation.state.params.key
+    this.chapterkey = this.props.navigation.state.params.chapterkey
+  }
+
+  state = {
+    exerName: '',
+    desciption: '',
+    point: '',
+    answer: ''
+  }
+
+  exerciseUpdate(exerName , desciption , point, answer){
+    chapterkey = this.props.navigation.state.params.chapterkey
+    exercisekey = this.props.navigation.state.params.exercisekey
+    const {currentUser} = firebase.auth()
+    teacherid = currentUser.uid
+    const exercise = firebase.database().ref(`/course/${courseKey}/chapter/${chapterkey}/exercise/${exercisekey}`)
+    exercise.update({exerName , desciption , point, answer})
+  }
+
+  exerciseDelete(){
+    chapterkey = this.props.navigation.state.params.chapterkey
+    exercisekey = this.props.navigation.state.params.exercisekey
+    const {currentUser} = firebase.auth()
+    teacherid = currentUser.uid
+    const exercise = firebase.database().ref(`/course/${courseKey}/chapter/${chapterkey}/exercise/${exercisekey}`)
+    exercise.remove()
   }
 
   render() {
@@ -55,27 +83,43 @@ export default class PageExerciseTeacherEditScreen extends Component {
             Exercise
           </Text>
           <TextInput
+            value={this.state.exerName}
+            onChangeText={exerName => this.setState({exerName}) }
           />
           <Text styte={styles.welcome}>
             Desciption
           </Text>
           <TextInput
+            value={this.state.desciption}
+            onChangeText={desciption => this.setState({desciption})}
           />
           <Text styte={styles.welcome}>
-            Point
+            point
           </Text>
           <TextInput
+            value={this.state.point}
+            onChangeText={point => this.setState({point})}
           />
           <Text styte={styles.welcome}>
             Answer
           </Text>
           <TextInput
+            value={this.state.answer}
+            onChangeText={answer => this.setState({answer})}
           />
           <Button
             title='Done'
             onPress={() => {
+              this.exerciseUpdate(this.state.exerName, this.state.desciption, this.state.point, this.state.answer)
               this.props.navigation.goBack()
             }} />
+          <Button
+            title='Delete'
+            onPress={() => {
+              this.exerciseDelete()
+              this.props.navigation.goBack()
+            }}
+          />
           <Button
             title='Back to Main screen'
             onPress={() => {

@@ -5,6 +5,7 @@
  */
 
 import React, { Component } from 'react';
+import firebase from 'firebase'
 import {
   Platform,
   StyleSheet,
@@ -21,8 +22,24 @@ export default class PageExerciseTeacherNewScreen extends Component {
 
   constructor(props) {
     super(props)
+    this.coursekey = this.props.navigation.state.params.key
+    this.chapterkey = this.props.navigation.state.params.chapterkey
   }
 
+  state = {
+    exerName: '',
+    desciption: '',
+    point: '',
+    answer: ''
+  }
+
+  exerciseCreate(exerName , desciption , point, answer){
+    chapterkey = this.props.navigation.state.params.chapterkey
+    const {currentUser} = firebase.auth()
+    teacherid = currentUser.uid
+    const exercise = firebase.database().ref(`/course/${courseKey}/chapter/${chapterkey}/exercise`)
+    exercise.push({exerName , desciption , point, answer})
+  }
 
   render() {
     return (
@@ -43,7 +60,7 @@ export default class PageExerciseTeacherNewScreen extends Component {
             <Text
               style={styles.appBar.colRight.titleTextStyle}
               numberOfLines={1}>
-                Chapter
+                Exersice
             </Text>
           </View>
         </View>
@@ -53,28 +70,37 @@ export default class PageExerciseTeacherNewScreen extends Component {
           flex: 1,
         }}>
           <Text styte={styles.welcome}>
-            Exercise
+            Exercise Name
           </Text>
           <TextInput
+            value={this.state.exerName}
+            onChangeText={exerName => this.setState({exerName}) }
           />
           <Text styte={styles.welcome}>
             Desciption
           </Text>
           <TextInput
+            value={this.state.desciption}
+            onChangeText={desciption => this.setState({desciption})}
           />
           <Text styte={styles.welcome}>
-            Point
+            point
           </Text>
           <TextInput
+            value={this.state.point}
+            onChangeText={point => this.setState({point})}
           />
           <Text styte={styles.welcome}>
             Answer
           </Text>
           <TextInput
+            value={this.state.answer}
+            onChangeText={answer => this.setState({answer})}
           />
           <Button
             title='Done'
             onPress={() => {
+              this.exerciseCreate(this.state.exerName , this.state.desciption, this.state.point, this.state.answer)
               this.props.navigation.goBack()
             }} />
           <Button

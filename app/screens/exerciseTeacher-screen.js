@@ -5,6 +5,7 @@
  */
 
 import React, { Component } from 'react';
+import firebase from 'firebase'
 import {
   Platform,
   StyleSheet,
@@ -14,12 +15,46 @@ import {
   TouchableOpacity,
   IconIonic,
   ScrollView,
+  ListView
 } from 'react-native'
 
 export default class PageExerciseTeacherScreen extends Component {
 
+
+  ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+  state = {
+    dataSource: [],
+  }
+
   constructor(props) {
     super(props)
+    coursekey = this.props.navigation.state.params.key
+    chapterkey = this.props.navigation.state.params.chapterkey
+    this.itemsRef = firebase.database().ref(`/course/${courseKey}/chapter/${chapterkey}/exercise`)
+    this.state.dataSource = this.ds.cloneWithRows([])
+  }
+
+
+
+  listenForItems(itemsRef){
+    itemsRef.on('value', (snap) => {
+
+        var items = []
+        snap.forEach((child) => {
+          items.push({
+              title: child.val().exerName,
+              _answer: child.val().answer,
+              _key: child.key
+          })
+        })
+        this.setState({
+          dataSource: this.ds.cloneWithRows(items)
+        })
+    })
+  }
+
+  componentDidMount(){
+    this.listenForItems(this.itemsRef)
   }
 
   render() {
@@ -46,7 +81,7 @@ export default class PageExerciseTeacherScreen extends Component {
           </View>
           <TouchableOpacity
             style={styles.appBar.colLeft.containerStyle}
-            onPress={() => {
+            onPress={(key , chapterkey, exercisekey) => {
               const { navigate } = this.props.navigation
               navigate('PageExerciseTeacherEditScreen')
              }}>
@@ -61,11 +96,33 @@ export default class PageExerciseTeacherScreen extends Component {
         <ScrollView style={{
           flex: 1,
         }}>
-          <Text style={styles.welcome}>
-          {/*Show Exercise View */}
-            Exercise View
-          </Text>
-          <Button
+          <ListView
+            enableEmptySections={true}
+            dataSource={this.state.dataSource}
+            renderRow={(data) => {
+              return (
+                <View style={{
+                  borderBottomColor: 'gray',
+                  borderBottomWidth: 1,
+                  marginLeft: 10,
+                  marginRight: 10,
+                  marginBottom: 10,
+                  padding: 10,
+                }}>
+                  <Text>{ data.title }</Text>
+                  <Text>{ data._answer }</Text>
+                  <Button
+                    title='Edit'
+                    onPress={(key , chapterkey) => {
+                    const { navigate } = this.props.navigation
+                    navigate('PageExerciseTeacherEditScreen',{key: this.props.navigation.state.params.key,
+                                                              chapterkey: this.props.navigation.state.params.chapterkey,
+                                                              exercisekey: data._key } )
+                   }}/>
+                </View>
+            )
+          }} />
+           <Button
             title='Back to Main screen'
             onPress={() => {
               this.props.navigation.goBack()
