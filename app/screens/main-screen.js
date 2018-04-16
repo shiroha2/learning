@@ -15,6 +15,7 @@ import {
 
 export default class MainScreen extends Component {
 
+
   constructor(props) {
     super(props)
     this.state = {
@@ -44,7 +45,6 @@ export default class MainScreen extends Component {
 
   onButtonPress() {
     const { email, password } = this.state;
-
     firebase.auth().signInWithEmailAndPassword(email, password)
       .catch(() => {
         firebase.auth().createUserWithEmailAndPassword(email, password)
@@ -54,6 +54,7 @@ export default class MainScreen extends Component {
       })
 
   }
+
   onButtonLoginGoogle = () => {
     GoogleSignin
     .signIn()
@@ -108,7 +109,7 @@ export default class MainScreen extends Component {
           />
         <Button
           title='Log in'
-          onPress = {() => {
+          onPress = {(userid) => {
             this.onButtonPress.bind(this)
             const {navigate} = this.props.navigation
             navigate('Page2Screen')
@@ -118,11 +119,11 @@ export default class MainScreen extends Component {
 
         <Button
           title='Log in with google'
-          onPress={() => {
-              this.onButtonLoginGoogle()
-              const {navigate} = this.props.navigation
-              navigate('Page2Screen')
-          }} />
+            onPress={() => {
+                this.onButtonLoginGoogle()
+                const {navigate} = this.props.navigation
+                navigate('Page2Screen')
+              }} />
           <Button
             title= 'next'
             onPress={() => {

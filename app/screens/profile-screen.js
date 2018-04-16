@@ -27,7 +27,9 @@ export default class Page2Screen extends Component {
 
   constructor(props) {
     super(props)
+    this.itemsRef = firebase.database().ref(`/users/iduser`)
   }
+
   state = {
     name: 'default',
     email: 'default@default.com'
@@ -37,7 +39,7 @@ export default class Page2Screen extends Component {
     status = 'student'
     const {currentUser} = firebase.auth()
     iduser = currentUser.uid
-    firebase.database().ref(`/users/iduser`).push({iduser, name, email,status})
+    firebase.database().ref(`/users/iduser/${currentUser.uid}`).update({iduser, name, email,status})
     console.log(name, email, status)
     /**return(dispatch)=> {
       student.push({ name, email, status})
@@ -54,7 +56,7 @@ export default class Page2Screen extends Component {
     status = "teacher"
     const {currentUser} = firebase.auth()
     iduser = currentUser.uid
-    firebase.database().ref(`/users/iduser`).push({iduser, name, email,status})
+    firebase.database().ref(`/users/iduser/${currentUser.uid}`).update({iduser, name, email,status})
     console.log(name, email, status)
     /**return(dispatch)=> {
       teacher.push({name, email, status})
@@ -67,7 +69,54 @@ export default class Page2Screen extends Component {
     navigate('Page6Screen')
   }
 
+  userCheck(itemsRef){
+    const {currentUser} = firebase.auth()
+      itemsRef.on('value', (snap) => {
+
+          var items = []
+          snap.forEach((child) => {
+            if(child.val().iduser == currentUser.uid){
+              return true
+            }
+          })
+      })
+      return false
+  }
+  userCheckStudent(itemsRef){
+    itemsRef.on('value', (snap) => {
+
+        var items = []
+        snap.forEach((child) => {
+          if(child.val().status == 'student'){
+            return true
+          }
+        })
+    })
+    return false
+  }
+  userCheckTeacher(itemsRef){
+    itemsRef.on('value', (snap) => {
+
+        var items = []
+        snap.forEach((child) => {
+          if(child.val().status == 'teacher'){
+            return true
+          }
+        })
+    })
+    return false
+  }
+
   render() {
+    if(this.userCheck(this.itemsRef)){
+      if(this.userCheckStudent(this.itemsRef)){
+        const {navigate} = this.props.navigation
+        navigation('Page3Screen')
+      }else if(this.userCheckTeacher(this.itemsRef)){
+        const {navigate} = this.props.navigation
+        navigation('Page6Screen')
+      }
+    }
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>

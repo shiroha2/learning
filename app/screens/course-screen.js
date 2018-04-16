@@ -28,19 +28,71 @@ export default class Page3Screen extends Component {
 
   constructor(props) {
     super(props)
-
+    this.itemsRef = firebase.database().ref(`/course/`)
     this.state.dataSource = this.ds.cloneWithRows([])
+  }
+
+  listenForItems(itemsRef){
+    itemsRef.on('value', (snap) => {
+
+        var items = []
+        snap.forEach((child) => {
+          items.push({
+              title: child.val().courseName,
+              _key: child.key
+          })
+        })
+        this.setState({
+          dataSource: this.ds.cloneWithRows(items)
+        })
+    })
+  }
+  listenForYourItems(itemsRef){
+    const {currentUser} = firebase.auth()
+    itemsRef.on('value', (snap) => {
+
+        var items = []
+        snap.forEach((child) => {
+          if(child.val().studentid == currentUser.uid){
+            items.push({
+                title: child.val().courseName,
+                _key: child.key
+            })
+          }
+        })
+        this.setState({
+          dataSource: this.ds.cloneWithRows(items)
+        })
+    })
+  }
+  listenForYourItemsDeployed(itemsRef){
+    const {currentUser} = firebase.auth()
+    itemsRef.on('value', (snap) => {
+
+        var items = []
+        snap.forEach((child) => {
+          if((child.val().studentid == currentUser.uid) && (child.val().status == "deploy")){
+            items.push({
+                title: child.val().courseName,
+                _key: child.key
+            })
+          }
+        })
+        this.setState({
+          dataSource: this.ds.cloneWithRows(items)
+        })
+    })
+  }
+
+  goInCourse(chapterkey){
+    const {currentUser} = firebase.auth()
+    studentid = currentUser.uid
+    firebase.database().ref(`/course/${chapterkey}/student/`).push(studentid)
   }
 
   componentDidMount() {
     // Call API then set data(s) into state
-    this.setState({
-      dataSource: this.ds.cloneWithRows([{
-        title: 'Title name 1',
-      },{
-        title: 'Title name 1',
-      }]),
-    })
+    this.listenForItems(this.itemsRef)
   }
 
   render() {
@@ -135,6 +187,7 @@ export default class Page3Screen extends Component {
                       <Button
                           title='Add'
                           onPress={() => {
+                          this.goInCourse(data._key)
                           const { navigate } = this.props.navigation
                           navigate('Page4Screen')
                         }}
