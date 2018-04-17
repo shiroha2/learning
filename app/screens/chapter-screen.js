@@ -16,6 +16,7 @@ import {
   IconIonic,
   ScrollView,
   ListView,
+  Alert
 
 } from 'react-native'
 
@@ -29,19 +30,47 @@ export default class Page4Screen extends Component {
 
   constructor(props) {
     super(props)
-
+    this.coursekey = this.props.navigation.state.params.key
+    this.itemsRef = firebase.database().ref(`/course/${this.coursekey}/chapter/`)
     this.state.dataSource = this.ds.cloneWithRows([])
+  }
+
+  studentDelete(coursekey){
+    const {currentUser} = firebase.auth()
+    studentid = currentUser.uid
+    items = firebase.database().ref(`/course/${coursekey}/students`)
+    items.on('value', (snap) => {
+        snap.forEach((child) => {
+           if((child.val().studentid).localeCompare(currentUser.uid) == 0){
+             firebase.database().ref(`/course/${coursekey}/students/${child.key}`).remove()
+             return true
+           }
+        })
+    })
+    return false
+
+  }
+
+  listenForItems(itemsRef){
+    itemsRef.on('value', (snap) => {
+
+        var items = []
+        snap.forEach((child) => {
+          items.push({
+              title: child.val().chapterName,
+              _des: child.val().desciption,
+              _key: child.key
+          })
+        })
+        this.setState({
+          dataSource: this.ds.cloneWithRows(items)
+        })
+    })
   }
 
   componentDidMount() {
     // Call API then set data(s) into state
-    this.setState({
-      dataSource: this.ds.cloneWithRows([{
-        title: 'Title name 1',
-      },{
-        title: 'Title name 1',
-      }]),
-    })
+    this.listenForItems(this.itemsRef)
   }
 
   render() {
@@ -88,17 +117,20 @@ export default class Page4Screen extends Component {
                       padding: 10,
                     }}>
                       <Text>{ data.title }</Text>
+                      <Text>{ data._des }</Text>
+
+
                       <Button
                         title='Go In chapter'
-                        onPress={() => {
+                        onPress={( key , chapterkey ) => {
                         const { navigate } = this.props.navigation
-                        navigate('Page5Screen')
+                        navigate('Page5Screen', {key: this.props.navigation.state.params.key, chapterkey: data._key})
                       }} />
                       <Button
                         title='Go In exercise'
-                        onPress={() => {
+                        onPress={(key , chapterkey) => {
                         const { navigate } = this.props.navigation
-                        navigate('PageExerciseScreen')
+                        navigate('PageExerciseScreen', {key: this.props.navigation.state.params.key, chapterkey: data._key})
                       }} />
                     </View>
                   )
@@ -106,19 +138,18 @@ export default class Page4Screen extends Component {
 
               </View>
 
-
-          <Button
-            title='Back to Main screen'
-            onPress={() => {
-              this.props.navigation.goBack()
-            }} />
             <Button
               title='Chat'
-              onPress={() => {const { navigate } = this.props.navigation
-              navigate('ChatRoom')}} />
+              onPress={(key) => {
+                const { navigate } = this.props.navigation
+                navigate('ChatRoom', {key: this.props.navigation.state.params.key})
+              }} />
             <Button
               title='Out from Course'
-              onPress={() => {}} />
+              onPress={() => {
+                this.studentDelete(this.coursekey)
+                this.props.navigation.goBack()
+              }} />
 
         </ScrollView>
 

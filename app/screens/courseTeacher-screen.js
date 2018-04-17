@@ -55,7 +55,7 @@ export default class Page6Screen extends Component {
 
         var items = []
         snap.forEach((child) => {
-          if(child.val().teacherid == currentUser.uid){
+          if((child.val().teacherid).localeCompare(currentUser.uid) == 0){
             items.push({
                 title: child.val().courseName,
                 _key: child.key
@@ -73,7 +73,7 @@ export default class Page6Screen extends Component {
 
         var items = []
         snap.forEach((child) => {
-          if((child.val().teacherid == currentUser.uid) && (child.val().status == "deploy")){
+          if(((child.val().teacherid).localeCompare(currentUser.uid) == 0) && ((child.val().state).localeCompare("deploy") == 0)){
             items.push({
                 title: child.val().courseName,
                 _key: child.key
@@ -88,6 +88,7 @@ export default class Page6Screen extends Component {
   constructor(props) {
     super(props)
     this.itemsRef = firebase.database().ref(`/course`)
+
     this.state.dataSource = this.ds.cloneWithRows([])
   }
   componentDidMount() {
@@ -101,11 +102,6 @@ export default class Page6Screen extends Component {
       }]),
     })**/
   }
-
-  chatRoomCreate(){
-
-  }
-
 
   render() {
     return (
@@ -203,6 +199,13 @@ export default class Page6Screen extends Component {
                         }}
                       />
                       <Button
+                        title='Students'
+                        onPress={(key) => {
+                          const {navigate} = this.props.navigation
+                          navigate('PageStudentCourseScreen', {key: data._key})
+                        }}
+                      />
+                      <Button
                           title='Edit'
                           onPress={(key) =>{
                           const { navigate } = this.props.navigation
@@ -211,9 +214,9 @@ export default class Page6Screen extends Component {
                       />
                        <Button
                           title='Chat'
-                          onPress={() =>{
+                          onPress={(key, chapterkey) =>{
                           const { navigate } = this.props.navigation
-                          navigate('ChatRoom')
+                          navigate('ChatRoom', {key: data._key})
                         }}
                       />
                     </View>

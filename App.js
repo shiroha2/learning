@@ -18,9 +18,10 @@ import Page7EditScreen from './app/screens/chapterTeacherEdit-screen'
 import PageExerciseTeacherScreen from './app/screens/exerciseTeacher-screen'
 import PageExerciseTeacherEditScreen from './app/screens/exerciseTeacherEdit-screen'
 import PageExerciseTeacherNewScreen from './app/screens/exerciseTeacherNew-screen'
+import PageStudentCourseScreen from './app/screens/courseStudentTeacher-screen'
 
 import LoginForm from './app/auth/loginForm'
-
+import firebase from 'firebase'
 
 import { defaultTransitionConfig } from 'react-navigation/src/views/CardStack/TransitionConfigs'
 
@@ -76,6 +77,9 @@ const Navigator = StackNavigator({
   },
   PageExerciseTeacherNewScreen: {
     screen: PageExerciseTeacherNewScreen,
+  },
+  PageStudentCourseScreen: {
+    screen: PageStudentCourseScreen
   },
 
 }, {

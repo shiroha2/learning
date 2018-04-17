@@ -4,8 +4,8 @@
  * @flow
  */
 
+import _ from 'lodash'
 import React, { Component } from 'react';
-import firebase from 'firebase'
 import {
   Platform,
   StyleSheet,
@@ -15,34 +15,33 @@ import {
   TouchableOpacity,
   IconIonic,
   ScrollView,
-  ListView
+  ListView,
+
 } from 'react-native'
 
-export default class Page4Screen extends Component {
+import firebase from 'firebase'
+import {
+  COURSE_FETCH_SUCCESS
+}from '../type/types'
+
+//import { Actions } from 'react-native-router-flux'
+
+export default class Page6Screen extends Component {
+
 
   ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
   state = {
     dataSource: [],
   }
 
-  constructor(props) {
-    super(props)
-    this.coursekey = this.props.navigation.state.params.key
-    this.chapterkey = this.props.navigation.state.params.chapterkey
-    this.itemsRef = firebase.database().ref(`/course/${this.coursekey}/chapter/${this.chapterkey}/`)
-    this.state.dataSource = this.ds.cloneWithRows([])
-  }
-
-
   listenForItems(itemsRef){
+
     itemsRef.on('value', (snap) => {
 
         var items = []
         snap.forEach((child) => {
           items.push({
-              title: child.val().chapterName,
-              _des: child.val().desciption,
-              _path: child.val().pathOfpdf,
+              title: child.val().name,
               _key: child.key
           })
         })
@@ -52,8 +51,22 @@ export default class Page4Screen extends Component {
     })
   }
 
-  componentDidMount(){
+  constructor(props) {
+    super(props)
+    this.coursekey = this.props.navigation.state.params.key
+    this.itemsRef = firebase.database().ref(`/course/${this.coursekey}/students/`)
+    this.state.dataSource = this.ds.cloneWithRows([])
+  }
+  componentDidMount() {
+    // Call API then set data(s) into state
     this.listenForItems(this.itemsRef)
+  /**  this.setState({
+      dataSource: this.ds.cloneWithRows([{
+        title: 'Title name 1',
+      },{
+        title: 'Title name 1',
+      }]),
+    })**/
   }
 
   render() {
@@ -63,9 +76,8 @@ export default class Page4Screen extends Component {
         <View style={styles.appBar.containerStyle}>
           <TouchableOpacity
             style={styles.appBar.colLeft.containerStyle}
-            onPress={() => {
-              this.props.navigation.goBack()
-             }}>
+            onPress={() => {this.props.navigation.goBack()
+            }}>
             <Text>
               Back
             </Text>
@@ -75,35 +87,41 @@ export default class Page4Screen extends Component {
             <Text
               style={styles.appBar.colRight.titleTextStyle}
               numberOfLines={1}>
-                Chapter
+              Student
             </Text>
           </View>
-        </View>
 
+        </View>
+        {/* ItemBar */}
+
+        <View style={styles.appBar2.containerStyle}>
+
+        </View>
         {/* Body */}
         <ScrollView style={{
           flex: 1,
         }}>
-        <ListView
-          enableEmptySections={true}
-          dataSource={this.state.dataSource}
-          renderRow={(data) => {
-            return (
-              <View style={{
-                borderBottomColor: 'gray',
-                borderBottomWidth: 1,
-                marginLeft: 10,
-                marginRight: 10,
-                marginBottom: 10,
-                padding: 10,
-              }}>
-                <Text>{ data.title }</Text>
-                <Text>{ data._des }</Text>
-                <Text>{ data._path }</Text>
+            <View style={styles.container}>
 
-              </View>
-          )
-        }} />
+              <ListView
+                enableEmptySections={true}
+                dataSource={this.state.dataSource}
+                renderRow={(data) => {
+                  return (
+                    <View style={{
+                      borderBottomColor: 'gray',
+                      borderBottomWidth: 1,
+                      marginLeft: 10,
+                      marginRight: 10,
+                      marginBottom: 10,
+                      padding: 10,
+                    }}>
+                      <Text>{ data.title }</Text>
+                    </View>
+                  )
+                }} />
+
+            </View>
 
         </ScrollView>
 
@@ -137,6 +155,37 @@ const styles = {
       containerStyle: {
         padding: 12,
         width: 40,
+      },
+      iconStyle: {
+        color: '#969696',
+        alignSelf: 'center',
+        textAlignVertical: 'center',
+      },
+    },
+    colRight: {
+      containerStyle: {
+        flex: 1,
+        justifyContent: 'center',
+      },
+      titleTextStyle: {
+        fontFamily: 'HelvethaicaBd',
+        color: 'rgba(0, 0, 0, .8)',
+        fontSize: 26,
+        alignSelf: 'center',
+        textAlignVertical: 'center',
+        marginRight: 40,
+      },
+    },
+  },
+  appBar2: {
+    containerStyle: {
+      flexDirection: 'row',
+      height: 50,
+      backgroundColor: '#F7F7F7',
+    },
+    colLeft: {
+      containerStyle: {
+        flexDirection: 'row'
       },
       iconStyle: {
         color: '#969696',

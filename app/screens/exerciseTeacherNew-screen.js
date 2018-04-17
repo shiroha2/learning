@@ -103,11 +103,7 @@ export default class PageExerciseTeacherNewScreen extends Component {
               this.exerciseCreate(this.state.exerName , this.state.desciption, this.state.point, this.state.answer)
               this.props.navigation.goBack()
             }} />
-          <Button
-            title='Back to Main screen'
-            onPress={() => {
-              this.props.navigation.goBack()
-            }} />
+          
 
         </ScrollView>
 

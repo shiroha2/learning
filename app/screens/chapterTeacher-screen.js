@@ -138,12 +138,6 @@ export default class Page7Screen extends Component {
                 }} />
 
               </View>
-          <Button
-            title='Back to Main screen'
-            onPress={() => {
-              this.props.navigation.goBack()
-            }} />
-
 
         </ScrollView>
 

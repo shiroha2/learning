@@ -56,12 +56,7 @@ export default class PageAnswerScreen extends Component {
           {/*Show Chapter TableView */}
             Answer View
           </Text>
-          <Button
-            title='Back to Main screen'
-            onPress={() => {
-              this.props.navigation.goBack()
-            }} />
-
+        
         </ScrollView>
 
       </View>

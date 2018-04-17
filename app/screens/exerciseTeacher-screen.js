@@ -43,6 +43,7 @@ export default class PageExerciseTeacherScreen extends Component {
         snap.forEach((child) => {
           items.push({
               title: child.val().exerName,
+              _des: child.val().desciption,
               _answer: child.val().answer,
               _key: child.key
           })
@@ -81,7 +82,7 @@ export default class PageExerciseTeacherScreen extends Component {
           </View>
           <TouchableOpacity
             style={styles.appBar.colLeft.containerStyle}
-            onPress={(key , chapterkey, exercisekey) => {
+            onPress={() => {
               const { navigate } = this.props.navigation
               navigate('PageExerciseTeacherEditScreen')
              }}>
@@ -110,6 +111,7 @@ export default class PageExerciseTeacherScreen extends Component {
                   padding: 10,
                 }}>
                   <Text>{ data.title }</Text>
+                  <Text>{ data._des}</Text>
                   <Text>{ data._answer }</Text>
                   <Button
                     title='Edit'
@@ -122,11 +124,6 @@ export default class PageExerciseTeacherScreen extends Component {
                 </View>
             )
           }} />
-           <Button
-            title='Back to Main screen'
-            onPress={() => {
-              this.props.navigation.goBack()
-            }} />
 
         </ScrollView>
 

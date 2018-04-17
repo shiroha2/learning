@@ -24,23 +24,41 @@ export default class ChatRoom extends Component {
   ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
   state = {
     dataSource: [],
+    message: ''
   }
 
   constructor(props) {
     super(props)
-
+    this.coursekey = this.props.navigation.state.params.key
+    this.itemsRef = firebase.database().ref(`course/${this.coursekey}/chatmessage/`)
     this.state.dataSource = this.ds.cloneWithRows([])
+  }
+
+  listenForItems(itemsRef){
+    itemsRef.on('value', (snap) => {
+
+        var items = []
+        snap.forEach((child) => {
+          items.push({
+              title: child.val().message,
+              _key: child.key
+          })
+        })
+        this.setState({
+          dataSource: this.ds.cloneWithRows(items)
+        })
+    })
+  }
+
+  putMessage(message){
+    const {currentUser} = firebase.auth()
+    userid = currentUser.uid
+    firebase.database().ref(`course/${this.coursekey}/chatmessage/`).push({userid, message})
   }
 
   componentDidMount() {
     // Call API then set data(s) into state
-    this.setState({
-      dataSource: this.ds.cloneWithRows([{
-        title: 'Messages1',
-      },{
-        title: 'Messages2',
-      }]),
-    })
+    this.listenForItems(this.itemsRef)
   }
 
   render() {
@@ -96,14 +114,14 @@ export default class ChatRoom extends Component {
 
               </View>
           <TextInput
+            value={this.state.message}
+            onChangeText={message => this.setState({message})}
           />
           <Button
             title='Send'
-            onPress={() => {}} />
-          <Button
-            title='Back to Main screen'
             onPress={() => {
-              this.props.navigation.goBack()
+              this.putMessage(this.state.message)
+              this.listenForItems(this.itemsRef)
             }} />
 
         </ScrollView>

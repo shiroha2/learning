@@ -47,13 +47,14 @@ export default class Page3Screen extends Component {
         })
     })
   }
-  listenForYourItems(itemsRef){
+  listenForYourItems(coursekey){
+    items
     const {currentUser} = firebase.auth()
     itemsRef.on('value', (snap) => {
 
         var items = []
         snap.forEach((child) => {
-          if(child.val().studentid == currentUser.uid){
+          if((child.val().studentid).localeCompare(currentUser.uid) == 0){
             items.push({
                 title: child.val().courseName,
                 _key: child.key
@@ -71,9 +72,10 @@ export default class Page3Screen extends Component {
 
         var items = []
         snap.forEach((child) => {
-          if((child.val().studentid == currentUser.uid) && (child.val().status == "deploy")){
+          if((child.val().state).localeCompare('deploy') == 0){
             items.push({
                 title: child.val().courseName,
+                _des: child.val().desciption,
                 _key: child.key
             })
           }
@@ -84,15 +86,39 @@ export default class Page3Screen extends Component {
     })
   }
 
-  goInCourse(chapterkey){
+  checkStudentInCourse(coursekey){
+    const {currentUser} = firebase.auth()
+    items = firebase.database().ref(`/course/${coursekey}/students`)
+    items.on('value', (snap) => {
+        snap.forEach((child) => {
+           if((child.val().studentid).localeCompare(currentUser.uid) == 0){
+             return true
+           }
+        })
+    })
+    return false
+  }
+
+  studentName(){
+    const {currentUser} = firebase.auth()
+    items = firebase.database().ref(`/users/iduser/${currentUser.uid}`)
+    var name = ''
+    items.on('value', (snap) => {
+      name = snap.val().name
+    })
+    return name
+  }
+
+  goInCourse(coursekey){
     const {currentUser} = firebase.auth()
     studentid = currentUser.uid
-    firebase.database().ref(`/course/${chapterkey}/student/`).push(studentid)
+    name = this.studentName()
+    firebase.database().ref(`/course/${coursekey}/students`).push({studentid, name})
   }
 
   componentDidMount() {
     // Call API then set data(s) into state
-    this.listenForItems(this.itemsRef)
+    this.listenForYourItemsDeployed(this.itemsRef)
   }
 
   render() {
@@ -177,33 +203,34 @@ export default class Page3Screen extends Component {
                       padding: 10,
                     }}>
                       <Text>{ data.title }</Text>
+                      <Text>{ data._des }</Text>
                       <Button
                           title='Go chapter'
-                          onPress={() => {
-                          const { navigate } = this.props.navigation
-                          navigate('Page4Screen')
+                          onPress={(key) => {
+                          if(this.checkStudentInCourse(data._key)){
+                              const { navigate } = this.props.navigation
+                              navigate('Page4Screen', {key: data._key})
+                          }else{
+                              const { navigate } = this.props.navigation
+                              navigate('Page3Screen')
+                          }
                         }}
                       />
+
                       <Button
                           title='Add'
-                          onPress={() => {
+                          onPress={(key) => {
                           this.goInCourse(data._key)
                           const { navigate } = this.props.navigation
-                          navigate('Page4Screen')
+                          navigate('Page4Screen', {key: data._key})
                         }}
                       />
+
                     </View>
                   )
                 }} />
 
             </View>
-
-            <Button
-            title='Back to Main screen'
-            onPress={() => {
-              this.props.navigation.goBack()
-            }}
-            />
         </ScrollView>
 
       </View>

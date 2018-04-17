@@ -124,12 +124,6 @@ export default class Page7NewScreen extends Component {
               this.onPresschapterCreate(this.state.chapterName , this.state.desciption , this.state.pathOfpdf)
               this.props.navigation.goBack()
             }} />
-          <Button
-            title='Back to Main screen'
-            onPress={() => {
-              this.props.navigation.goBack()
-            }} />
-
 
         </ScrollView>
 

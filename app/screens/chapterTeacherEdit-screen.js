@@ -101,11 +101,6 @@ export default class Page7EditScreen extends Component {
               this.props.navigation.goBack()
             }} />
           <Button
-            title='Back to Main screen'
-            onPress={() => {
-              this.props.navigation.goBack()
-            }} />
-          <Button
               title='Detele'
               onPress={() => {
                 this.chapterDelete()
