@@ -29,28 +29,31 @@ export default class Page4Screen extends Component {
     super(props)
     this.coursekey = this.props.navigation.state.params.key
     this.chapterkey = this.props.navigation.state.params.chapterkey
-    this.itemsRef = firebase.database().ref(`/course/${this.coursekey}/chapter/${this.chapterkey}/`)
+    this.itemsRef = firebase.database().ref(`/course/${this.coursekey}/chapter/${this.chapterkey}`)
     this.state.dataSource = this.ds.cloneWithRows([])
   }
 
 
   listenForItems(itemsRef){
-    itemsRef.on('value', (snap) => {
-
-        var items = []
-        snap.forEach((child) => {
-          items.push({
-              title: child.val().chapterName,
-              _des: child.val().desciption,
-              _path: child.val().pathOfpdf,
-              _key: child.key
-          })
-        })
-        this.setState({
-          dataSource: this.ds.cloneWithRows(items)
-        })
+    var name = ''
+    var des = ''
+    var path = ''
+    itemsRef.on('value' ,(snap) =>{
+       name = snap.val().chapterName
+       des = snap.val().desciption
+       path = snap.val().pathOfpdf
     })
+    this.setState({
+      dataSource: this.ds.cloneWithRows([{
+          title: name,
+        },{
+          title: des,
+        },{
+          title: path,
+        }]),
+      })
   }
+
 
   componentDidMount(){
     this.listenForItems(this.itemsRef)
@@ -98,8 +101,6 @@ export default class Page4Screen extends Component {
                 padding: 10,
               }}>
                 <Text>{ data.title }</Text>
-                <Text>{ data._des }</Text>
-                <Text>{ data._path }</Text>
 
               </View>
           )

@@ -122,6 +122,7 @@ export default class ChatRoom extends Component {
             onPress={() => {
               this.putMessage(this.state.message)
               this.listenForItems(this.itemsRef)
+              this.state.message = ''
             }} />
 
         </ScrollView>
