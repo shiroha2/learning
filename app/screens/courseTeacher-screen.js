@@ -19,6 +19,10 @@ import {
 
 } from 'react-native'
 
+import {
+  GoogleSignin
+} from 'react-native-google-signin'
+
 import firebase from 'firebase'
 import {
   COURSE_FETCH_SUCCESS
@@ -32,6 +36,7 @@ export default class Page6Screen extends Component {
   ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
   state = {
     dataSource: [],
+
   }
 
   listenForItems(itemsRef){
@@ -41,6 +46,7 @@ export default class Page6Screen extends Component {
         snap.forEach((child) => {
           items.push({
               title: child.val().courseName,
+              _des: child.val().desciption,
               _key: child.key
           })
         })
@@ -58,6 +64,7 @@ export default class Page6Screen extends Component {
           if((child.val().teacherid).localeCompare(currentUser.uid) == 0){
             items.push({
                 title: child.val().courseName,
+                _des: child.val().desciption,
                 _key: child.key
             })
           }
@@ -76,6 +83,7 @@ export default class Page6Screen extends Component {
           if(((child.val().teacherid).localeCompare(currentUser.uid) == 0) && ((child.val().state).localeCompare("deploy") == 0)){
             items.push({
                 title: child.val().courseName,
+                _des: child.val().desciption,
                 _key: child.key
             })
           }
@@ -101,6 +109,16 @@ export default class Page6Screen extends Component {
         title: 'Title name 1',
       }]),
     })**/
+  }
+  _signOut(){
+    firebase.auth().signOut().then(function() {
+      // Sign-out successful.
+      const {navigate} = this.props.navigation
+      navigate('MainScreen')
+    }).catch(function(error) {
+      // An error happened.
+      
+    });
   }
 
   render() {
@@ -190,7 +208,7 @@ export default class Page6Screen extends Component {
                       padding: 10,
                     }}>
                       <Text>{ data.title }</Text>
-                      <Text>{ data._key }</Text>
+                      <Text>{ data._des }</Text>
                       <Button
                           title='Chapter'
                           onPress={(key) =>{
@@ -225,11 +243,11 @@ export default class Page6Screen extends Component {
 
             </View>
             <Button
-              title='Back to Main screen'
+              title='Sign out'
               onPress={() => {
-                this.props.navigation.goBack()
-              }}
-            />
+                this._signOut()
+
+            }}/>
         </ScrollView>
 
       </View>

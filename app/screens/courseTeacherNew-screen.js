@@ -106,12 +106,7 @@ export default class Page6NewScreen extends Component {
               this.props.navigation.goBack()
             }}
             />
-            <Button
-            title='Back to Main screen'
-            onPress={() => {
-              this.props.navigation.goBack()
-            }}
-            />
+
 
         </ScrollView>
 

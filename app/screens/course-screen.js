@@ -18,11 +18,16 @@ import {
   ListView,
 } from 'react-native'
 
+import {
+  GoogleSignin
+} from 'react-native-google-signin'
+
 export default class Page3Screen extends Component {
 
   ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
   state = {
     dataSource: [],
+    
   }
 
 
@@ -37,10 +42,15 @@ export default class Page3Screen extends Component {
 
         var items = []
         snap.forEach((child) => {
-          items.push({
-              title: child.val().courseName,
-              _key: child.key
-          })
+          if((child.val().studentid).localeCompare(currentUser.uid) == 0){
+
+          }else{
+            items.push({
+                title: child.val().courseName,
+                _des: child.val().desciption,
+                _key: child.key
+            })
+          }
         })
         this.setState({
           dataSource: this.ds.cloneWithRows(items)
@@ -57,6 +67,7 @@ export default class Page3Screen extends Component {
           if((child.val().studentid).localeCompare(currentUser.uid) == 0){
             items.push({
                 title: child.val().courseName,
+                _des: child.val().desciption,
                 _key: child.key
             })
           }
@@ -121,6 +132,27 @@ export default class Page3Screen extends Component {
     this.listenForYourItemsDeployed(this.itemsRef)
   }
 
+  _signOut(){
+    firebase.auth().signOut().then(function() {
+      // Sign-out successful.
+      const {navigate} = this.props.navigation
+      navigate('MainScreen')
+    }).catch(function(error) {
+      // An error happened.
+
+    });
+  }
+
+  SignOut(){
+    GoogleSignin.signOut()
+    .then(() => {
+      console.log('out');
+    })
+    .catch((err) => {
+
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -158,7 +190,9 @@ export default class Page3Screen extends Component {
         <View style={styles.appBar2.containerStyle}>
           <TouchableOpacity
             style={styles.appBar2.colLeft.containerStyle}
-            onPress={() => { }}>
+            onPress={() => {
+              this.listenForYourItemsDeployed(this.itemsRef)
+            }}>
             <Text style={styles.appBar.colRight.titleTextStyle}
               numberOfLines={1}>
               All
@@ -166,7 +200,9 @@ export default class Page3Screen extends Component {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.appBar2.colLeft.containerStyle}
-            onPress={() => { }}>
+            onPress={() => {
+                this.listenForYourItems(this.itemsRef)
+            }}>
             <Text style={styles.appBar.colRight.titleTextStyle}
               numberOfLines={1}>
               Course Added
@@ -174,7 +210,9 @@ export default class Page3Screen extends Component {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.appBar2.colLeft.containerStyle}
-            onPress={() => { }}>
+            onPress={() => {
+              this.listenForItems(this.itemsRef)
+            }}>
             <Text style={styles.appBar.colRight.titleTextStyle}
               numberOfLines={1}>
               Course
@@ -231,8 +269,14 @@ export default class Page3Screen extends Component {
                 }} />
 
             </View>
-        </ScrollView>
+            <Button
+              title='Sign out'
+              onPress={() =>{
+                this._signOut()
 
+              }}
+            />
+        </ScrollView>
       </View>
     )
   }

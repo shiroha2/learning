@@ -6,6 +6,7 @@
 
 import React, { Component } from 'react';
 import firebase from 'firebase'
+import FilePickerManager from 'react-native-file-picker'
 import {
   Platform,
   StyleSheet,
@@ -31,6 +32,8 @@ export default class Page7NewScreen extends Component {
     desciption: '',
     pathOfpdf: ''
   }
+
+
 
   onPresschapterCreate(chapterName , desciption, pathOfpdf){
     courseKey = this.props.navigation.state.params.key
@@ -110,6 +113,21 @@ export default class Page7NewScreen extends Component {
           <Button
             title= 'Select File'
             onPress={() => {
+              FilePickerManager.showFilePicker(null, (response) => {
+                  console.log('Response = ', response);
+
+                  if (response.didCancel) {
+                    console.log('User cancelled file picker');
+                  }
+                  else if (response.error) {
+                    console.log('FilePickerManager Error: ', response.error);
+                  }
+                  else {
+                    this.setState({
+                      pathOfpdf: response
+                    });
+                  }
+                });
               this.props.navigation.goBack()
             }}
             color="#841584"

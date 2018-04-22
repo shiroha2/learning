@@ -40,6 +40,7 @@ export default class Page7Screen extends Component {
         snap.forEach((child) => {
           items.push({
               title: child.val().chapterName,
+              _des: child.val().desciption,
               _key: child.key
           })
         })
@@ -115,6 +116,7 @@ export default class Page7Screen extends Component {
                       padding: 10,
                     }}>
                       <Text>{ data.title }</Text>
+                      <Text>{ data._des }</Text>
                       <Button
                         title='Edit'
                         onPress={(key , chapterkey) => {

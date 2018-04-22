@@ -10,7 +10,8 @@ import {
 
 import firebase from 'firebase'
 import {
-  GoogleSignin
+  GoogleSignin,
+  GoogleSigninButton
 } from 'react-native-google-signin'
 
 export default class MainScreen extends Component {
@@ -35,6 +36,9 @@ export default class MainScreen extends Component {
       messagingSenderId: "849804559418"
     }
     firebase.initializeApp(config)
+    GoogleSignin.configure({
+      webClientId: '849804559418-u11iup8ent00klagiru4bri809hovhap.apps.googleusercontent.com'
+    })
   }
 
   state = {
@@ -46,24 +50,26 @@ export default class MainScreen extends Component {
   onButtonPress() {
     const { email, password } = this.state;
     firebase.auth().signInWithEmailAndPassword(email, password)
-      .catch(() => {
-        firebase.auth().createUserWithEmailAndPassword(email, password)
-          .catch(() => {
-            this.setState({ error: 'Authentication Failed.' });
-          })
-      })
+
+        /**.catch((signInError) => {
+          const { navigate } = this.props.navigation
+          navigate('PageRegisterScreen')
+          firebase.auth().createUserWithEmailAndPassword(email, password)
+            .catch((signUpError) => {
+              this.setState({ error: 'Authentication Failed.' });
+            })
+        })**/
 
   }
 
-  onButtonLoginGoogle = () => {
-    GoogleSignin
-    .signIn()
-    .then((data)=>{
-       const credential = firebase.auth.GithubAuthProvider.credential(data.idToken, data.accessToken)
+  _signIn(){
+    GoogleSignin.signIn().then((data)=>{
+       const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken)
+
        return firebase.auth().signInWithCredential(credential)
         .then((user)=>{
-          const { navigate } = this.props.navigation
-          navigate('Page2Screen')
+          console.log(`Google Login with user: ${JSON.stringify(user.toJSON())}`)
+
         }).catch((error)=>{
           const { code, message } = error
         })
@@ -95,14 +101,19 @@ export default class MainScreen extends Component {
 
         <TextInput
             value={this.state.email}
+            autoCorrect={false}
             onChangeText={email => this.setState({ email })}
             style={{ height: 50, width: 200 }}
           />
         <Text>
           Password
         </Text>
+        <Text
+          value={this.state.error}
+        />
        <TextInput
             secureTextEntry={true}
+            autoCorrect={false}
             value={this.state.password}
             onChangeText={password => this.setState({ password })}
             style={{ height: 50, width: 200 }}
@@ -110,27 +121,31 @@ export default class MainScreen extends Component {
         <Button
           title='Log in'
           onPress = {(userid) => {
+            this.state.error = ''
             this.onButtonPress.bind(this)
-            const {navigate} = this.props.navigation
+            const { navigate } = this.props.navigation
             navigate('Page2Screen')
+
           }
         }
         />
-
         <Button
-          title='Log in with google'
-            onPress={() => {
-                this.onButtonLoginGoogle()
-                const {navigate} = this.props.navigation
-                navigate('Page2Screen')
-              }} />
-          <Button
-            title= 'next'
-            onPress={() => {
-              const {navigate} = this.props.navigation
-              navigate('Page2Screen')
-            }}
+            title='Register'
+            onPress = {(userid) => {
+              this.state.error = ''
+              const { navigate } = this.props.navigation
+              navigate('PageRegisterScreen')
+            }
+          }
           />
+        <GoogleSigninButton
+          style={{width: 48, height: 48}}
+          size={GoogleSigninButton.Size.Icon}
+          color={GoogleSigninButton.Color.Dark}
+          onPress={this._signIn.bind(this)}
+
+          />
+
       </View>
     )
   }
