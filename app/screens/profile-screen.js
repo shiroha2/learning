@@ -75,7 +75,7 @@ export default class Page2Screen extends Component {
 
           var items = []
           snap.forEach((child) => {
-            if(child.val().iduser == currentUser.uid){
+            if((child.val().iduser).localeCompare(currentUser.uid) == 0){
               return true
             }
           })

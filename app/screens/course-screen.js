@@ -27,7 +27,6 @@ export default class Page3Screen extends Component {
   ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
   state = {
     dataSource: [],
-    
   }
 
 
@@ -38,39 +37,57 @@ export default class Page3Screen extends Component {
   }
 
   listenForItems(itemsRef){
+    const {currentUser} = firebase.auth()
     itemsRef.on('value', (snap) => {
 
         var items = []
         snap.forEach((child) => {
-          if((child.val().studentid).localeCompare(currentUser.uid) == 0){
+          itemStudentRef = firebase.database().ref(`/course/${child.key}/students`)
+          itemStudentRef.on('value' , (snapStudent) =>{
+            snapStudent.forEach((student) =>{
+              if((student.val().studentid).localeCompare(currentUser.uid) == 0){
 
-          }else{
-            items.push({
-                title: child.val().courseName,
-                _des: child.val().desciption,
-                _key: child.key
+              }else{
+                items.push({
+                  title: child.val().courseName,
+                  _des: child.val().desciption,
+                  _key: child.key
+                })
+              }
             })
-          }
+          })
+
         })
         this.setState({
           dataSource: this.ds.cloneWithRows(items)
         })
     })
   }
-  listenForYourItems(coursekey){
-    items
+  listenForYourItems(itemsRef){
     const {currentUser} = firebase.auth()
     itemsRef.on('value', (snap) => {
 
         var items = []
         snap.forEach((child) => {
-          if((child.val().studentid).localeCompare(currentUser.uid) == 0){
+          itemStudentRef = firebase.database().ref(`/course/${child.key}/students`)
+          itemStudentRef.on('value' , (snapStudent) =>{
+            snapStudent.forEach((student) =>{
+              if((student.val().studentid).localeCompare(currentUser.uid) == 0){
+                items.push({
+                  title: child.val().courseName,
+                  _des: child.val().desciption,
+                  _key: child.key
+                })
+              }
+            })
+          })
+          /**if((child.val().students).localeCompare(currentUser.uid) == 0){
             items.push({
                 title: child.val().courseName,
                 _des: child.val().desciption,
                 _key: child.key
             })
-          }
+          }**/
         })
         this.setState({
           dataSource: this.ds.cloneWithRows(items)
@@ -84,6 +101,7 @@ export default class Page3Screen extends Component {
         var items = []
         snap.forEach((child) => {
           if((child.val().state).localeCompare('deploy') == 0){
+
             items.push({
                 title: child.val().courseName,
                 _des: child.val().desciption,
@@ -96,6 +114,7 @@ export default class Page3Screen extends Component {
         })
     })
   }
+
 
   checkStudentInCourse(coursekey){
     const {currentUser} = firebase.auth()
