@@ -85,11 +85,10 @@ export default class PageExerciseTeacherScreen extends Component {
           <TouchableOpacity
             style={styles.appBar.colLeft.containerStyle}
             onPress={() => {
-              const { navigate } = this.props.navigation
-              navigate('PageExerciseTeacherEditScreen')
+
              }}>
             <Text>
-              Edit
+              
             </Text>
         </TouchableOpacity>
 

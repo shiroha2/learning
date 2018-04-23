@@ -39,6 +39,9 @@ export default class MainScreen extends Component {
     GoogleSignin.configure({
       webClientId: '849804559418-u11iup8ent00klagiru4bri809hovhap.apps.googleusercontent.com'
     })
+    console.ignoredYellowBox = [
+    'Setting a timer'
+    ]
   }
 
   state = {

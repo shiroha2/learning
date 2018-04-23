@@ -92,6 +92,7 @@ const Navigator = StackNavigator({
 
 const DEBUG_TAG = 'App'
 
+
 export default class App extends Component {
   render() {
     return <Navigator  />
