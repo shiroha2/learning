@@ -36,7 +36,7 @@ export default class Page3Screen extends Component {
     this.state.dataSource = this.ds.cloneWithRows([])
   }
 
-  listenForItems(itemsRef){
+/**  listenForItems(itemsRef){
     const {currentUser} = firebase.auth()
     itemsRef.on('value', (snap) => {
 
@@ -46,8 +46,6 @@ export default class Page3Screen extends Component {
           itemStudentRef.on('value' , (snapStudent) =>{
             snapStudent.forEach((student) =>{
               if((student.val().studentid).localeCompare(currentUser.uid) == 0){
-
-              }else{
                 items.push({
                   title: child.val().courseName,
                   _des: child.val().desciption,
@@ -62,7 +60,7 @@ export default class Page3Screen extends Component {
           dataSource: this.ds.cloneWithRows(items)
         })
     })
-  }
+  }**/
   listenForYourItems(itemsRef){
     const {currentUser} = firebase.auth()
     itemsRef.on('value', (snap) => {
@@ -181,8 +179,10 @@ export default class Page3Screen extends Component {
             style={styles.appBar.colLeft.containerStyle}
             onPress={() => {this.props.navigation.goBack()
             }}>
-            <Text>
-              Back
+            <Text
+              style={styles.appBar.colRight.titleTextStyle}
+              numberOfLines={1}>
+                Back
             </Text>
           </TouchableOpacity>
           <View
@@ -196,11 +196,10 @@ export default class Page3Screen extends Component {
           <TouchableOpacity
             style={styles.appBar.colLeft.containerStyle}
             onPress={() => {
-              const { navigate } = this.props.navigation
-              navigate('Page4Screen')
+
               }}>
             <Text>
-              +
+
             </Text>
           </TouchableOpacity>
         </View>
@@ -230,7 +229,7 @@ export default class Page3Screen extends Component {
           <TouchableOpacity
             style={styles.appBar2.colLeft.containerStyle}
             onPress={() => {
-              this.listenForItems(this.itemsRef)
+              //this.listenForItems(this.itemsRef)
             }}>
             <Text style={styles.appBar.colRight.titleTextStyle}
               numberOfLines={1}>

@@ -61,9 +61,11 @@ export default class PageExerciseTeacherEditScreen extends Component {
             onPress={() => {
               this.props.navigation.goBack()
              }}>
-            <Text>
-              Back
-            </Text>
+             <Text
+               style={styles.appBar.colRight.titleTextStyle}
+               numberOfLines={1}>
+                 Back
+             </Text>
           </TouchableOpacity>
           <View
             style={styles.appBar.colRight.containerStyle}>
@@ -120,7 +122,7 @@ export default class PageExerciseTeacherEditScreen extends Component {
               this.props.navigation.goBack()
             }}
           />
-      
+
 
         </ScrollView>
 

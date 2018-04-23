@@ -30,7 +30,8 @@ export default class Page7NewScreen extends Component {
   state = {
     chapterName: '',
     desciption: '',
-    pathOfpdf: ''
+    pathOfpdf: '',
+    file: ''
   }
 
 
@@ -71,8 +72,10 @@ export default class Page7NewScreen extends Component {
             onPress={() => {
               this.props.navigation.goBack()
              }}>
-            <Text>
-              Back
+            <Text
+              style={styles.appBar.colRight.titleTextStyle}
+              numberOfLines={1}>
+                Back
             </Text>
           </TouchableOpacity>
           <View
@@ -114,21 +117,20 @@ export default class Page7NewScreen extends Component {
             title= 'Select File'
             onPress={() => {
               FilePickerManager.showFilePicker(null, (response) => {
-                  console.log('Response = ', response);
+                  console.log('Response = ', response)
 
                   if (response.didCancel) {
-                    console.log('User cancelled file picker');
+                    console.log('User cancelled file picker')
                   }
                   else if (response.error) {
-                    console.log('FilePickerManager Error: ', response.error);
+                    console.log('FilePickerManager Error: ', response.error)
                   }
                   else {
                     this.setState({
-                      pathOfpdf: response
-                    });
+                      file: response
+                    })
                   }
-                });
-              this.props.navigation.goBack()
+                })
             }}
             color="#841584"
             accessibilityLabel="Learn more about this purple button"

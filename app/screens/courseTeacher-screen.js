@@ -40,15 +40,18 @@ export default class Page6Screen extends Component {
   }
 
   listenForItems(itemsRef){
+    const {currentUser} = firebase.auth()
     itemsRef.on('value', (snap) => {
 
         var items = []
         snap.forEach((child) => {
-          items.push({
-              title: child.val().courseName,
-              _des: child.val().desciption,
-              _key: child.key
-          })
+          if((child.val().teacherid).localeCompare(currentUser.uid) == 0){
+            items.push({
+                title: child.val().courseName,
+                _des: child.val().desciption,
+                _key: child.key
+            })
+          }
         })
         this.setState({
           dataSource: this.ds.cloneWithRows(items)
@@ -117,7 +120,7 @@ export default class Page6Screen extends Component {
       navigate('MainScreen')
     }).catch(function(error) {
       // An error happened.
-      
+
     });
   }
 
@@ -130,8 +133,10 @@ export default class Page6Screen extends Component {
             style={styles.appBar.colLeft.containerStyle}
             onPress={() => {this.props.navigation.goBack()
             }}>
-            <Text>
-              Back
+            <Text
+              style={styles.appBar.colRight.titleTextStyle}
+              numberOfLines={1}>
+                Back
             </Text>
           </TouchableOpacity>
           <View

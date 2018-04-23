@@ -41,6 +41,8 @@ export default class ChatRoom extends Component {
         snap.forEach((child) => {
           items.push({
               title: child.val().message,
+              _name: child.val().name,
+              _status: child.val().status,
               _key: child.key
           })
         })
@@ -50,10 +52,31 @@ export default class ChatRoom extends Component {
     })
   }
 
+  studentName(){
+    const {currentUser} = firebase.auth()
+    items = firebase.database().ref(`/users/iduser/${currentUser.uid}`)
+    var name = ''
+    items.on('value', (snap) => {
+      name = snap.val().name
+    })
+    return name
+  }
+  statusName(){
+    const {currentUser} = firebase.auth()
+    items = firebase.database().ref(`/users/iduser/${currentUser.uid}`)
+    var status = ''
+    items.on('value', (snap) => {
+      status = snap.val().status
+    })
+    return status
+  }
+
   putMessage(message){
     const {currentUser} = firebase.auth()
     userid = currentUser.uid
-    firebase.database().ref(`course/${this.coursekey}/chatmessage/`).push({userid, message})
+    name = this.studentName()
+    status = this.statusName()
+    firebase.database().ref(`course/${this.coursekey}/chatmessage/`).push({userid, name, status, message})
   }
 
   componentDidMount() {
@@ -71,9 +94,11 @@ export default class ChatRoom extends Component {
             onPress={() => {
               this.props.navigation.goBack()
              }}>
-            <Text>
-              Back
-            </Text>
+             <Text
+               style={styles.appBar.colRight.titleTextStyle}
+               numberOfLines={1}>
+                 Back
+             </Text>
           </TouchableOpacity>
           <View
             style={styles.appBar.colRight.containerStyle}>
@@ -107,7 +132,11 @@ export default class ChatRoom extends Component {
                       marginBottom: 10,
                       padding: 10,
                     }}>
-                      <Text>{ data.title }</Text>
+                      <Text>{ data._name }</Text>
+                      <Text>{ data._status }</Text>
+                      <Text>
+                        { data.title }
+                      </Text>
                     </View>
                   )
                 }} />
@@ -120,9 +149,11 @@ export default class ChatRoom extends Component {
           <Button
             title='Send'
             onPress={() => {
-              this.putMessage(this.state.message)
-              this.listenForItems(this.itemsRef)
-              this.state.message = ''
+              if((this.state.message).localeCompare('') != 0){
+                this.putMessage(this.state.message)
+                this.listenForItems(this.itemsRef)
+                this.state.message = ''
+              }
             }} />
 
         </ScrollView>

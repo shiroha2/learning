@@ -55,8 +55,10 @@ export default class Page6NewScreen extends Component {
             style={styles.appBar.colLeft.containerStyle}
             onPress={() => {this.props.navigation.goBack()
             }}>
-            <Text>
-              Back
+            <Text
+              style={styles.appBar.colRight.titleTextStyle}
+              numberOfLines={1}>
+                Back
             </Text>
           </TouchableOpacity>
           <View

@@ -74,9 +74,11 @@ export default class PageExerciseScreen extends Component {
             onPress={() => {
               this.props.navigation.goBack()
              }}>
-            <Text>
-              Back
-            </Text>
+             <Text
+               style={styles.appBar.colRight.titleTextStyle}
+               numberOfLines={1}>
+                 Back
+             </Text>
           </TouchableOpacity>
           <View
             style={styles.appBar.colRight.containerStyle}>

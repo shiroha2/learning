@@ -51,9 +51,11 @@ export default class PageExerciseTeacherNewScreen extends Component {
             onPress={() => {
               this.props.navigation.goBack()
              }}>
-            <Text>
-              Back
-            </Text>
+             <Text
+               style={styles.appBar.colRight.titleTextStyle}
+               numberOfLines={1}>
+                 Back
+             </Text>
           </TouchableOpacity>
           <View
             style={styles.appBar.colRight.containerStyle}>
@@ -103,7 +105,7 @@ export default class PageExerciseTeacherNewScreen extends Component {
               this.exerciseCreate(this.state.exerName , this.state.desciption, this.state.point, this.state.answer)
               this.props.navigation.goBack()
             }} />
-          
+
 
         </ScrollView>
 

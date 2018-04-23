@@ -82,8 +82,10 @@ export default class Page6EditScreen extends Component {
             style={styles.appBar.colLeft.containerStyle}
             onPress={() => {this.props.navigation.goBack()
             }}>
-            <Text>
-              Back
+            <Text
+              style={styles.appBar.colRight.titleTextStyle}
+              numberOfLines={1}>
+                Back
             </Text>
           </TouchableOpacity>
           <View
@@ -137,7 +139,7 @@ export default class Page6EditScreen extends Component {
               this.props.navigation.goBack()
             }}
             />
-          
+
         </ScrollView>
 
       </View>
