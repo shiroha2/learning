@@ -56,6 +56,9 @@ export default class PageExerciseTeacherScreen extends Component {
 
   componentDidMount(){
     this.listenForItems(this.itemsRef)
+    console.ignoredYellowBox = [
+    'Setting a timer'
+    ]
   }
 
   render() {
@@ -88,7 +91,7 @@ export default class PageExerciseTeacherScreen extends Component {
 
              }}>
             <Text>
-              
+
             </Text>
         </TouchableOpacity>
 

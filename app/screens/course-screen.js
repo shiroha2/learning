@@ -147,6 +147,9 @@ export default class Page3Screen extends Component {
   componentDidMount() {
     // Call API then set data(s) into state
     this.listenForYourItemsDeployed(this.itemsRef)
+    console.ignoredYellowBox = [
+    'Setting a timer'
+    ]
   }
 
   _signOut(){

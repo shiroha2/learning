@@ -53,6 +53,9 @@ export default class Page7Screen extends Component {
   componentDidMount() {
     // Call API then set data(s) into state
     this.listenForItems(this.itemRef)
+    console.ignoredYellowBox = [
+    'Setting a timer'
+    ]
     /**this.setState({
       dataSource: this.ds.cloneWithRows([{
         title: 'Title name 1',

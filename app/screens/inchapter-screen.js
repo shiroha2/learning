@@ -15,7 +15,8 @@ import {
   TouchableOpacity,
   IconIonic,
   ScrollView,
-  ListView
+  ListView,
+  WebView
 } from 'react-native'
 
 export default class Page4Screen extends Component {
@@ -23,6 +24,7 @@ export default class Page4Screen extends Component {
   ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
   state = {
     dataSource: [],
+    url: ''
   }
 
   constructor(props) {
@@ -54,6 +56,10 @@ export default class Page4Screen extends Component {
       })
   }
 
+  _download(filepath){
+      documentRef = firebase.storage().ref(filepath)
+      return url
+  }
 
   componentDidMount(){
     this.listenForItems(this.itemsRef)
@@ -103,10 +109,14 @@ export default class Page4Screen extends Component {
                 padding: 10,
               }}>
                 <Text>{ data.title }</Text>
-
+                <WebView
+                  source={{uri: data._path}}
+                  style={{marginTop: 20}}
+                />
               </View>
           )
         }} />
+
 
         </ScrollView>
 

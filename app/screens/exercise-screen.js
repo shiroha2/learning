@@ -62,6 +62,9 @@ export default class PageExerciseScreen extends Component {
 
   componentDidMount(){
     this.listenForItems(this.itemsRef)
+    console.ignoredYellowBox = [
+    'Setting a timer'
+    ]
   }
 
   render() {

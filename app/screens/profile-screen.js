@@ -27,7 +27,8 @@ export default class Page2Screen extends Component {
 
   constructor(props) {
     super(props)
-    this.itemsRef = firebase.database().ref(`/users/iduser`)
+    const {currentUser} = firebase.auth()
+    this.itemsRef = firebase.database().ref(`/users/iduser/${currentUser.uid}`)
   }
 
   state = {
@@ -71,38 +72,26 @@ export default class Page2Screen extends Component {
 
   userCheck(itemsRef){
     const {currentUser} = firebase.auth()
-      itemsRef.on('value', (snap) => {
-
-          var items = []
-          snap.forEach((child) => {
-            if((child.val().iduser).localeCompare(currentUser.uid) == 0){
-              return true
-            }
-          })
-      })
-      return false
+    itemsRef.on('value', (snap) =>{
+      if((snap.val().iduser).localeCompare(currentUser.uid)){
+        return true
+      }
+    })
+    return false
   }
   userCheckStudent(itemsRef){
-    itemsRef.on('value', (snap) => {
-
-        var items = []
-        snap.forEach((child) => {
-          if(child.val().status == 'student'){
-            return true
-          }
-        })
+    itemsRef.on('value', (snap) =>{
+      if((snap.val().status).localeCompare('student')){
+        return true
+      }
     })
     return false
   }
   userCheckTeacher(itemsRef){
-    itemsRef.on('value', (snap) => {
-
-        var items = []
-        snap.forEach((child) => {
-          if(child.val().status == 'teacher'){
-            return true
-          }
-        })
+    itemsRef.on('value', (snap) =>{
+      if((snap.val().status).localeCompare('teacher')){
+        return true
+      }
     })
     return false
   }
@@ -142,15 +131,34 @@ export default class Page2Screen extends Component {
         <Button
           title='Student'
           onPress={() => {
-            this.userStudentCreate(this.state.name , this.state.email)
-          }}
+              if(this.userCheckStudent(this.itemsRef)){
+                const {navigate} = this.props.navigation
+                navigation('Page3Screen')
+              }else if(this.userCheckTeacher(this.itemsRef)){
+                const {navigate} = this.props.navigation
+                navigation('Page6Screen')
+              }else{
+                this.userStudentCreate(this.state.name , this.state.email)
+              }
+            }
+          }
         />
 
         <Button
           title='Teacher'
           onPress={() => {
-            this.userTeacherCreate(this.state.name , this.state.email)
-          }}
+
+              if(this.userCheckStudent(this.itemsRef)){
+                const {navigate} = this.props.navigation
+                navigation('Page3Screen')
+              }else if(this.userCheckTeacher(this.itemsRef)){
+                const {navigate} = this.props.navigation
+                navigation('Page6Screen')
+              }else{
+                  this.userTeacherCreate(this.state.name , this.state.email)
+              }
+            }
+          }
         />
       </View>
     )

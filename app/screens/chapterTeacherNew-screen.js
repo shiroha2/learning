@@ -30,7 +30,7 @@ export default class Page7NewScreen extends Component {
   state = {
     chapterName: '',
     desciption: '',
-    pathOfpdf: '',
+    pathOfpdf: 'Upload PDF',
     file: ''
   }
 
@@ -42,6 +42,14 @@ export default class Page7NewScreen extends Component {
     teacherid = currentUser.uid
     const chapter = firebase.database().ref(`/course/${courseKey}/chapter`)
     chapter.push({chapterName , desciption , pathOfpdf})
+  }
+
+  _upload(filepath){
+    courseKey = this.props.navigation.state.params.key
+    storageRef = firebase.storage().ref(`/course/${courseKey}/chapter`)
+    documentfile = storageRef.child(filepath)
+    uploadtask = documentfile.put(file)
+    return documentfile.fullpath
   }
  /**  onPressLearnMore(){
     FilePickerManager.showFilePicker(null, (response) => {
@@ -107,12 +115,8 @@ export default class Page7NewScreen extends Component {
             onChangeText={desciption => this.setState({ desciption })}
           />
           <Text styte={styles.welcome}>
-            Upload PDF
+            {this.state.pathOfpdf}
           </Text>
-          <TextInput
-            value={this.state.pathOfpdf}
-            onChangeText={pathOfpdf => this.setState({ pathOfpdf })}
-          />
           <Button
             title= 'Select File'
             onPress={() => {
@@ -127,7 +131,7 @@ export default class Page7NewScreen extends Component {
                   }
                   else {
                     this.setState({
-                      file: response
+                      pathOfpdf: response
                     })
                   }
                 })
@@ -141,7 +145,8 @@ export default class Page7NewScreen extends Component {
           <Button
             title='Done'
             onPress={() => {
-              this.onPresschapterCreate(this.state.chapterName , this.state.desciption , this.state.pathOfpdf)
+              filepath = this._upload(this.state.pathOfpdf)
+              this.onPresschapterCreate(this.state.chapterName , this.state.desciption , filepath)
               this.props.navigation.goBack()
             }} />
 

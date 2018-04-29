@@ -29,6 +29,9 @@ export default class Page6EditScreen extends Component {
   }
   componentDidMount(){
     this.listenForItems(this.itemRef)
+    console.ignoredYellowBox = [
+    'Setting a timer'
+    ]
   }
 
   listenForItems(itemsRef){

@@ -59,6 +59,7 @@ export default class Page4Screen extends Component {
           items.push({
               title: child.val().chapterName,
               _des: child.val().desciption,
+              //_path: child.val().pathOfpdf,
               _key: child.key
           })
         })
@@ -71,6 +72,9 @@ export default class Page4Screen extends Component {
   componentDidMount() {
     // Call API then set data(s) into state
     this.listenForItems(this.itemsRef)
+    console.ignoredYellowBox = [
+    'Setting a timer'
+    ]
   }
 
   render() {

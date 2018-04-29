@@ -82,6 +82,9 @@ export default class ChatRoom extends Component {
   componentDidMount() {
     // Call API then set data(s) into state
     this.listenForItems(this.itemsRef)
+    console.ignoredYellowBox = [
+    'Setting a timer'
+    ]
   }
 
   render() {
