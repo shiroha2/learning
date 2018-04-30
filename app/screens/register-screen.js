@@ -33,13 +33,18 @@ export default class Page2Screen extends Component {
   state = {
     email: 'default@default.com',
     password:'',
-    error:''
+    error:'',
+    redirectToHome: false
   }
 
-  _signUp(email , password){
-    firebase.auth().createUserWithEmailAndPassword(email, password).catch(() => {
-            this.setState({ error: 'Authentication Failed.' });
-          });
+  _signUp(){
+    const {email, password} = this.state
+    firebase.auth().createUserWithEmailAndPassword(email,password).then(result => {
+          this.setState({ redirectToHome: true })
+      }).catch(error => {
+          // Handle Errors here.
+          this.setState({ error: error})
+      })
   }
 
   render() {
@@ -60,9 +65,9 @@ export default class Page2Screen extends Component {
         <Text>
           Password
         </Text>
-        <Text
-          value={this.state.error}
-        />
+        <Text style={styles.welcome}>
+          {this.state.error}
+        </Text>
        <TextInput
             secureTextEntry={true}
             autoCorrect={false}
@@ -73,10 +78,12 @@ export default class Page2Screen extends Component {
 
         <Button
           title='SignUp'
-          onPress={() => {
-            this._signUp(this.state.email , this.state.password)
-            const { navigate } = this.props.navigation
-            navigate('MainScreen')
+          onPress={(userid) => {
+            this._signUp.bind(this)
+            if(this.state.redirectToHome){
+              const {navigate} = this.props.navigation
+              navigate('Page2Screen')
+            }
           }}
         />
       </View>

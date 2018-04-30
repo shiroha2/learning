@@ -155,8 +155,6 @@ export default class Page3Screen extends Component {
   _signOut(){
     firebase.auth().signOut().then(function() {
       // Sign-out successful.
-      const {navigate} = this.props.navigation
-      navigate('MainScreen')
     }).catch(function(error) {
       // An error happened.
 
@@ -294,7 +292,8 @@ export default class Page3Screen extends Component {
               title='Sign out'
               onPress={() =>{
                 this._signOut()
-
+                const {navigate} = this.props.navigation
+                navigate('MainScreen')
               }}
             />
         </ScrollView>

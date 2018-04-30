@@ -254,7 +254,8 @@ export default class Page6Screen extends Component {
               title='Sign out'
               onPress={() => {
                 this._signOut()
-
+                const {navigate} = this.props.navigation
+                navigate('MainScreen')
             }}/>
         </ScrollView>
 
