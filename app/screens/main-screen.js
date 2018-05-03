@@ -35,8 +35,7 @@ export default class MainScreen extends Component {
       storageBucket: 'learninghpapp.appspot.com',
       messagingSenderId: '849804559418'
     }
-    //!firebase.apps.length ?
-    firebase.initializeApp(config)//: firebase.app()
+    !firebase.apps.length ? firebase.initializeApp(config): firebase.app()
     GoogleSignin.configure({
       webClientId: '849804559418-u11iup8ent00klagiru4bri809hovhap.apps.googleusercontent.com'
     })
@@ -58,7 +57,7 @@ export default class MainScreen extends Component {
       }).catch(error => {
         // Handle Errors here.
         this.setState({ error: error})
-
+        this.setState({ redirectToNext: false })
       })
         /**.catch((signInError) => {
           const { navigate } = this.props.navigation
@@ -132,6 +131,8 @@ export default class MainScreen extends Component {
             if(this.state.redirectToNext){
               const { navigate } = this.props.navigation
               navigate('Page2Screen')
+            }else{
+              this.state.error = 'Please register or check your password or email keep right'
             }
           }
         }

@@ -65,9 +65,7 @@ export default class Page2Screen extends Component {
         <Text>
           Password
         </Text>
-        <Text style={styles.welcome}>
-          {this.state.error}
-        </Text>
+
        <TextInput
             secureTextEntry={true}
             autoCorrect={false}
