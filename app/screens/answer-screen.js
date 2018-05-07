@@ -16,12 +16,57 @@ import {
   IconIonic,
   ScrollView,
   TextInput,
+  ListView
 } from 'react-native'
 
 export default class PageAnswerScreen extends Component {
 
+
+  ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+  state = {
+    dataSource: [],
+  }
+
   constructor(props) {
     super(props)
+    this.coursekey = this.props.navigation.state.params.key
+    this.chapterkey = this.props.navigation.state.params.chapterkey
+    this.exercisekey = this.props.navigation.state.params.exercisekey
+    this.itemRef = firebase.database().ref(`/course/${this.coursekey}/chapter/${this.chapterkey}/exercise/${this.exercisekey}/answerStudent`)
+    this.state.dataSource = this.ds.cloneWithRows([])
+  }
+  studentName(studentid){
+    items = firebase.database().ref(`/users/iduser/${studentid}`)
+    var name = ''
+    items.on('value', (snap) => {
+      name = snap.val().name
+    })
+    return name
+  }
+
+  listenForItems(itemsRef){
+    itemsRef.on('value', (snap) => {
+
+        var items = []
+        snap.forEach((child) => {
+            items.push({
+                title: this.studentName(child.val().studentid),
+                _des: child.val().ans,
+                _key: child.key
+            })
+
+        })
+        this.setState({
+          dataSource: this.ds.cloneWithRows(items)
+        })
+    })
+  }
+
+  componentDidMount(){
+    this.listenForItems(this.itemRef)
+    console.ignoredYellowBox = [
+      'Setting a timer'
+    ]
   }
 
   render() {
@@ -54,10 +99,29 @@ export default class PageAnswerScreen extends Component {
         <ScrollView style={{
           flex: 1,
         }}>
-          <Text style={styles.welcome}>
-          {/*Show Chapter TableView */}
-            Answer View
-          </Text>
+        <View style={styles.container}>
+
+            <ListView
+              enableEmptySections={true}
+              dataSource={this.state.dataSource}
+              renderRow={(data) => {
+                return (
+                  <View style={{
+                    borderBottomColor: 'gray',
+                    borderBottomWidth: 1,
+                    marginLeft: 10,
+                    marginRight: 10,
+                    marginBottom: 10,
+                    padding: 10,
+                  }}>
+                    <Text>{ data.title }</Text>
+                    <Text>{ data._des }</Text>
+
+                  </View>
+                )
+              }} />
+
+            </View>
 
         </ScrollView>
 

@@ -30,6 +30,20 @@ export default class Page2Screen extends Component {
     const {currentUser} = firebase.auth()
     this.itemsRef = firebase.database().ref(`/users/iduser/${currentUser.uid}`)
   }
+  componentDidMount(){
+    console.ignoredYellowBox = [
+    'Setting a timer'
+    ]
+    if(this.userCheck(this.itemsRef)){
+      if(this.userCheckStudent(this.itemsRef)){
+        const {navigate} = this.props.navigation
+        navigation('Page3Screen')
+      }else if(this.userCheckTeacher(this.itemsRef)){
+        const {navigate} = this.props.navigation
+        navigation('Page6Screen')
+      }
+    }
+  }
 
   state = {
     name: 'default',
@@ -97,15 +111,6 @@ export default class Page2Screen extends Component {
   }
 
   render() {
-    if(this.userCheck(this.itemsRef)){
-      if(this.userCheckStudent(this.itemsRef)){
-        const {navigate} = this.props.navigation
-        navigation('Page3Screen')
-      }else if(this.userCheckTeacher(this.itemsRef)){
-        const {navigate} = this.props.navigation
-        navigation('Page6Screen')
-      }
-    }
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
@@ -138,7 +143,7 @@ export default class Page2Screen extends Component {
                 const {navigate} = this.props.navigation
                 navigation('Page6Screen')
               }else{
-                this.userStudentCreate(this.state.name , this.state.email)
+                this.userStudentCreate(this.state.name ,@vvd this.state.email)
               }
             }
           }

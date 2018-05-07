@@ -27,6 +27,12 @@ export default class Page6NewScreen extends Component {
     super(props)
   }
 
+  componentDidMount(){
+    console.ignoredYellowBox = [
+      'Setting a timer'
+    ]
+  }
+
   state = {
     courseName: '',
     desciption: ''

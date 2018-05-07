@@ -26,6 +26,12 @@ export default class Page7NewScreen extends Component {
   constructor(props) {
     super(props)
   }
+  
+  componentDidMount(){
+    console.ignoredYellowBox = [
+      'Setting a timer'
+    ]
+  }
 
   state = {
     chapterName: '',
@@ -51,6 +57,7 @@ export default class Page7NewScreen extends Component {
     uploadtask = documentfile.put(file)
     return documentfile.fullpath
   }
+
  /**  onPressLearnMore(){
     FilePickerManager.showFilePicker(null, (response) => {
       console.log('Response = ', response)

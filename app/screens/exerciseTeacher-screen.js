@@ -119,12 +119,21 @@ export default class PageExerciseTeacherScreen extends Component {
                   <Text>{ data._answer }</Text>
                   <Button
                     title='Edit'
-                    onPress={(key , chapterkey) => {
+                    onPress={(key , chapterkey,exercisekey) => {
                     const { navigate } = this.props.navigation
                     navigate('PageExerciseTeacherEditScreen',{key: this.props.navigation.state.params.key,
                                                               chapterkey: this.props.navigation.state.params.chapterkey,
                                                               exercisekey: data._key } )
                    }}/>
+                   <Button
+                     title='Watch answer students'
+                     onPress={(key , chapterkey,exercisekey) => {
+                     const { navigate } = this.props.navigation
+                     navigate('PageAnswerScreen', {key: this.props.navigation.state.params.key,
+                                                               chapterkey: this.props.navigation.state.params.chapterkey,
+                                                               exercisekey: data._key})
+                   }}
+                   />
                 </View>
             )
           }} />

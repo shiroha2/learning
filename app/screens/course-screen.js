@@ -261,25 +261,23 @@ export default class Page3Screen extends Component {
                     }}>
                       <Text>{ data.title }</Text>
                       <Text>{ data._des }</Text>
+
                       <Button
                           title='Go chapter'
+                          disabled={this.checkStudentInCourse(data._key)}
                           onPress={(key) => {
-                          if(this.checkStudentInCourse(data._key)){
-                              const { navigate } = this.props.navigation
-                              navigate('Page4Screen', {key: data._key})
-                          }else{
-                              const { navigate } = this.props.navigation
-                              navigate('Page3Screen')
-                          }
+                            const { navigate } = this.props.navigation
+                            navigate('Page4Screen', {key: data._key})
                         }}
                       />
 
                       <Button
                           title='Add'
+                          disabled={this.checkStudentInCourse(data._key)}
                           onPress={(key) => {
-                          this.goInCourse(data._key)
-                          const { navigate } = this.props.navigation
-                          navigate('Page4Screen', {key: data._key})
+                            this.goInCourse(data._key)
+                            const { navigate } = this.props.navigation
+                            navigate('Page4Screen', {key: data._key})
                         }}
                       />
 

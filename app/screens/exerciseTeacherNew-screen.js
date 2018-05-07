@@ -25,6 +25,11 @@ export default class PageExerciseTeacherNewScreen extends Component {
     this.coursekey = this.props.navigation.state.params.key
     this.chapterkey = this.props.navigation.state.params.chapterkey
   }
+  componentDidMount(){
+    console.ignoredYellowBox = [
+      'Setting a timer'
+    ]
+  }
 
   state = {
     exerName: '',

@@ -63,6 +63,9 @@ export default class Page4Screen extends Component {
 
   componentDidMount(){
     this.listenForItems(this.itemsRef)
+    console.ignoredYellowBox = [
+      'Setting a timer'
+    ]
   }
 
   render() {

@@ -42,6 +42,13 @@ export default class MainScreen extends Component {
     console.ignoredYellowBox = [
     'Setting a timer'
     ]
+    const { navigate } = this.props.navigation
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        // User is signed in.
+        navigate('Page2Screen')
+      }
+    })
   }
 
   state = {
@@ -128,11 +135,12 @@ export default class MainScreen extends Component {
           title='Log in'
           onPress = {(userid) => {
             this.onButtonPress(this.state.email , this.state.password)
+            const { navigate } = this.props.navigation
             if(this.state.redirectToNext){
-              const { navigate } = this.props.navigation
               navigate('Page2Screen')
             }else{
               this.state.error = 'Please register or check your password or email keep right'
+              navigate('MainScreen')
             }
           }
         }

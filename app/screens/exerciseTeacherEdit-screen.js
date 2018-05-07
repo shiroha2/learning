@@ -33,6 +33,12 @@ export default class PageExerciseTeacherEditScreen extends Component {
     answer: ''
   }
 
+  componentDidMount(){
+    console.ignoredYellowBox = [
+      'Setting a timer'
+    ]
+  }
+  
   exerciseUpdate(exerName , desciption , point, answer){
     chapterkey = this.props.navigation.state.params.chapterkey
     exercisekey = this.props.navigation.state.params.exercisekey
