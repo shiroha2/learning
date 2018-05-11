@@ -56,10 +56,6 @@ export default class Page4Screen extends Component {
       })
   }
 
-  _download(filepath){
-      documentRef = firebase.storage().ref(filepath)
-      return url
-  }
 
   componentDidMount(){
     this.listenForItems(this.itemsRef)
@@ -114,8 +110,9 @@ export default class Page4Screen extends Component {
                 <Text>{ data.title }</Text>
                 <WebView
                   source={{uri: data._path}}
-                  style={{marginTop: 20}}
+                  style={{fex: 1}}
                 />
+
               </View>
           )
         }} />

@@ -273,7 +273,7 @@ export default class Page3Screen extends Component {
 
                       <Button
                           title='Add'
-                          disabled={this.checkStudentInCourse(data._key)}
+                          disabled={!this.checkStudentInCourse(data._key)}
                           onPress={(key) => {
                             this.goInCourse(data._key)
                             const { navigate } = this.props.navigation

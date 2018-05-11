@@ -90,7 +90,7 @@ export default class Page7EditScreen extends Component {
             onChangeText={desciption => this.setState({ desciption })}
           />
           <Text styte={styles.welcome}>
-            Upload PDF
+            Url PDF
           </Text>
           <TextInput
             value={this.state.pathOfpdf}

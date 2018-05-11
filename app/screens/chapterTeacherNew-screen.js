@@ -17,6 +17,7 @@ import {
   TouchableOpacity,
   IconIonic,
   ScrollView,
+  WebView,
   Alert
 } from 'react-native'
 
@@ -26,7 +27,7 @@ export default class Page7NewScreen extends Component {
   constructor(props) {
     super(props)
   }
-  
+
   componentDidMount(){
     console.ignoredYellowBox = [
       'Setting a timer'
@@ -36,8 +37,8 @@ export default class Page7NewScreen extends Component {
   state = {
     chapterName: '',
     desciption: '',
-    pathOfpdf: 'Upload PDF',
-    file: ''
+    pathOfpdf: '',
+    url: ''
   }
 
 
@@ -48,14 +49,6 @@ export default class Page7NewScreen extends Component {
     teacherid = currentUser.uid
     const chapter = firebase.database().ref(`/course/${courseKey}/chapter`)
     chapter.push({chapterName , desciption , pathOfpdf})
-  }
-
-  _upload(filepath){
-    courseKey = this.props.navigation.state.params.key
-    storageRef = firebase.storage().ref(`/course/${courseKey}/chapter`)
-    documentfile = storageRef.child(filepath)
-    uploadtask = documentfile.put(file)
-    return documentfile.fullpath
   }
 
  /**  onPressLearnMore(){
@@ -122,38 +115,26 @@ export default class Page7NewScreen extends Component {
             onChangeText={desciption => this.setState({ desciption })}
           />
           <Text styte={styles.welcome}>
-            {this.state.pathOfpdf}
+            Url PDF
           </Text>
+          <TextInput
+            value={this.state.pathOfpdf}
+            onChangeText={pathOfpdf => this.setState({ pathOfpdf })}
+          />
           <Button
-            title= 'Select File'
-            onPress={() => {
-              FilePickerManager.showFilePicker(null, (response) => {
-                  console.log('Response = ', response)
-
-                  if (response.didCancel) {
-                    console.log('User cancelled file picker')
-                  }
-                  else if (response.error) {
-                    console.log('FilePickerManager Error: ', response.error)
-                  }
-                  else {
-                    this.setState({
-                      pathOfpdf: response
-                    })
-                  }
-                })
+            title='preview'
+            onPress={() =>{
+              this.state.url = this.state.pathOfpdf
             }}
-            color="#841584"
-            accessibilityLabel="Learn more about this purple button"
-            />
-          <View>
-            {/*PDF View*/}
-          </View>
+          />
+          <WebView
+            source={{uri: this.state.url}}
+            style={{flex: 1}}
+          />
           <Button
             title='Done'
             onPress={() => {
-              filepath = this._upload(this.state.pathOfpdf)
-              this.onPresschapterCreate(this.state.chapterName , this.state.desciption , filepath)
+              this.onPresschapterCreate(this.state.chapterName , this.state.desciption , this.state.pathOfpdf)
               this.props.navigation.goBack()
             }} />
 
