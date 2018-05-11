@@ -31,6 +31,7 @@ export default class ChatRoom extends Component {
     super(props)
     this.coursekey = this.props.navigation.state.params.key
     this.itemsRef = firebase.database().ref(`course/${this.coursekey}/chatmessage/`)
+    this.topic = ''
     this.state.dataSource = this.ds.cloneWithRows([])
   }
 
@@ -76,7 +77,17 @@ export default class ChatRoom extends Component {
     userid = currentUser.uid
     name = this.studentName()
     status = this.statusName()
-    firebase.database().ref(`course/${this.coursekey}/chatmessage/`).push({userid, name, status, message})
+    const messageRef = firebase.database().ref(`course/${this.coursekey}/chatmessage/`).push({userid, name, status, message})
+    firebase.auth.onAuthStateChanged((user: any) => {
+      if (user) {
+        FCM.requestPermissions()
+        this.topic = messageRef
+        FCM.subscribeToTopic(this.topic)
+      }else if (this.topic) {
+        // If the user is logged-out, we unsubscribe
+          FCM.unsubscribeFromTopic(this.topic);
+      }
+    });
   }
 
   componentDidMount() {

@@ -22,6 +22,8 @@ import {
   GoogleSignin
 } from 'react-native-google-signin'
 
+import FCM from 'react-native-fcm'
+
 export default class Page3Screen extends Component {
 
   ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
@@ -29,6 +31,19 @@ export default class Page3Screen extends Component {
     dataSource: [],
   }
 
+
+  _notification(message, uid, nid){
+    firebase.auth.onAuthStateChanged((user: any) => {
+      if (user) {
+        FCM.requestPermissions();
+        this.topic = `/topics/${user.uid}`;
+        FCM.subscribeToTopic(this.topic);
+      }else if (this.topic) {
+        // If the user is logged-out, we unsubscribe
+          FCM.unsubscribeFromTopic(this.topic);
+      }
+    });
+  }
 
   constructor(props) {
     super(props)
