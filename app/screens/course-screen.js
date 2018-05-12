@@ -31,20 +31,6 @@ export default class Page3Screen extends Component {
     dataSource: [],
   }
 
-
-  _notification(message, uid, nid){
-    firebase.auth.onAuthStateChanged((user: any) => {
-      if (user) {
-        FCM.requestPermissions();
-        this.topic = `/topics/${user.uid}`;
-        FCM.subscribeToTopic(this.topic);
-      }else if (this.topic) {
-        // If the user is logged-out, we unsubscribe
-          FCM.unsubscribeFromTopic(this.topic);
-      }
-    });
-  }
-
   constructor(props) {
     super(props)
     this.itemsRef = firebase.database().ref(`/course/`)
@@ -134,12 +120,13 @@ export default class Page3Screen extends Component {
     items = firebase.database().ref(`/course/${coursekey}/students`)
     items.on('value', (snap) => {
         snap.forEach((child) => {
-           if((child.val().studentid).localeCompare(currentUser.uid) == 0){
+           if((child.val().studentid).localeCompare(currentUser.uid) == 0 == 0){
              return true
+           }else{
+             return false
            }
         })
     })
-    return false
   }
 
   studentName(){
@@ -288,11 +275,12 @@ export default class Page3Screen extends Component {
 
                       <Button
                           title='Add'
-                          disabled={!this.checkStudentInCourse(data._key)}
+                          disabled={this.checkStudentInCourse(data._key)}
                           onPress={(key) => {
                             this.goInCourse(data._key)
                             const { navigate } = this.props.navigation
                             navigate('Page4Screen', {key: data._key})
+
                         }}
                       />
 

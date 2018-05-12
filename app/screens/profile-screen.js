@@ -41,7 +41,7 @@ export default class Page2Screen extends Component {
         const {navigate} = this.props.navigation
         navigation('Page6Screen')
       }
-    
+
   }
 
   state = {
@@ -94,7 +94,7 @@ export default class Page2Screen extends Component {
   }
   userCheckStudent(itemsRef){
     itemsRef.on('value', (snap) =>{
-      if((snap.val().status).localeCompare('student')){
+      if((snap.val().status).localeCompare('student') == 0){
         return true
       }
     })
@@ -102,7 +102,7 @@ export default class Page2Screen extends Component {
   }
   userCheckTeacher(itemsRef){
     itemsRef.on('value', (snap) =>{
-      if((snap.val().status).localeCompare('teacher')){
+      if((snap.val().status).localeCompare('teacher') == 0){
         return true
       }
     })

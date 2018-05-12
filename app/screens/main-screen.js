@@ -14,6 +14,8 @@ import {
   GoogleSigninButton
 } from 'react-native-google-signin'
 
+import OneSignal from 'react-native-onesignal'
+
 export default class MainScreen extends Component {
 
 
@@ -49,6 +51,7 @@ export default class MainScreen extends Component {
         navigate('Page2Screen')
       }
     })
+    OneSignal.registerForPushNotifications()
   }
 
   state = {
@@ -57,6 +60,7 @@ export default class MainScreen extends Component {
     error: '',
     redirectToNext: false
   }
+
 
   onButtonPress(email , password) {
     firebase.auth().signInWithEmailAndPassword(email, password/**testEmail,testPassword**/).then(result => {

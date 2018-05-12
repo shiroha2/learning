@@ -29,6 +29,11 @@ export default class Page2Screen extends Component {
     super(props)
     this.itemsRef = firebase.database().ref(`/users/iduser`)
   }
+  componentDidMount(){
+    console.ignoredYellowBox = [
+    'Setting a timer'
+    ]
+  }
 
   state = {
     email: 'default@default.com',

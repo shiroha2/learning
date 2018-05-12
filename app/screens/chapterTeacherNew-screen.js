@@ -6,7 +6,6 @@
 
 import React, { Component } from 'react';
 import firebase from 'firebase'
-import FilePickerManager from 'react-native-file-picker'
 import {
   Platform,
   StyleSheet,
@@ -129,7 +128,7 @@ export default class Page7NewScreen extends Component {
           />
           <WebView
             source={{uri: this.state.url}}
-            style={{flex: 1}}
+            style={{marginTop: 20}}
           />
           <Button
             title='Done'

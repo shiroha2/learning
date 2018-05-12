@@ -110,7 +110,7 @@ export default class Page4Screen extends Component {
                 <Text>{ data.title }</Text>
                 <WebView
                   source={{uri: data._path}}
-                  style={{fex: 1}}
+                  style={{marginTop: 20}}
                 />
 
               </View>
