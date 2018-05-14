@@ -34,19 +34,12 @@ export default class Page2Screen extends Component {
     console.ignoredYellowBox = [
     'Setting a timer'
     ]
-      if(this.userCheckStudent(this.itemsRef)){
-        const {navigate} = this.props.navigation
-        navigation('Page3Screen')
-      }else if(this.userCheckTeacher(this.itemsRef)){
-        const {navigate} = this.props.navigation
-        navigation('Page6Screen')
-      }
 
   }
 
   state = {
-    name: 'default',
-    email: 'default@default.com'
+    name: this.getNameUser(),
+    email: this.getEmailUser()
   }
 
   userStudentCreate(name , email){
@@ -108,6 +101,35 @@ export default class Page2Screen extends Component {
     })
     return false
   }
+  getNameUser(){
+    const {currentUser} = firebase.auth()
+    items = firebase.database().ref(`/users/iduser/${currentUser.uid}`)
+    var name = ''
+    items.on('value', (snap) => {
+      name = snap.val().name
+    })
+    return name
+  }
+  getEmailUser(){
+    const {currentUser} = firebase.auth()
+    itemsRef = firebase.database().ref(`/users/iduser/${currentUser.uid}`)
+    var email = ''
+    itemsRef.on('value', (snap) =>{
+        email = snap.val().email
+    })
+    return email
+  }
+
+  _signOut(){
+    firebase.auth().signOut().then(function() {
+      // Sign-out successful.
+      const {navigate} = this.props.navigation
+      navigate('MainScreen')
+    }).catch(function(error) {
+      // An error happened.
+
+    });
+  }
 
   render() {
     return (
@@ -119,7 +141,7 @@ export default class Page2Screen extends Component {
           Name
         </Text>
         <TextInput
-          value = {this.state.name}
+          value = {this.state.name = this.getNameUser()}
           onChangeText={name => this.setState({ name })}
           style={{ height: 50, width: 200 }}
         />
@@ -127,7 +149,7 @@ export default class Page2Screen extends Component {
           E-mail
         </Text>
         <TextInput
-          value = {this.state.email}
+          value = {this.state.email = this.getEmailUser()}
           onChangeText={email => this.setState({ email })}
           style={{ height: 50, width: 200 }}
         />
@@ -135,16 +157,10 @@ export default class Page2Screen extends Component {
         <Button
           title='Student'
           onPress={() => {
-              if(this.userCheckStudent(this.itemsRef)){
-                const {navigate} = this.props.navigation
-                navigation('Page3Screen')
-              }else if(this.userCheckTeacher(this.itemsRef)){
-                const {navigate} = this.props.navigation
-                navigation('Page6Screen')
-              }else{
+
                 this.userStudentCreate(this.state.name , this.state.email)
               }
-            }
+
           }
         />
 
@@ -152,18 +168,20 @@ export default class Page2Screen extends Component {
           title='Teacher'
           onPress={() => {
 
-              if(this.userCheckStudent(this.itemsRef)){
-                const {navigate} = this.props.navigation
-                navigation('Page3Screen')
-              }else if(this.userCheckTeacher(this.itemsRef)){
-                const {navigate} = this.props.navigation
-                navigation('Page6Screen')
-              }else{
                   this.userTeacherCreate(this.state.name , this.state.email)
               }
-            }
+
           }
         />
+        <View>
+          <Button
+            title='Sign out'
+            onPress={() => {
+              this._signOut()
+              const {navigate} = this.props.navigation
+              navigate('MainScreen')
+            }}/>
+        </View>
       </View>
     )
   }

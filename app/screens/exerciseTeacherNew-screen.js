@@ -22,6 +22,9 @@ export default class PageExerciseTeacherNewScreen extends Component {
 
   constructor(props) {
     super(props)
+    this.state = {
+      loading: true
+    }
     this.coursekey = this.props.navigation.state.params.key
     this.chapterkey = this.props.navigation.state.params.chapterkey
   }

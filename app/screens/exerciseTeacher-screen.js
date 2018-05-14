@@ -28,6 +28,9 @@ export default class PageExerciseTeacherScreen extends Component {
 
   constructor(props) {
     super(props)
+    this.state = {
+      loading: true
+    }
     coursekey = this.props.navigation.state.params.key
     chapterkey = this.props.navigation.state.params.chapterkey
     this.itemsRef = firebase.database().ref(`/course/${courseKey}/chapter/${chapterkey}/exercise`)

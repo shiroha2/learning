@@ -25,6 +25,9 @@ export default class Page7NewScreen extends Component {
 
   constructor(props) {
     super(props)
+    this.state = {
+      loading: true
+    }
   }
 
   componentDidMount(){

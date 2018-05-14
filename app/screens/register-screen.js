@@ -27,7 +27,10 @@ export default class Page2Screen extends Component {
 
   constructor(props) {
     super(props)
-    this.itemsRef = firebase.database().ref(`/users/iduser`)
+    this.state = {
+      loading: true
+    }
+    this.itemsRef = firebase.database().ref(`/users/iduser/`)
   }
   componentDidMount(){
     console.ignoredYellowBox = [
@@ -36,19 +39,20 @@ export default class Page2Screen extends Component {
   }
 
   state = {
-    email: 'default@default.com',
+    email: '',
     password:'',
     error:'',
     redirectToHome: false
   }
 
-  _signUp(){
-    const {email, password} = this.state
+  _signUp(email, password){
     firebase.auth().createUserWithEmailAndPassword(email,password).then(result => {
           this.setState({ redirectToHome: true })
       }).catch(error => {
           // Handle Errors here.
           this.setState({ error: error})
+          this.setState({ redirectToNext: false })
+
       })
   }
 
@@ -82,8 +86,9 @@ export default class Page2Screen extends Component {
         <Button
           title='SignUp'
           onPress={(userid) => {
-            this._signUp.bind(this)
+            this._signUp(this.state.email, this.state.password)
             if(this.state.redirectToHome){
+              this.userDefaultCreate(this.state.email)
               const {navigate} = this.props.navigation
               navigate('Page2Screen')
             }

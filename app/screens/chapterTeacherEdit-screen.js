@@ -22,12 +22,16 @@ export default class Page7EditScreen extends Component {
 
   constructor(props) {
     super(props)
+    this.state = {
+      loading: true
+    }
   }
 
   state = {
     chapterName: '',
     desciption: '',
-    pathOfpdf: ''
+    pathOfpdf: '',
+    url:''
   }
 
   onPresschapterUpdate(chapterName , desciption, pathOfpdf){

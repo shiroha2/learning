@@ -63,7 +63,7 @@ export default class MainScreen extends Component {
 
 
   onButtonPress(email , password) {
-    firebase.auth().signInWithEmailAndPassword(email, password/**testEmail,testPassword**/).then(result => {
+    firebase.auth().signInWithEmailAndPassword(email, password).then(result => {
         this.setState({ redirectToNext: true })
       }).catch(error => {
         // Handle Errors here.

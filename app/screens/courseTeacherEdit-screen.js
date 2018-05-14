@@ -24,6 +24,9 @@ export default class Page6EditScreen extends Component {
 
   constructor(props) {
     super(props)
+    this.state = {
+      loading: true
+    }
     this.itemRef = firebase.database().ref(`/course`)
 
   }
