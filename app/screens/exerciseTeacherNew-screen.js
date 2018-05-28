@@ -38,15 +38,19 @@ export default class PageExerciseTeacherNewScreen extends Component {
     exerName: '',
     desciption: '',
     point: '',
+    choice1: '',
+    choice2: '',
+    choice3: '',
+    choice4: '',
     answer: ''
   }
 
-  exerciseCreate(exerName , desciption , point, answer){
+  exerciseCreate(exerName , desciption , point, choice1 ,choice2 ,choice3 ,choice4, answer){
     chapterkey = this.props.navigation.state.params.chapterkey
     const {currentUser} = firebase.auth()
     teacherid = currentUser.uid
     const exercise = firebase.database().ref(`/course/${courseKey}/chapter/${chapterkey}/exercise`)
-    exercise.push({exerName , desciption , point, answer})
+    exercise.push({exerName , desciption , point,choice1 ,choice2 ,choice3 ,choice4, answer})
   }
 
   render() {
@@ -80,14 +84,14 @@ export default class PageExerciseTeacherNewScreen extends Component {
           flex: 1,
         }}>
           <Text styte={styles.welcome}>
-            Exercise Name
+            Exercise
           </Text>
           <TextInput
             value={this.state.exerName}
             onChangeText={exerName => this.setState({exerName}) }
           />
           <Text styte={styles.welcome}>
-            Desciption
+            Question
           </Text>
           <TextInput
             value={this.state.desciption}
@@ -101,6 +105,37 @@ export default class PageExerciseTeacherNewScreen extends Component {
             onChangeText={point => this.setState({point})}
           />
           <Text styte={styles.welcome}>
+            Create Choice
+          </Text>
+          <Text styte={styles.welcome}>
+            Choice1
+          </Text>
+          <TextInput
+            value={this.state.choice1}
+            onChangeText={choice1 => this.setState({choice1})}
+          />
+          <Text styte={styles.welcome}>
+            Choice2
+          </Text>
+          <TextInput
+            value={this.state.choice2}
+            onChangeText={choice2 => this.setState({choice2})}
+          />
+          <Text styte={styles.welcome}>
+            Choice3
+          </Text>
+          <TextInput
+            value={this.state.choice3}
+            onChangeText={choice3 => this.setState({choice3})}
+          />
+          <Text styte={styles.welcome}>
+            Choice4
+          </Text>
+          <TextInput
+            value={this.state.choice4}
+            onChangeText={choice4 => this.setState({choice4})}
+          />
+          <Text styte={styles.welcome}>
             Answer
           </Text>
           <TextInput
@@ -110,7 +145,7 @@ export default class PageExerciseTeacherNewScreen extends Component {
           <Button
             title='Done'
             onPress={() => {
-              this.exerciseCreate(this.state.exerName , this.state.desciption, this.state.point, this.state.answer)
+              this.exerciseCreate(this.state.exerName , this.state.desciption, this.state.point,this.state.choice1,this.state.choice2,this.state.choice3,this.state.choice4, this.state.answer)
               this.props.navigation.goBack()
             }} />
 

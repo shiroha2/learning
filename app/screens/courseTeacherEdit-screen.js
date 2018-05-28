@@ -16,7 +16,8 @@ import {
   IconIonic,
   ScrollView,
   TextInput,
-  ListView
+  ListView,
+  Alert
 
 } from 'react-native'
 
@@ -27,34 +28,35 @@ export default class Page6EditScreen extends Component {
     this.state = {
       loading: true
     }
-    this.itemRef = firebase.database().ref(`/course`)
+    this.state.password = this.listenPassword()
 
   }
   componentDidMount(){
-    this.listenForItems(this.itemRef)
+  //  this.listenForItems(this.itemRef)
     console.ignoredYellowBox = [
     'Setting a timer'
     ]
   }
 
-  listenForItems(itemsRef){
+  listenPassword(){
     courseKey = this.props.navigation.state.params.key
-    itemsRef.on('value', (snap) => {
-        var items = []
-        snap.forEach((child) => {
-          if(child.val().key == courseKey){
-            items.push({
-                title: child.val().courseName,
-                _key: child.key
-              })
-            }
-        })
+    items = firebase.database().ref(`/course/${courseKey}`)
+    var password = ''
+    items.on('value', (snap) => {
+      if(snap != null){
+          password = snap.val().password
+      }else {
+          password = ''
+      }
     })
+    return password
   }
+
 
   state = {
     courseName: '',
-    desciption: ''
+    desciption: '',
+    password: ''
   }
 
   courseUpdateUndaploy(courseName, desciption){
@@ -123,6 +125,12 @@ export default class Page6EditScreen extends Component {
                 value = {this.state.desciption}
                 onChangeText={desciption => this.setState({ desciption })}
               />
+              <Text>
+                Password Course Please save
+              </Text>
+              <Text>
+                {this.state.password}
+              </Text>
             </View>
             <Button
             title='Save'
@@ -138,16 +146,26 @@ export default class Page6EditScreen extends Component {
               this.props.navigation.goBack()
             }}
             />
-            <Button
-            title='Close Course'
-            onPress={() => {
-              this.courseDelete()
-              this.props.navigation.goBack()
-            }}
-            />
 
         </ScrollView>
-
+        <Button
+        title='Close Course'
+        color='#FF0000'
+        onPress={() => {
+          Alert.alert(
+            'ALERT',
+            'Would you like to delete this course',
+            [
+              {text: 'Cancal', onPress:() => console.log('Cancel Pressed')},
+              {text: 'Ok' , onPress:() =>
+                    this.courseDelete()
+              },
+            ],
+            {cancalable: false}
+          )
+          this.props.navigation.goBack()
+        }}
+        />
       </View>
     )
   }

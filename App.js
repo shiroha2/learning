@@ -20,6 +20,8 @@ import PageExerciseTeacherEditScreen from './app/screens/exerciseTeacherEdit-scr
 import PageExerciseTeacherNewScreen from './app/screens/exerciseTeacherNew-screen'
 import PageStudentCourseScreen from './app/screens/courseStudentTeacher-screen'
 import PageRegisterScreen from './app/screens/register-screen'
+import PageCoursePassword from './app/screens/coursePassword-screen'
+import PageScoreScreen from './app/screens/score-screen'
 
 import LoginForm from './app/auth/loginForm'
 import firebase from 'firebase'
@@ -85,6 +87,12 @@ const Navigator = StackNavigator({
   },
   PageRegisterScreen: {
     screen: PageRegisterScreen
+  },
+  PageCoursePassword: {
+    screen: PageCoursePassword
+  },
+  PageScoreScreen: {
+    screen: PageScoreScreen
   },
 }, {
   headerMode: 'none',

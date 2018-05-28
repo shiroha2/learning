@@ -13,6 +13,7 @@ import {
   View,
   Button,
   TextInput,
+  ScrollView,
   Picker
 } from 'react-native'
 
@@ -176,6 +177,7 @@ export default class Page2Screen extends Component {
         <View>
           <Button
             title='Sign out'
+            color='#FF0000'
             onPress={() => {
               this._signOut()
               const {navigate} = this.props.navigation

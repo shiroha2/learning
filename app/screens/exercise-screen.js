@@ -33,7 +33,55 @@ export default class PageExerciseScreen extends Component {
   state = {
     dataSource: [],
     answer: '',
-    hint:''
+    point: 0,
+    getPoint: '',
+    yetAns: true
+  }
+  checkAlreadyAns(exerkey){
+    coursekey = this.props.navigation.state.params.key
+    chapterkey = this.props.navigation.state.params.chapterkey
+    const {currentUser} = firebase.auth()
+    ansStudent = firebase.database().ref(`course/${coursekey}/chapter/${chapterkey}/exercise/${exerkey}/answerStudent`)
+    ansStudent.on('value', (snap) => {
+      snap.forEach((child) => {
+        if((currentUser.uid).localeCompare(child.val().studentid) == 0){
+          this.state.yetAns = false
+        }else{
+          this.state.yetAns = true
+        }
+      })
+    })
+  }
+  checkAnswer(ans, exerkey){
+    const {currentUser} = firebase.auth()
+    ansRef = firebase.database().ref(`/course/${coursekey}/chapter/${chapterkey}/exercise/${exerkey}`)
+    scroeRef = firebase.database().ref(`users/iduser/${currentUser.uid}`)
+    var name = ''
+    var iduser = ''
+    var email = ''
+    var status = ''
+    var point = ''
+    scroeRef.on('value', (snap) =>{
+       name = snap.val().name
+       iduser = snap.val().iduser
+       email = snap.val().email
+       status = snap.val().status
+    })
+    var ansExe = ''
+    var pointEx = ''
+    var key = ''
+    ansRef.on('value', (snap) => {
+      ansExe = snap.val().answer
+      pointEx = snap.val().point
+    })
+    if(ansExe.localeCompare(ans) == 0){
+      this.state.point  = this.state.point + 1
+      this.state.getPoint = pointEx
+      point = this.state.point
+      scroeRef.update({iduser, name, email,status, point})
+    }else{
+
+    }
   }
 
   listenForItems(itemsRef){
@@ -43,7 +91,10 @@ export default class PageExerciseScreen extends Component {
           items.push({
               title: child.val().exerName,
               _des: child.val().desciption,
-              _answer: child.val().answer,
+              _choice1: child.val().choice1,
+              _choice2: child.val().choice2,
+              _choice3: child.val().choice3,
+              _choice4: child.val().choice4,
               _key: child.key
           })
         })
@@ -55,9 +106,18 @@ export default class PageExerciseScreen extends Component {
   putAnswer(ans, exercisekey){
     coursekey = this.props.navigation.state.params.key
     chapterkey = this.props.navigation.state.params.chapterkey
+    var timestamp = new Date()
+    var datetime = timestamp
     const {currentUser} = firebase.auth()
-    studentid = currentUser.uid
-    firebase.database().ref(`course/${coursekey}/chapter/${chapterkey}/exercise/${exercisekey}/answerStudent`).push({studentid , ans})
+    console.log(this.checkAlreadyAns(exercisekey))
+    if(this.checkAlreadyAns(exercisekey) && this.state.yetAns){
+      this.checkAnswer(ans, exercisekey)
+      savePoint = this.state.getPoint
+      studentid = currentUser.uid
+      firebase.database().ref(`course/${coursekey}/chapter/${chapterkey}/exercise/${exercisekey}/answerStudent`).push({studentid , ans, savePoint, datetime, exercisekey})
+    }else{
+      this.state.answer = ''
+    }
   }
 
   componentDidMount(){
@@ -111,13 +171,18 @@ export default class PageExerciseScreen extends Component {
                 marginBottom: 10,
                 padding: 10,
               }}>
-                <Text>{ data.title }</Text>
-                <Text>{ data._des }</Text>
-                <Text> Answer </Text>
+                <Text style={{fontSize: 20}}>{ data.title }</Text>
+                <Text style={{fontSize: 18}}>{ data._des }</Text>
+                <Text style={styles.choiceText}>1:{ data._choice1 }</Text>
+                <Text style={styles.choiceText}>2:{ data._choice2 }</Text>
+                <Text style={styles.choiceText}>3:{ data._choice3 }</Text>
+                <Text style={styles.choiceText}>4:{ data._choice4 }</Text>
+                <Text style={{fontSize: 18}}> Select Choice (Please insert number)</Text>
                <TextInput
                   value={this.state.answer}
                   onChangeText={answer => this.setState({ answer })}
                 />
+                <Text style={{fontSize: 18}}>You get {this.state.point} point</Text>
                 <Button
                   title='Send'
                   onPress={() =>{
@@ -125,18 +190,7 @@ export default class PageExerciseScreen extends Component {
                     this.state.answer = ''
                   }}
                 />
-                <Text> Hint </Text>
-                <TextInput
-                  value={this.state.hint}
-                  onChangeText={hint => this.setState({ hint })}
-                />
-                <Button
-                  title='Hint'
-                  onPress={(/**key, chapterkey , exercisekey**/) => {
-                    this.state.hint = data._answer
-                  //  const { navigate } = this.props.navigation
-                  //  navigate('PageAnswerScreen')
-                  }}/>
+
            </View>
           )
         }} />
@@ -157,6 +211,9 @@ const styles = {
   container: {
     flex: 1,
     backgroundColor: '#F5FCFF',
+  },
+  choiceText:{
+    fontSize: 15,
   },
   welcome: {
     fontSize: 20,

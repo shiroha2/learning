@@ -6,6 +6,7 @@
 
 import React, { Component } from 'react';
 import firebase from 'firebase'
+//import Pdf from 'react-native-pdf'
 import {
   Platform,
   StyleSheet,
@@ -16,7 +17,8 @@ import {
   IconIonic,
   ScrollView,
   ListView,
-  WebView
+  WebView,
+  Dimensions
 } from 'react-native'
 
 export default class Page4Screen extends Component {
@@ -49,13 +51,20 @@ export default class Page4Screen extends Component {
       dataSource: this.ds.cloneWithRows([{
           title: name,
         },{
-          title: des,
+          _des: des,
         },{
-          title: path,
+          _path: path,
         }]),
       })
   }
-
+  getPath(){
+    itemsRef = firebase.database().ref(`/course/${this.coursekey}/chapter/${this.chapterkey}`)
+    var path = ''
+    itemsRef.on('value', (snap) =>{
+      path = snap.val().pathOfpdf
+    })
+    return path
+  }
 
   componentDidMount(){
     this.listenForItems(this.itemsRef)
@@ -108,17 +117,17 @@ export default class Page4Screen extends Component {
                 padding: 10,
               }}>
                 <Text>{ data.title }</Text>
-                <WebView
-                  source={{uri: data._path}}
-                  style={{marginTop: 20}}
-                />
+                <Text>{ data._des}</Text>
 
               </View>
+
           )
         }} />
-
-
         </ScrollView>
+        <WebView
+          source={{uri: this.getPath()}}
+          style={{marginTop: 20}}
+        />
 
       </View>
     )
@@ -126,6 +135,7 @@ export default class Page4Screen extends Component {
 }
 
 const styles = {
+
   container: {
     flex: 1,
     backgroundColor: '#F5FCFF',

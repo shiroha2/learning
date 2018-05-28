@@ -16,6 +16,7 @@ import {
   IconIonic,
   ScrollView,
   ListView,
+  Alert,
 } from 'react-native'
 
 import {
@@ -29,6 +30,8 @@ export default class Page3Screen extends Component {
   ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
   state = {
     dataSource: [],
+    added: false,
+    add: true
   }
 
   constructor(props) {
@@ -115,18 +118,33 @@ export default class Page3Screen extends Component {
   }
 
 
+  checkStudentDisCourse(coursekey){
+    const {currentUser} = firebase.auth()
+    items = firebase.database().ref(`/course/${coursekey}/students`)
+      items.on('value', (snap) => {
+          snap.forEach((child) => {
+            console.log((child.val().studentid).localeCompare(currentUser.uid) == 0)
+            if((child.val().studentid).localeCompare(currentUser.uid) ==  0){
+              this.state.added = true
+              return false
+            }
+          })
+          this.state.added = false
+            return true
+        })
+  }
   checkStudentInCourse(coursekey){
     const {currentUser} = firebase.auth()
     items = firebase.database().ref(`/course/${coursekey}/students`)
-    items.on('value', (snap) => {
-        snap.forEach((child) => {
-           if((child.val().studentid).localeCompare(currentUser.uid) == 0 == 0){
-             return true
-           }else{
-             return false
-           }
+      items.on('value', (snap) => {
+          snap.forEach((child) => {
+            console.log((child.val().studentid).localeCompare(currentUser.uid) == 0)
+            if((child.val().studentid).localeCompare(currentUser.uid) ==  0){
+              return true
+            }
+          })
+          return false
         })
-    })
   }
 
   studentName(){
@@ -139,12 +157,12 @@ export default class Page3Screen extends Component {
     return name
   }
 
-  goInCourse(coursekey){
+/**  goInCourse(coursekey){
     const {currentUser} = firebase.auth()
     studentid = currentUser.uid
     name = this.studentName()
     firebase.database().ref(`/course/${coursekey}/students`).push({studentid, name})
-  }
+  }**/
 
   componentDidMount() {
     // Call API then set data(s) into state
@@ -172,6 +190,7 @@ export default class Page3Screen extends Component {
 
     });
   }
+
 
   render() {
     return (
@@ -266,21 +285,27 @@ export default class Page3Screen extends Component {
 
                       <Button
                           title='Go chapter'
-                          disabled={this.checkStudentInCourse(data._key)}
+                          disabled={this.checkStudentDisCourse(data._key)}
                           onPress={(key) => {
-                            const { navigate } = this.props.navigation
-                            navigate('Page4Screen', {key: data._key})
+                            const {currentUser} = firebase.auth()
+                            items = firebase.database().ref(`/course/${data._key}/students`)
+                              items.on('value', (snap) => {
+                                  snap.forEach((child) => {
+                                    console.log((child.val().studentid).localeCompare(currentUser.uid) == 0)
+                                    if((child.val().studentid).localeCompare(currentUser.uid) ==  0){
+                                      const { navigate } = this.props.navigation
+                                      navigate('Page4Screen', {key: data._key})                                    }
+                                  })
+                                })
                         }}
                       />
 
                       <Button
                           title='Add'
-                          disabled={this.checkStudentInCourse(data._key)}
+                          disabled={this.state.added}
                           onPress={(key) => {
-                            this.goInCourse(data._key)
                             const { navigate } = this.props.navigation
-                            navigate('Page4Screen', {key: data._key})
-
+                            navigate('PageCoursePassword', {key: data._key})
                         }}
                       />
 
@@ -289,15 +314,17 @@ export default class Page3Screen extends Component {
                 }} />
 
             </View>
-            <Button
-              title='Sign out'
-              onPress={() =>{
-                this._signOut()
-                const {navigate} = this.props.navigation
-                navigate('MainScreen')
-              }}
-            />
+
         </ScrollView>
+        <Button
+          title='Sign out'
+          color='#FF0000'
+          onPress={() =>{
+            this._signOut()
+            const {navigate} = this.props.navigation
+            navigate('MainScreen')
+          }}
+        />
       </View>
     )
   }

@@ -44,17 +44,47 @@ export default class PageAnswerScreen extends Component {
     return name
   }
 
+  filterByName(){
+
+  }
+  //PersonRightChoice
+  filterByRightChoice(){
+
+  }
+
+  getScroeStudent(){
+    getScroeRef = firebase.database().ref(`/course/${this.coursekey}/chapter/${this.chapterkey}/exercise`)
+    var point = 0
+    getScroeRef.on('value' , (snap) => {
+      var exerkey = ''
+      snap.forEach((child) => {
+        exerkey = child.key
+        getScroeAnsRef = firebase.database().ref(`/course/${this.coursekey}/chapter/${this.chapterkey}/exercise/${exerkey}`)
+        getScroeAnsRef.on('value' , (snap2) => {
+          snap2.forEach((child2) => {
+            if(child2.val().savePoint != null){
+
+            }
+          })
+        })
+      })
+    })
+  }
+
   listenForItems(itemsRef){
+    var point = 0
     itemsRef.on('value', (snap) => {
 
         var items = []
         snap.forEach((child) => {
+          point = point + parseInt(snap.val().savePoint)
             items.push({
                 title: this.studentName(child.val().studentid),
                 _des: child.val().ans,
+                _date: child.val().datetime,
+                _point: point,
                 _key: child.key
             })
-
         })
         this.setState({
           dataSource: this.ds.cloneWithRows(items)
@@ -114,8 +144,10 @@ export default class PageAnswerScreen extends Component {
                     marginBottom: 10,
                     padding: 10,
                   }}>
-                    <Text>{ data.title }</Text>
-                    <Text>{ data._des }</Text>
+                    <Text>Name: { data.title }</Text>
+                    <Text>Answer: { data._des }</Text>
+                    <Text>Date answer:{ data._date }</Text>
+
 
                   </View>
                 )

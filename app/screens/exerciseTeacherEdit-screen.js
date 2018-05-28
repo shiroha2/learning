@@ -124,17 +124,18 @@ export default class PageExerciseTeacherEditScreen extends Component {
               this.exerciseUpdate(this.state.exerName, this.state.desciption, this.state.point, this.state.answer)
               this.props.navigation.goBack()
             }} />
-          <Button
-            title='Delete'
-            onPress={() => {
-              this.exerciseDelete()
-              this.props.navigation.goBack()
-            }}
-          />
+
 
 
         </ScrollView>
-
+        <Button
+          title='Delete'
+          color='#FF0000'
+          onPress={() => {
+            this.exerciseDelete()
+            this.props.navigation.goBack()
+          }}
+        />
       </View>
     )
   }

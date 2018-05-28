@@ -150,15 +150,27 @@ export default class Page4Screen extends Component {
                 const { navigate } = this.props.navigation
                 navigate('ChatRoom', {key: this.props.navigation.state.params.key})
               }} />
-            <Button
-              title='Out from Course'
-              onPress={() => {
-                this.studentDelete(this.coursekey)
-                this.props.navigation.goBack()
-              }} />
+
 
         </ScrollView>
-
+          <Button
+          title='Out from Course'
+          color='#FF0000'
+          onPress={() => {
+            Alert.alert(
+              'ALERT',
+              'Would you like to out from this course',
+              [
+                {text: 'Cancal', onPress:() => console.log('Cancel Pressed')},
+                {text: 'Ok' , onPress:() =>
+                      this.studentDelete(this.coursekey)
+                },
+              ],
+              {cancalable: false}
+            )
+            this.props.navigation.goBack()
+          }}
+          />
       </View>
     )
   }

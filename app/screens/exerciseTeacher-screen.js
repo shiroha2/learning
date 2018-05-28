@@ -40,6 +40,7 @@ export default class PageExerciseTeacherScreen extends Component {
 
 
   listenForItems(itemsRef){
+
     itemsRef.on('value', (snap) => {
 
         var items = []
@@ -126,7 +127,7 @@ export default class PageExerciseTeacherScreen extends Component {
                     const { navigate } = this.props.navigation
                     navigate('PageExerciseTeacherEditScreen',{key: this.props.navigation.state.params.key,
                                                               chapterkey: this.props.navigation.state.params.chapterkey,
-                                                              exercisekey: data._key } )
+                                                              exercisekey: data._key })
                    }}/>
                    <Button
                      title='Watch answer students'
@@ -137,10 +138,19 @@ export default class PageExerciseTeacherScreen extends Component {
                                                                exercisekey: data._key})
                    }}
                    />
+                   <Button
+                     title='Watch scroe from student'
+                     onPress={(key , chapterkey,exercisekey)=>{
+                       const {navigate} = this.props.navigation
+                       navigate('PageScoreScreen', {key: this.props.navigation.state.params.key,
+                                                                 chapterkey: this.props.navigation.state.params.chapterkey,
+                                                                 exercisekey: data._key})
+
+                     }}
+                   />
                 </View>
             )
           }} />
-
         </ScrollView>
 
       </View>

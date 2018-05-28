@@ -106,15 +106,15 @@ export default class Page7EditScreen extends Component {
               this.onPresschapterUpdate(this.state.chapterName , this.state.desciption , this.state.pathOfpdf)
               this.props.navigation.goBack()
             }} />
-          <Button
-              title='Detele'
-              onPress={() => {
-                this.chapterDelete()
-                this.props.navigation.goBack()
-              }} />
 
         </ScrollView>
-
+        <Button
+            title='Detele'
+            color='#FF0000'
+            onPress={() => {
+              this.chapterDelete()
+              this.props.navigation.goBack()
+            }} />
       </View>
     )
   }

@@ -25,6 +25,7 @@ export default class Page6NewScreen extends Component {
 
   constructor(props) {
     super(props)
+    this.state.password = this.generate()
   }
 
   componentDidMount(){
@@ -35,22 +36,37 @@ export default class Page6NewScreen extends Component {
 
   state = {
     courseName: '',
-    desciption: ''
+    desciption: '',
+    password: ''
   }
 
-  courseCreate(courseName, desciption){
+  randomPassword(length) {
+    var chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOP1234567890";
+    var pass = "";
+    for (var x = 0; x < length; x++) {
+        var i = Math.floor(Math.random() * chars.length);
+        pass += chars.charAt(i);
+    }
+    return pass;
+  }
+  generate() {
+    var password = this.randomPassword(8);
+    return password
+  }
+
+  courseCreate(courseName, desciption, password){
     state = 'undeploy'
     const {currentUser} = firebase.auth()
     teacherid = currentUser.uid
     const course = firebase.database().ref(`/course/`)
-    course.push({courseName, desciption, state, teacherid})
+    course.push({courseName, desciption, state, teacherid, password})
   }
-  courseCreateDeploy(courseName, desciption){
+  courseCreateDeploy(courseName, desciption, password){
     state = 'deploy'
     const {currentUser} = firebase.auth()
     teacherid = currentUser.uid
     const course = firebase.database().ref(`/course/`)
-    course.push({ courseName, desciption, state, teacherid})
+    course.push({ courseName, desciption, state, teacherid, password})
   }
   render() {
     return (
@@ -88,7 +104,6 @@ export default class Page6NewScreen extends Component {
               <TextInput
                 value = {this.state.courseName}
                 onChangeText={courseName => this.setState({ courseName })}
-                style={{ height: 50, width: 200 }}
               />
               <Text style={styles.welcome}>
                 desciption
@@ -96,21 +111,26 @@ export default class Page6NewScreen extends Component {
               <TextInput
                 value = {this.state.desciption}
                 onChangeText={desciption => this.setState({ desciption })}
-                style={{ height: 50, width: 300 }}
               />
+              <Text style={styles.welcome}>
+                Password Course Please save
+              </Text>
+              <Text >
+                {this.state.password}
+              </Text>
             </View>
 
             <Button
             title='Save'
             onPress={() => {
-              this.courseCreate(this.state.courseName , this.state.desciption)
+              this.courseCreate(this.state.courseName , this.state.desciption, this.state.password)
               this.props.navigation.goBack()
             }}
             />
             <Button
             title='Deploy'
             onPress={() => {
-              this.courseCreateDeploy(this.state.courseName , this.state.desciption)
+              this.courseCreateDeploy(this.state.courseName , this.state.desciption, this.state.password)
               this.props.navigation.goBack()
             }}
             />

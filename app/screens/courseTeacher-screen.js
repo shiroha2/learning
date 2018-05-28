@@ -49,6 +49,7 @@ export default class Page6Screen extends Component {
             items.push({
                 title: child.val().courseName,
                 _des: child.val().desciption,
+                _pass: child.val().password,
                 _key: child.key
             })
           }
@@ -68,6 +69,7 @@ export default class Page6Screen extends Component {
             items.push({
                 title: child.val().courseName,
                 _des: child.val().desciption,
+                _pass: child.val().password,
                 _key: child.key
             })
           }
@@ -87,6 +89,7 @@ export default class Page6Screen extends Component {
             items.push({
                 title: child.val().courseName,
                 _des: child.val().desciption,
+                _pass: child.val().password,
                 _key: child.key
             })
           }
@@ -215,8 +218,9 @@ export default class Page6Screen extends Component {
                       marginBottom: 10,
                       padding: 10,
                     }}>
-                      <Text>{ data.title }</Text>
-                      <Text>{ data._des }</Text>
+                      <Text>Name: { data.title }</Text>
+                      <Text>Desciption: { data._des }</Text>
+                      <Text>Password: { data._pass }</Text>
                       <Button
                           title='Chapter'
                           onPress={(key) =>{
@@ -250,15 +254,16 @@ export default class Page6Screen extends Component {
                 }} />
 
             </View>
-            <Button
-              title='Sign out'
-              onPress={() => {
-                this._signOut()
-                const {navigate} = this.props.navigation
-                navigate('MainScreen')
-            }}/>
-        </ScrollView>
 
+        </ScrollView>
+        <Button
+          title='Sign out'
+          color='#FF0000'
+          onPress={() => {
+            this._signOut()
+            const {navigate} = this.props.navigation
+            navigate('MainScreen')
+        }}/>
       </View>
     )
   }

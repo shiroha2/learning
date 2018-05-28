@@ -78,7 +78,7 @@ export default class ChatRoom extends Component {
     name = this.studentName()
     status = this.statusName()
     const messageRef = firebase.database().ref(`course/${this.coursekey}/chatmessage/`).push({userid, name, status, message})
-    firebase.auth.onAuthStateChanged((user: any) => {
+    /**firebase.auth.onAuthStateChanged((user: any) => {
       if (user) {
         FCM.requestPermissions()
         this.topic = messageRef
@@ -87,7 +87,7 @@ export default class ChatRoom extends Component {
         // If the user is logged-out, we unsubscribe
           FCM.unsubscribeFromTopic(this.topic);
       }
-    });
+    }); **/
   }
 
   componentDidMount() {
