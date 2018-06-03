@@ -15,7 +15,7 @@ import {
   IconIonic,
   ScrollView,
   TextInput,
-
+  Alert
 
 } from 'react-native'
 
@@ -115,7 +115,7 @@ export default class Page6NewScreen extends Component {
               <Text style={styles.welcome}>
                 Password Course Please save
               </Text>
-              <Text >
+              <Text style={styles.welcome}>
                 {this.state.password}
               </Text>
             </View>
@@ -130,8 +130,18 @@ export default class Page6NewScreen extends Component {
             <Button
             title='Deploy'
             onPress={() => {
-              this.courseCreateDeploy(this.state.courseName , this.state.desciption, this.state.password)
-              this.props.navigation.goBack()
+              Alert.alert(
+                'ALERT',
+                'Would you like to DEPLOY this course',
+                [
+                  {text: 'Cancal', onPress:() => console.log('Cancel Pressed')},
+                  {text: 'Ok' , onPress:() =>
+                    this.courseCreateDeploy(this.state.courseName , this.state.desciption, this.state.password)
+                  },
+                ],
+                {cancalable: false}
+
+              )
             }}
             />
 

@@ -20,6 +20,11 @@ import {
   Alert
 } from 'react-native'
 
+import PropTypes from 'prop-types'
+
+//import PDFView from 'react-native-pdf-view'
+
+import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker'
 
 export default class Page7NewScreen extends Component {
 
@@ -40,17 +45,25 @@ export default class Page7NewScreen extends Component {
     chapterName: '',
     desciption: '',
     pathOfpdf: '',
-    url: ''
+    url: '',
+    pathOfYoutube: '',
+    urlYoutube: ''
+  }
+
+  _upload(url){
+    courseKey = this.props.navigation.state.params.key
+    storage = firebase.storage()
+    sessionId = new Date().getTime()
+    imageRef = storage.ref('pdf').child(`${courseKey}/${sessionId}`)
   }
 
 
-
-  onPresschapterCreate(chapterName , desciption, pathOfpdf){
+  onPresschapterCreate(chapterName , desciption, pathOfpdf, pathOfYoutube){
     courseKey = this.props.navigation.state.params.key
     const {currentUser} = firebase.auth()
     teacherid = currentUser.uid
     const chapter = firebase.database().ref(`/course/${courseKey}/chapter`)
-    chapter.push({chapterName , desciption , pathOfpdf})
+    chapter.push({chapterName , desciption , pathOfpdf, pathOfYoutube})
   }
 
  /**  onPressLearnMore(){
@@ -102,41 +115,63 @@ export default class Page7NewScreen extends Component {
         <ScrollView style={{
           flex: 1,
         }}>
-          <Text styte={styles.welcome}>
+          <Text style={styles.welcome}>
             Chapter
           </Text>
           <TextInput
             value={this.state.chapterName}
             onChangeText={chapterName => this.setState({ chapterName })}
           />
-          <Text styte={styles.welcome}>
+          <Text style={styles.welcome}>
             Desciption
           </Text>
           <TextInput
             value={this.state.desciption}
             onChangeText={desciption => this.setState({ desciption })}
           />
-          <Text styte={styles.welcome}>
-            Url PDF
+          <Text style={styles.welcome}>
+            Url from Youtube
+          </Text>
+          <TextInput
+            value={this.state.pathOfYoutube}
+            onChangeText={pathOfYoutube => this.setState({pathOfYoutube})}
+          />
+
+          <Text style={styles.welcome}>
+            Url PDF from Google driver
           </Text>
           <TextInput
             value={this.state.pathOfpdf}
             onChangeText={pathOfpdf => this.setState({ pathOfpdf })}
           />
+          <Text style={styles.welcome}>
+            Url PDF and Youtube
+          </Text>
+          <Text>PDF: {this.state.pathOfpdf}</Text>
+          <Text>Youtube: {this.state.pathOfYoutube}</Text>
           <Button
-            title='preview'
+            title='Select'
             onPress={() =>{
-              this.state.url = this.state.pathOfpdf
+              DocumentPicker.show({
+                filetype: [DocumentPickerUtil.pdf()],
+              },(error,res) => {
+                // Android
+                this.state.pathOfpdf = res.uri
+                console.log(
+                  res.uri,
+                  res.type, // mime type
+                  res.fileName,
+                  res.fileSize
+                );
+              });
             }}
           />
-          <WebView
-            source={{uri: this.state.url}}
-            style={{marginTop: 20}}
-          />
+
           <Button
             title='Done'
             onPress={() => {
-              this.onPresschapterCreate(this.state.chapterName , this.state.desciption , this.state.pathOfpdf)
+              this.onPresschapterCreate(this.state.chapterName , this.state.desciption , this.state.pathOfpdf, this.state.pathOfYoutube)
+              this._upload(this.state.pathOfpdf)
               this.props.navigation.goBack()
             }} />
 
@@ -161,6 +196,9 @@ const styles = {
     textAlign: 'center',
     color: '#333333',
     marginBottom: 5,
+  },
+  pdf: {
+        flex:1
   },
   appBar: {
     containerStyle: {

@@ -118,9 +118,9 @@ export default class PageExerciseTeacherScreen extends Component {
                   marginBottom: 10,
                   padding: 10,
                 }}>
-                  <Text>{ data.title }</Text>
-                  <Text>{ data._des}</Text>
-                  <Text>{ data._answer }</Text>
+                  <Text>Exersice name: { data.title }</Text>
+                  <Text>Desciption: { data._des}</Text>
+                  <Text>Answer: { data._answer }</Text>
                   <Button
                     title='Edit'
                     onPress={(key , chapterkey,exercisekey) => {
@@ -138,19 +138,18 @@ export default class PageExerciseTeacherScreen extends Component {
                                                                exercisekey: data._key})
                    }}
                    />
-                   <Button
-                     title='Watch scroe from student'
-                     onPress={(key , chapterkey,exercisekey)=>{
-                       const {navigate} = this.props.navigation
-                       navigate('PageScoreScreen', {key: this.props.navigation.state.params.key,
-                                                                 chapterkey: this.props.navigation.state.params.chapterkey,
-                                                                 exercisekey: data._key})
-
-                     }}
-                   />
                 </View>
+
             )
           }} />
+          <Button
+            title='Watch scroe from student'
+            onPress={(key , chapterkey)=>{
+              const {navigate} = this.props.navigation
+              navigate('PageScoreScreen', {key: this.props.navigation.state.params.key,
+                                           chapterkey: this.props.navigation.state.params.chapterkey })
+            }}
+          />
         </ScrollView>
 
       </View>

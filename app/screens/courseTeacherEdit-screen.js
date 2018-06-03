@@ -17,7 +17,7 @@ import {
   ScrollView,
   TextInput,
   ListView,
-  Alert
+  Alert,
 
 } from 'react-native'
 
@@ -128,7 +128,7 @@ export default class Page6EditScreen extends Component {
               <Text>
                 Password Course Please save
               </Text>
-              <Text>
+              <Text style={styles.welcome}>
                 {this.state.password}
               </Text>
             </View>
@@ -142,8 +142,17 @@ export default class Page6EditScreen extends Component {
             <Button
             title='Deploy'
             onPress={() => {
-              this.courseUpdateDeploy(this.state.courseName, this.state.desciption)
-              this.props.navigation.goBack()
+              Alert.alert(
+                'ALERT',
+                'Would you like to DEPLOY this course',
+                [
+                  {text: 'Cancal', onPress:() => console.log('Cancel Pressed')},
+                  {text: 'Ok' , onPress:() =>
+                    this.courseUpdateDeploy(this.state.courseName, this.state.desciption)
+                  },
+                ],
+                {cancalable: false}
+              )
             }}
             />
 
@@ -154,7 +163,7 @@ export default class Page6EditScreen extends Component {
         onPress={() => {
           Alert.alert(
             'ALERT',
-            'Would you like to delete this course',
+            'Would you like to CLOSE this course',
             [
               {text: 'Cancal', onPress:() => console.log('Cancel Pressed')},
               {text: 'Ok' , onPress:() =>

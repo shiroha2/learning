@@ -16,7 +16,11 @@ import {
   IconIonic,
   ScrollView,
   TextInput,
+  Alert
 } from 'react-native'
+
+import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker'
+
 
 export default class Page7EditScreen extends Component {
 
@@ -25,27 +29,48 @@ export default class Page7EditScreen extends Component {
     this.state = {
       loading: true
     }
+    this.courseKey = this.props.navigation.state.params.key
+    this.chapterkey = this.props.navigation.state.params.chapterkey
   }
 
   state = {
     chapterName: '',
     desciption: '',
     pathOfpdf: '',
-    url:''
+    url: '',
+    pathOfYoutube: '',
+    urlYoutube: ''
   }
 
-  onPresschapterUpdate(chapterName , desciption, pathOfpdf){
+  onPresschapterUpdate(chapterName , desciption, pathOfpdf,pathOfYoutube){
     courseKey = this.props.navigation.state.params.key
     const {currentUser} = firebase.auth()
     teacherid = currentUser.uid
     const chapter = firebase.database().ref(`/course/${courseKey}/chapter`)
-    chapter.update({chapterName , desciption , pathOfpdf})
+    chapter.update({chapterName , desciption , pathOfpdf,pathOfYoutube})
   }
 
   chapterDelete(){
     courseKey = this.props.navigation.state.params.key
     chapterkey = this.props.navigation.state.params.chapterkey
     firebase.database().ref(`/course/${courseKey}/chapter/${chapterkey}`).remove()
+  }
+  getPath(){
+    itemsRef = firebase.database().ref(`/course/${this.coursekey}/chapter/${this.chapterkey}`)
+    var path = ''
+    itemsRef.on('value', (snap) =>{
+      path = snap.val().pathOfpdf
+    })
+    return path
+  }
+  getPathYoutube(){
+
+    itemsRef = firebase.database().ref(`/course/${this.coursekey}/chapter/${this.chapterkey}`)
+    var path = ''
+    itemsRef.on('value', (snap) =>{
+      path = snap.val().pathOfYoutube
+    })
+    return path
   }
 
 
@@ -93,27 +118,77 @@ export default class Page7EditScreen extends Component {
             value={this.state.desciption}
             onChangeText={desciption => this.setState({ desciption })}
           />
-          <Text styte={styles.welcome}>
-            Url PDF
+          <Text style={styles.welcome}>
+            Url from Youtube
+          </Text>
+          <TextInput
+            value={this.state.pathOfYoutube}
+            onChangeText={pathOfYoutube => this.setState({pathOfYoutube})}
+          />
+          <Text style={styles.welcome}>
+            Url PDF from Google driver
           </Text>
           <TextInput
             value={this.state.pathOfpdf}
             onChangeText={pathOfpdf => this.setState({ pathOfpdf })}
           />
+          <Text style={styles.welcome}>
+            Url PDF
+          </Text>
+          <Text>PDF: {this.state.pathOfpdf}</Text>
+          <Text>Youtube: {this.state.pathOfpdf}</Text>
+          <Button
+            title='Select'
+            onPress={() =>{
+              DocumentPicker.show({
+                filetype: [DocumentPickerUtil.pdf()],
+              },(error,res) => {
+                // Android
+                this.state.pathOfpdf = res.uri
+                console.log(
+                  res.uri,
+                  res.type, // mime type
+                  res.fileName,
+                  res.fileSize
+                );
+              });
+            }}
+          />
+
           <Button
             title='Done'
             onPress={() => {
-              this.onPresschapterUpdate(this.state.chapterName , this.state.desciption , this.state.pathOfpdf)
-              this.props.navigation.goBack()
+                    Alert.alert(
+                      'ALERT',
+                      'Would you like to EDIT this chapter',
+                      [
+                        {text: 'Cancal', onPress:() => console.log('Cancel Pressed')},
+                        {text: 'Ok' , onPress:() =>
+                              this.onPresschapterUpdate(this.state.chapterName , this.state.desciption , this.state.pathOfpdf,this.state.pathOfYoutube)
+                        },
+                      ],
+                      {cancalable: false}
+                    )
             }} />
 
         </ScrollView>
         <Button
-            title='Detele'
+            title='Delete'
             color='#FF0000'
             onPress={() => {
-              this.chapterDelete()
+              Alert.alert(
+                'ALERT',
+                'Would you like to DELETE this chapter',
+                [
+                  {text: 'Cancal', onPress:() => console.log('Cancel Pressed')},
+                  {text: 'Ok' , onPress:() =>
+                        this.chapterDelete()
+                  },
+                ],
+                {cancalable: false}
+              )
               this.props.navigation.goBack()
+
             }} />
       </View>
     )

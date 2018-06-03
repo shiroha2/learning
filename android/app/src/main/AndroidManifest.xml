@@ -8,6 +8,10 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/> <!--  Precise location If you want to use promptLocation for letting OneSignal know the user location. -->
 
 
+    <meta-data
+        android:name="pspdfkit_license_key"
+        android:value="Lxzh85eKn2X0Dpw-wPLbDwJFS9_P6eIyQrkuYtJe0xPFZCCNKkgrjunPvPZaeUvr52LsG9O7YuR94_9DktFbDgK6RMSP7t694USivraPnAV9yTlY3B8Js8tf57ZkjhfhOMXGn8sBX2ZTDx6a6X4BBUvGxb-HbfI-jJhgOuI58sPLxuubyE2Gdq5rPn1YgqfCJHePI5zJNgEqER59K4u-FxfaSYvVSe3HybCsG1OdIrp9HVRuVAuolPfBRG9CHi6Oy3V0L3hAl0ZqOcBJ8glAqQ0ZxPrOoTuo9xYjbzWX1lwMdW9cs5AtNMTCldAHhqwi9crQlkMHxgi1YbKsiITS0SxXZqAmH54ce9c0dPA8rQhBczZdOPW1y3cv75MvbAMGNkDRRW_W9LeaCGyzArpcBjTKLORulsfk0evDD45tJRXDoirDJQMjZrTyc8KNAnRa"/>
+
     <application
       android:name=".MainApplication"
       android:label="@string/app_name"
@@ -20,7 +24,6 @@
         android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
         android:windowSoftInputMode="adjustResize"
           android:launchMode="singleTop">
-
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />

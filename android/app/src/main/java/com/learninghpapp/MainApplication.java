@@ -3,11 +3,16 @@ package com.learninghpapp;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import org.wonday.pdf.RCTPdfView;
+import com.RNFetchBlob.RNFetchBlobPackage;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.reactnativedocumentpicker.ReactNativeDocumentPicker; // Import package
+import com.keyee.pdfview.PDFView;
+
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +31,11 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-              new RNGoogleSigninPackage()
+            new RCTPdfView(),
+            new RNFetchBlobPackage(),
+              new RNGoogleSigninPackage(),
+              new ReactNativeDocumentPicker(),
+              new PDFView()
       );
     }
 

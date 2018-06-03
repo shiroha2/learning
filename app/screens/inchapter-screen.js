@@ -21,6 +21,8 @@ import {
   Dimensions
 } from 'react-native'
 
+//import Pdf from 'react-native-pdf'
+
 export default class Page4Screen extends Component {
 
   ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
@@ -45,14 +47,12 @@ export default class Page4Screen extends Component {
     itemsRef.on('value' ,(snap) =>{
        name = snap.val().chapterName
        des = snap.val().desciption
-       path = snap.val().pathOfpdf
+       path = snap.val().pathOfpdfs
     })
     this.setState({
       dataSource: this.ds.cloneWithRows([{
           title: name,
-        },{
           _des: des,
-        },{
           _path: path,
         }]),
       })
@@ -62,6 +62,14 @@ export default class Page4Screen extends Component {
     var path = ''
     itemsRef.on('value', (snap) =>{
       path = snap.val().pathOfpdf
+    })
+    return path
+  }
+  getPathYoutube(){
+    itemsRef = firebase.database().ref(`/course/${this.coursekey}/chapter/${this.chapterkey}`)
+    var path = ''
+    itemsRef.on('value', (snap) =>{
+      path = snap.val().pathOfYoutube
     })
     return path
   }
@@ -100,6 +108,15 @@ export default class Page4Screen extends Component {
         </View>
 
         {/* Body */}
+        <WebView
+          style={{flex:1}}
+          javaScriptEnabled={true}
+          source={{html: `<iframe width="560" height="315" src=${this.getPathYoutube()} frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`}}
+        />
+        <WebView
+          source={{uri: this.getPath()}}
+          style={styles.container}
+         />
         <ScrollView style={{
           flex: 1,
         }}>
@@ -113,21 +130,14 @@ export default class Page4Screen extends Component {
                 borderBottomWidth: 1,
                 marginLeft: 10,
                 marginRight: 10,
-                marginBottom: 10,
                 padding: 10,
               }}>
-                <Text>{ data.title }</Text>
-                <Text>{ data._des}</Text>
-
+                <Text>Chapter: { data.title }</Text>
+                <Text>Desciption: { data._des}</Text>
               </View>
-
           )
         }} />
         </ScrollView>
-        <WebView
-          source={{uri: this.getPath()}}
-          style={{marginTop: 20}}
-        />
 
       </View>
     )

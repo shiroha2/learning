@@ -16,6 +16,7 @@ import {
   IconIonic,
   ScrollView,
   TextInput,
+  Alert
 } from 'react-native'
 
 export default class PageExerciseTeacherNewScreen extends Component {

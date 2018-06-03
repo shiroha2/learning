@@ -160,18 +160,18 @@ export default class ChatRoom extends Component {
             value={this.state.message}
             onChangeText={message => this.setState({message})}
           />
-          <Button
-            title='Send'
-            onPress={() => {
-              if((this.state.message).localeCompare('') != 0){
-                this.putMessage(this.state.message)
-                this.listenForItems(this.itemsRef)
-                this.state.message = ''
-              }
-            }} />
+
 
         </ScrollView>
-
+        <Button
+          title='Send'
+          onPress={() => {
+            if((this.state.message).localeCompare('') != 0){
+              this.putMessage(this.state.message)
+              this.listenForItems(this.itemsRef)
+              this.state.message = ''
+            }
+          }} />
       </View>
     )
   }

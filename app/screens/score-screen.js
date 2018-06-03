@@ -31,39 +31,32 @@ export default class PageAnswerScreen extends Component {
     super(props)
     this.coursekey = this.props.navigation.state.params.key
     this.chapterkey = this.props.navigation.state.params.chapterkey
-    this.exercisekey = this.props.navigation.state.params.exercisekey
-    this.itemsRef = firebase.database().ref(`course/${this.coursekey}/chapter/${this.chapterkey}/exercise/${this.exercisekey}/answerStudent`)
+    this.itemsRef = firebase.database().ref(`course/${this.coursekey}/students`)
     this.state.dataSource = this.ds.cloneWithRows([])
   }
 
   scoreStudent(itemsRef){
-    var point = 0
-    var studentid1 = ''
     itemsRef.on('value', (snap) => {
 
         var items = []
         snap.forEach((child) => {
-          studentid1 = child.val().studentid
-            snap.forEach((child2) => {
-              if(studentid1.localeCompare(child2.val().studentid) == 0){
-                point = point + parseInt(child2.val().savePoint)
-              }else{
-                studentid1 = child2.val().studentid
-              }
-            })
           items.push({
-              title: this.studentName(child.val().studentid),
-              _des: child.val().name,
-              _date: child.val().datetime,
-              _point: point,
-              _key: child.key
-            })
+              title: child.val().name,
+              _point: this.getScoreStudent(child.val().studentid)
+          })
         })
         this.setState({
           dataSource: this.ds.cloneWithRows(items)
         })
     })
-
+  }
+  getScoreStudent(studentid){
+    items = firebase.database().ref(`/users/iduser/${studentid}`)
+    var point = ''
+    items.on('value', (snap) => {
+      point = snap.val().point
+    })
+    return point
   }
 
   studentName(studentid){
@@ -130,11 +123,8 @@ export default class PageAnswerScreen extends Component {
                     marginBottom: 10,
                     padding: 10,
                   }}>
-                    <Text>Name:{ data.title }</Text>
-                    <Text>{ data._des }</Text>
-                    <Text> Point: { data._point }</Text>
-                    <Text> Datetime { data._date }</Text>
-
+                    <Text>Name: { data.title }</Text>
+                    <Text>Point: { data._point }</Text>
 
                   </View>
                 )

@@ -44,12 +44,52 @@ export default class PageAnswerScreen extends Component {
     return name
   }
 
-  filterByName(){
-
+  filterByWrongChoice(itemsRef){
+    ansExer = firebase.database().ref(`/course/${this.coursekey}/chapter/${this.chapterkey}/exercise/${this.exercisekey}`)
+    ansE = ''
+    ansExer.on('value', (snap) =>{
+      ansE = snap.val().answer
+    })
+    itemsRef.on('value', (snap) => {
+        var items = []
+        snap.forEach((child) => {
+          if((child.val().ans).localeCompare(ansE) != 0)
+            items.push({
+                title: this.studentName(child.val().studentid),
+                _des: child.val().ans,
+                _date: child.val().datetime,
+                _point: child.val().point,
+                _key: child.key
+            })
+        })
+        this.setState({
+          dataSource: this.ds.cloneWithRows(items)
+        })
+    })
   }
   //PersonRightChoice
-  filterByRightChoice(){
-
+  filterByRightChoice(itemsRef){
+    ansExer = firebase.database().ref(`/course/${this.coursekey}/chapter/${this.chapterkey}/exercise/${this.exercisekey}`)
+    ansE = ''
+    ansExer.on('value', (snap) =>{
+      ansE = snap.val().answer
+    })
+    itemsRef.on('value', (snap) => {
+        var items = []
+        snap.forEach((child) => {
+          if((child.val().ans).localeCompare(ansE) == 0)
+            items.push({
+                title: this.studentName(child.val().studentid),
+                _des: child.val().ans,
+                _date: child.val().datetime,
+                _point: child.val().point,
+                _key: child.key
+            })
+        })
+        this.setState({
+          dataSource: this.ds.cloneWithRows(items)
+        })
+    })
   }
 
   getScroeStudent(){
@@ -125,6 +165,41 @@ export default class PageAnswerScreen extends Component {
           </View>
         </View>
 
+        {/* ItemBar */}
+
+        <View style={styles.appBar2.containerStyle}>
+          <TouchableOpacity
+            style={styles.appBar2.colLeft.containerStyle}
+            onPress={() => {
+              this.filterByRightChoice(this.itemRef)
+            }}>
+            <Text style={styles.appBar.colRight.titleTextStyle}
+              numberOfLines={1}>
+              RightFilter
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.appBar2.colLeft.containerStyle}
+            onPress={() => {
+              this.filterByWrongChoice(this.itemRef)
+            }}>
+            <Text style={styles.appBar.colRight.titleTextStyle}
+              numberOfLines={1}>
+              WrongFilter
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.appBar2.colLeft.containerStyle}
+            onPress={() => {
+              this.listenForItems(this.itemRef)
+            }}>
+            <Text style={styles.appBar.colRight.titleTextStyle}
+              numberOfLines={1}>
+              All
+            </Text>
+          </TouchableOpacity>
+          </View>
+
         {/* Body */}
         <ScrollView style={{
           flex: 1,
@@ -187,6 +262,37 @@ const styles = {
       containerStyle: {
         padding: 12,
         width: 40,
+      },
+      iconStyle: {
+        color: '#969696',
+        alignSelf: 'center',
+        textAlignVertical: 'center',
+      },
+    },
+    colRight: {
+      containerStyle: {
+        flex: 1,
+        justifyContent: 'center',
+      },
+      titleTextStyle: {
+        fontFamily: 'HelvethaicaBd',
+        color: 'rgba(0, 0, 0, .8)',
+        fontSize: 26,
+        alignSelf: 'center',
+        textAlignVertical: 'center',
+        marginRight: 40,
+      },
+    },
+  },
+  appBar2: {
+    containerStyle: {
+      flexDirection: 'row',
+      height: 50,
+      backgroundColor: '#F7F7F7',
+    },
+    colLeft: {
+      containerStyle: {
+        flexDirection: 'row'
       },
       iconStyle: {
         color: '#969696',

@@ -120,8 +120,8 @@ export default class Page7Screen extends Component {
                       marginBottom: 10,
                       padding: 10,
                     }}>
-                      <Text>{ data.title }</Text>
-                      <Text>{ data._des }</Text>
+                      <Text>Chapter Name: { data.title }</Text>
+                      <Text>Desciption: { data._des }</Text>
                       <Button
                         title='Edit'
                         onPress={(key , chapterkey) => {

@@ -16,7 +16,8 @@ import {
   IconIonic,
   ScrollView,
   TextInput,
-  ListView
+  ListView,
+  Alert
 } from 'react-native'
 
 export default class PageExerciseScreen extends Component {
@@ -35,6 +36,7 @@ export default class PageExerciseScreen extends Component {
     answer: '',
     point: 0,
     getPoint: '',
+    count: 0,
     yetAns: true
   }
   checkAlreadyAns(exerkey){
@@ -52,6 +54,18 @@ export default class PageExerciseScreen extends Component {
       })
     })
   }
+
+  countExer(){
+    itemsRef = firebase.database().ref(`/course/${coursekey}/chapter/${chapterkey}/exercise`)
+    var count = 0
+    itemsRef.on('value', (snap) => {
+      snap.forEach((child) => {
+        count++
+      })
+    })
+    return count
+  }
+
   checkAnswer(ans, exerkey){
     const {currentUser} = firebase.auth()
     ansRef = firebase.database().ref(`/course/${coursekey}/chapter/${chapterkey}/exercise/${exerkey}`)
@@ -79,8 +93,6 @@ export default class PageExerciseScreen extends Component {
       this.state.getPoint = pointEx
       point = this.state.point
       scroeRef.update({iduser, name, email,status, point})
-    }else{
-
     }
   }
 
@@ -107,17 +119,18 @@ export default class PageExerciseScreen extends Component {
     coursekey = this.props.navigation.state.params.key
     chapterkey = this.props.navigation.state.params.chapterkey
     var timestamp = new Date()
-    var datetime = timestamp
+    var datetime = ''+timestamp
     const {currentUser} = firebase.auth()
     console.log(this.checkAlreadyAns(exercisekey))
-    if(this.checkAlreadyAns(exercisekey) && this.state.yetAns){
+    var countExe = this.countExer()
+    if(this.state.count != countExe){
       this.checkAnswer(ans, exercisekey)
       savePoint = this.state.getPoint
       studentid = currentUser.uid
       firebase.database().ref(`course/${coursekey}/chapter/${chapterkey}/exercise/${exercisekey}/answerStudent`).push({studentid , ans, savePoint, datetime, exercisekey})
-    }else{
-      this.state.answer = ''
-    }
+      this.state.count++
+
+      }
   }
 
   componentDidMount(){
@@ -186,6 +199,15 @@ export default class PageExerciseScreen extends Component {
                 <Button
                   title='Send'
                   onPress={() =>{
+                    Alert.alert(
+                      'ALERT',
+                      'Confirm your answer',
+                      [
+                        {text: 'Cancal', onPress:() => console.log('Cancel Pressed')},
+                        {text: 'Ok' , onPress:() => console.log('Send Answer')},
+                      ],
+                      {cancalable: false}
+                    )
                     this.putAnswer(this.state.answer, data._key)
                     this.state.answer = ''
                   }}
