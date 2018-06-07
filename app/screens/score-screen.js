@@ -51,7 +51,7 @@ export default class PageAnswerScreen extends Component {
     })
   }
   getScoreStudent(studentid){
-    items = firebase.database().ref(`/users/iduser/${studentid}`)
+    items = firebase.database().ref(`/course/${coursekey}/chapter/${chapterkey}/studentpoint/${studentid}`)
     var point = ''
     items.on('value', (snap) => {
       point = snap.val().point
@@ -60,7 +60,7 @@ export default class PageAnswerScreen extends Component {
   }
 
   studentName(studentid){
-    items = firebase.database().ref(`/users/iduser/${studentid}`)
+    items = firebase.database().ref(`/course/${coursekey}/chapter/${chapterkey}/studentpoint/${studentid}`)
     var name = ''
     items.on('value', (snap) => {
       name = snap.val().name

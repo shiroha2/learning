@@ -11,7 +11,6 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.reactnativedocumentpicker.ReactNativeDocumentPicker; // Import package
-import com.keyee.pdfview.PDFView;
 
 
 import java.util.Arrays;
@@ -34,8 +33,7 @@ public class MainApplication extends Application implements ReactApplication {
             new RCTPdfView(),
             new RNFetchBlobPackage(),
               new RNGoogleSigninPackage(),
-              new ReactNativeDocumentPicker(),
-              new PDFView()
+              new ReactNativeDocumentPicker()
       );
     }
 

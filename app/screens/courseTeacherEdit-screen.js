@@ -125,7 +125,7 @@ export default class Page6EditScreen extends Component {
                 value = {this.state.desciption}
                 onChangeText={desciption => this.setState({ desciption })}
               />
-              <Text>
+              <Text style={styles.welcome}>
                 Password Course Please save
               </Text>
               <Text style={styles.welcome}>

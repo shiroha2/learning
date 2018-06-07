@@ -66,6 +66,7 @@ export default class PageExerciseScreen extends Component {
     return count
   }
 
+
   checkAnswer(ans, exerkey){
     const {currentUser} = firebase.auth()
     ansRef = firebase.database().ref(`/course/${coursekey}/chapter/${chapterkey}/exercise/${exerkey}`)
@@ -93,6 +94,8 @@ export default class PageExerciseScreen extends Component {
       this.state.getPoint = pointEx
       point = this.state.point
       scroeRef.update({iduser, name, email,status, point})
+      courseRef = firebase.database().ref(`/course/${coursekey}/chapter/${chapterkey}/studentpoint/${iduser}`)
+      courseRef.update({iduser,name ,point})
     }
   }
 

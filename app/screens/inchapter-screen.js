@@ -21,7 +21,7 @@ import {
   Dimensions
 } from 'react-native'
 
-//import Pdf from 'react-native-pdf'
+import Pdf from 'react-native-pdf'
 
 export default class Page4Screen extends Component {
 
@@ -138,7 +138,7 @@ export default class Page4Screen extends Component {
           )
         }} />
         </ScrollView>
-
+        <Pdf/>
       </View>
     )
   }

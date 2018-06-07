@@ -51,6 +51,26 @@ export default class Page4Screen extends Component {
 
   }
 
+/**  createStudentCourse(chapterkey){
+    const {currentUser} = firebase.auth()
+    items = firebase.database().ref(`/course/${this.coursekey}/chapter/${chapterkey}/studentpoint/${currentUser.uid}`)
+    var name = this.studentName()
+    var point = ''
+    var iduser = currentUser.uid
+    items.update({iduser, name, point})
+  }**/
+
+
+  studentName(){
+    const {currentUser} = firebase.auth()
+    items = firebase.database().ref(`/users/iduser/${currentUser.uid}`)
+    var name = ''
+    items.on('value', (snap) => {
+      name = snap.val().name
+    })
+    return name
+  }
+
   listenForItems(itemsRef){
     itemsRef.on('value', (snap) => {
 
